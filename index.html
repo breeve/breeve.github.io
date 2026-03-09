@@ -1,4 +1,57 @@
----
-layout: home
-author_profile: true
----
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>极简竖屏赤潮Demo</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div id="game-container">
+        <!-- 顶部资源栏 -->
+        <div id="resource-bar">
+            <div id="gold">金币: 100</div>
+            <div id="population">人口: 0/10</div>
+            <div id="round-info">回合 1 - 等待中</div>
+            <div id="round-timer">10s</div>
+        </div>
+        
+        <!-- 战斗区域 -->
+        <div id="battle-field"></div>
+        
+        <!-- 底部出兵和升级区域 -->
+        <div id="control-bar">
+            <div id="unit-buttons">
+                <button class="unit-button" data-unit="1">步兵<br>10金/1人口</button>
+                <button class="unit-button" data-unit="2">弓箭手<br>20金/2人口</button>
+                <button class="unit-button" data-unit="3">法师<br>30金/3人口</button>
+                <button class="unit-button" data-unit="4">骑士<br>40金/4人口</button>
+                <button class="unit-button" data-unit="5">投石车<br>50金/5人口</button>
+                <button class="unit-button" data-unit="6">飞行兵<br>35金/3人口</button>
+                <button class="unit-button" data-unit="7">重装步兵<br>25金/2人口</button>
+                <button class="unit-button" data-unit="8">医疗兵<br>20金/1人口</button>
+            </div>
+            <div id="upgrade-buttons">
+                <button class="upgrade-button" data-unit="1">升级步兵<br>50金</button>
+                <button class="upgrade-button" data-unit="2">升级弓箭手<br>75金</button>
+                <button class="upgrade-button" data-unit="3">升级法师<br>100金</button>
+                <button class="upgrade-button" data-unit="4">升级骑士<br>125金</button>
+                <button class="upgrade-button" data-unit="5">升级投石车<br>150金</button>
+                <button class="upgrade-button" data-unit="6">升级飞行兵<br>110金</button>
+                <button class="upgrade-button" data-unit="7">升级重装步兵<br>80金</button>
+                <button class="upgrade-button" data-unit="8">升级医疗兵<br>70金</button>
+            </div>
+
+        </div>
+        
+        <!-- 游戏结束界面 -->
+        <div id="game-over" style="display: none;">
+            <div id="game-over-text"></div>
+            <button id="restart-button">重新开始</button>
+        </div>
+    </div>
+    
+    <script src="steering.js"></script>
+    <script src="game.js"></script>
+</body>
+</html>
