@@ -153,12 +153,23 @@ body {
   gap: var(--sp-sm);
   margin-bottom: var(--sp-md);
 }
-.card-weather { font-size: 1.8rem; line-height: 1; }
+.card-feeling { font-size: 1.8rem; line-height: 1; }
 .card-date-group { flex: 1; }
 .card-date {
   font-weight: 600;
   font-size: 0.95rem;
   color: var(--color-text);
+  display: flex;
+  align-items: center;
+  gap: var(--sp-sm);
+}
+.card-weather-tag {
+  font-size: 0.7rem;
+  background: var(--bg-secondary);
+  padding: 1px 6px;
+  border-radius: 10px;
+  color: var(--color-text-light);
+  font-weight: 400;
 }
 .card-relative {
   font-size: 0.75rem;
@@ -275,8 +286,9 @@ body {
   box-shadow: 0 16px 48px rgba(93,78,55,0.18);
   width: 100%;
   max-width: 480px;
-  max-height: 85vh;
+  max-height: 90vh;
   overflow-y: auto;
+  overflow-x: hidden;
   padding: var(--sp-xl);
   transform: translateY(20px) scale(0.97);
   transition: transform 0.35s var(--ease-out);
@@ -303,7 +315,7 @@ body {
   transition: all 0.2s;
 }
 .modal-close:hover { background: var(--color-rose); color: var(--color-text); }
-.modal-section { margin-bottom: var(--sp-lg); }
+.modal-section { margin-bottom: var(--sp-lg); overflow: visible; }
 .modal-label {
   font-size: 0.8rem;
   font-weight: 600;
@@ -312,29 +324,110 @@ body {
   text-transform: uppercase;
   letter-spacing: 0.05em;
 }
-.weather-grid {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: var(--sp-sm);
+
+/* ── Compact Wheel Picker ── */
+.picker-row {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  flex-wrap: wrap;
+  overflow: visible;
 }
-.weather-option {
-  border: 2px solid var(--color-border);
-  background: var(--bg-primary);
-  border-radius: var(--radius-sm);
-  padding: var(--sp-sm);
-  text-align: center;
-  cursor: pointer;
-  transition: all 0.25s var(--ease-out);
+.picker-col {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: auto;
+  height: auto;
+  transition: width 0.35s var(--ease-out), height 0.35s var(--ease-out), margin 0.35s var(--ease-out);
 }
-.weather-option:hover { border-color: var(--color-peach); }
-.weather-option.selected {
-  border-color: var(--color-accent);
+.picker-col.open {
+  width: 210px;
+  height: 210px;
+  margin: 10px 0;
+}
+.wheel-trigger {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 5px 12px;
+  border-radius: 16px;
+  border: 1.5px solid var(--color-border);
   background: var(--bg-secondary);
-  transform: scale(1.05);
-  box-shadow: 0 0 0 3px rgba(255,154,118,0.2);
+  color: var(--color-text-light);
+  font-family: inherit;
+  font-size: 0.78rem;
+  cursor: pointer;
+  transition: all 0.2s var(--ease-out);
+  user-select: none;
+  white-space: nowrap;
+  position: relative;
+  z-index: 2;
 }
-.weather-option .w-emoji { font-size: 1.5rem; display: block; }
-.weather-option .w-label { font-size: 0.7rem; color: var(--color-text-light); margin-top: 2px; }
+.wheel-trigger:hover { background: var(--color-peach); border-color: var(--color-peach); color: var(--color-text); }
+.wheel-trigger:active { transform: scale(0.95); }
+.picker-col.open .wheel-trigger {
+  background: var(--color-accent);
+  border-color: var(--color-accent);
+  color: #fff;
+  padding: 6px 10px;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  justify-content: center;
+}
+.picker-col.open .wheel-trigger span:last-child { display: none; }
+.wheel-trigger__emoji { font-size: 1rem; line-height: 1; }
+.picker-col.open .wheel-trigger__emoji { font-size: 1.1rem; }
+.wheel-item {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  margin-left: -22px;
+  margin-top: -24px;
+  width: 44px;
+  height: 48px;
+  border-radius: 14px;
+  background: var(--bg-card);
+  border: 1.5px solid var(--color-border);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1px;
+  cursor: pointer;
+  box-shadow: 0 2px 6px rgba(93,78,55,0.08);
+  opacity: 0;
+  transform: scale(0);
+  transition: all 0.3s var(--ease-out);
+  transition-delay: var(--d, 0ms);
+  z-index: 1;
+}
+.wheel-item__emoji { font-size: 1.05rem; line-height: 1; }
+.wheel-item__label { font-size: 0.55rem; color: var(--color-text-light); line-height: 1; white-space: nowrap; }
+.picker-col.open .wheel-item {
+  opacity: 1;
+  transform: scale(1) translate(var(--tx), var(--ty));
+}
+.wheel-item:hover {
+  background: var(--color-peach);
+  border-color: var(--color-peach);
+  transform: scale(1.2) translate(var(--tx), var(--ty)) !important;
+  z-index: 3;
+}
+.wheel-item:active { transform: scale(0.9) translate(var(--tx), var(--ty)) !important; }
+.wheel-item.selected {
+  border-color: var(--color-accent);
+  background: var(--color-peach);
+}
+.wheel-item.selected .wheel-item__label { color: var(--color-text); font-weight: 600; }
+.wheel-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+}
+
 .note-input-row {
   display: flex;
   gap: var(--sp-sm);
@@ -395,6 +488,57 @@ body {
   flex-shrink: 0;
 }
 .note-delete-btn:hover { color: #e74c3c; background: rgba(231,76,60,0.1); }
+.note-edit-btn {
+  border: none;
+  background: transparent;
+  color: var(--color-text-light);
+  cursor: pointer;
+  font-size: 0.85rem;
+  padding: 2px 4px;
+  border-radius: 4px;
+  transition: all 0.2s;
+  flex-shrink: 0;
+}
+.note-edit-btn:hover { color: var(--color-accent); background: rgba(255,154,118,0.1); }
+
+/* ── Delete Day ── */
+.delete-day-section {
+  margin-top: var(--sp-lg);
+  padding-top: var(--sp-lg);
+  border-top: 1px solid var(--color-border);
+  text-align: center;
+}
+.delete-day-btn {
+  border: 1.5px solid var(--color-rose);
+  background: transparent;
+  color: var(--color-text-light);
+  font-family: inherit;
+  font-size: 0.8rem;
+  padding: 6px 16px;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.delete-day-btn:hover { background: var(--color-rose); color: var(--color-text); }
+.delete-confirm-row {
+  display: flex;
+  gap: var(--sp-sm);
+  justify-content: center;
+  margin-top: var(--sp-sm);
+}
+.delete-confirm-row button {
+  border: none;
+  font-family: inherit;
+  font-size: 0.8rem;
+  padding: 6px 14px;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.btn-confirm-delete { background: #e74c3c; color: #fff; }
+.btn-confirm-delete:hover { background: #c0392b; }
+.btn-cancel-delete { background: var(--bg-secondary); color: var(--color-text-light); }
+.btn-cancel-delete:hover { background: var(--color-border); }
 
 /* ── FAB ── */
 .fab {
@@ -500,8 +644,20 @@ body {
       <button class="modal-close" id="modal-close">&times;</button>
     </div>
     <div class="modal-section">
-      <div class="modal-label">今天的天气</div>
-      <div class="weather-grid" id="weather-grid"></div>
+      <div class="picker-row">
+        <div class="picker-col" id="feeling-col">
+          <button class="wheel-trigger" id="feeling-trigger">
+            <span class="wheel-trigger__emoji" id="feeling-emoji">😊</span>
+            <span>体感</span>
+          </button>
+        </div>
+        <div class="picker-col" id="weather-col">
+          <button class="wheel-trigger" id="weather-trigger">
+            <span class="wheel-trigger__emoji" id="weather-emoji">☁️</span>
+            <span>天气</span>
+          </button>
+        </div>
+      </div>
     </div>
     <div class="modal-section">
       <div class="modal-label">碎碎念</div>
@@ -511,21 +667,37 @@ body {
       </div>
       <ul class="modal-notes-list" id="modal-notes"></ul>
     </div>
+    <div class="delete-day-section" id="delete-day-section">
+      <button class="delete-day-btn" id="delete-day-btn">删除此天记录</button>
+    </div>
   </div>
 </div>
 
 <script>
 /* ── Constants ── */
 const STORAGE_KEY = 'happy-every-day-data';
+const FEELING_TYPES = [
+  { key: 'freezing', emoji: '🥶', label: '很冷' },
+  { key: 'chilly',   emoji: '🧣', label: '略冷' },
+  { key: 'cool',     emoji: '🍃', label: '凉爽' },
+  { key: 'comfy',    emoji: '😊', label: '舒适' },
+  { key: 'warm',     emoji: '🌤️', label: '温暖' },
+  { key: 'humid',    emoji: '💧', label: '湿热' },
+  { key: 'hot',      emoji: '🔥', label: '炎热' }
+];
 const WEATHER_TYPES = [
-  { key: 'sunny',      emoji: '\u2600\uFE0F', label: '晴天' },
-  { key: 'cloudy',     emoji: '\u26C5',       label: '多云' },
-  { key: 'overcast',   emoji: '\u2601\uFE0F', label: '阴天' },
-  { key: 'light-rain', emoji: '\uD83C\uDF27\uFE0F', label: '小雨' },
-  { key: 'heavy-rain', emoji: '\uD83C\uDF0A', label: '大雨' },
-  { key: 'snow',       emoji: '\uD83C\uDF28\uFE0F', label: '下雪' },
-  { key: 'wind',       emoji: '\uD83C\uDF2C\uFE0F', label: '大风' },
-  { key: 'thunder',    emoji: '\u26C8\uFE0F', label: '雷雨' }
+  { key: 'sunny',         emoji: '☀️', label: '晴' },
+  { key: 'partly-cloudy', emoji: '⛅', label: '少云' },
+  { key: 'cloudy',        emoji: '☁️', label: '多云' },
+  { key: 'overcast',      emoji: '🌫️', label: '阴' },
+  { key: 'light-rain',    emoji: '🌦️', label: '小雨' },
+  { key: 'heavy-rain',    emoji: '🌊', label: '大雨' },
+  { key: 'thunder',       emoji: '⛈️', label: '雷雨' },
+  { key: 'snow',          emoji: '🌨️', label: '雪' },
+  { key: 'sleet',         emoji: '🧊', label: '雨夹雪' },
+  { key: 'wind',          emoji: '🌬️', label: '大风' },
+  { key: 'fog',           emoji: '🌁', label: '雾' },
+  { key: 'hail',          emoji: '🫧', label: '冰雹' }
 ];
 
 /* ── Data Layer ── */
@@ -549,20 +721,39 @@ function getDayData(dateStr) {
   return data.days[dateStr] || null;
 }
 
+function ensureDay(data, dateStr) {
+  if (!data.days[dateStr]) {
+    data.days[dateStr] = { feeling: null, weather: null, notes: [] };
+  }
+  if (data.days[dateStr].feeling === undefined) {
+    data.days[dateStr].feeling = null;
+  }
+  return data;
+}
+
+function setFeeling(dateStr, feelingKey) {
+  const data = loadData();
+  ensureDay(data, dateStr);
+  data.days[dateStr].feeling = feelingKey;
+  if (!feelingKey && !data.days[dateStr].weather && data.days[dateStr].notes.length === 0) {
+    delete data.days[dateStr];
+  }
+  saveData(data);
+}
+
 function setWeather(dateStr, weatherKey) {
   const data = loadData();
-  if (!data.days[dateStr]) {
-    data.days[dateStr] = { weather: null, notes: [] };
-  }
+  ensureDay(data, dateStr);
   data.days[dateStr].weather = weatherKey;
+  if (!weatherKey && !data.days[dateStr].feeling && data.days[dateStr].notes.length === 0) {
+    delete data.days[dateStr];
+  }
   saveData(data);
 }
 
 function addNote(dateStr, text) {
   const data = loadData();
-  if (!data.days[dateStr]) {
-    data.days[dateStr] = { weather: null, notes: [] };
-  }
+  ensureDay(data, dateStr);
   data.days[dateStr].notes.push({
     id: 'n_' + Date.now() + '_' + Math.random().toString(36).slice(2, 6),
     text: text,
@@ -579,9 +770,26 @@ function deleteNote(dateStr, noteId) {
     ...day,
     notes: day.notes.filter(n => n.id !== noteId)
   };
-  if (!data.days[dateStr].weather && data.days[dateStr].notes.length === 0) {
+  if (!data.days[dateStr].feeling && !data.days[dateStr].weather && data.days[dateStr].notes.length === 0) {
     delete data.days[dateStr];
   }
+  saveData(data);
+}
+
+function editNote(dateStr, noteId, newText) {
+  const data = loadData();
+  const day = data.days[dateStr];
+  if (!day) return;
+  data.days[dateStr] = {
+    ...day,
+    notes: day.notes.map(n => n.id === noteId ? { ...n, text: newText } : n)
+  };
+  saveData(data);
+}
+
+function deleteDay(dateStr) {
+  const data = loadData();
+  delete data.days[dateStr];
   saveData(data);
 }
 
@@ -623,6 +831,9 @@ function mergeData(imported) {
     if (!current.days[dateStr]) {
       current.days[dateStr] = dayData;
     } else {
+      if (dayData.feeling && !current.days[dateStr].feeling) {
+        current.days[dateStr].feeling = dayData.feeling;
+      }
       if (dayData.weather && !current.days[dateStr].weather) {
         current.days[dateStr].weather = dayData.weather;
       }
@@ -666,9 +877,19 @@ function formatTime(isoStr) {
   return `${String(d.getHours()).padStart(2,'0')}:${String(d.getMinutes()).padStart(2,'0')}`;
 }
 
+function feelingEmoji(key) {
+  const f = FEELING_TYPES.find(t => t.key === key);
+  return f ? f.emoji : '';
+}
+
 function weatherEmoji(key) {
   const w = WEATHER_TYPES.find(t => t.key === key);
   return w ? w.emoji : '';
+}
+
+function weatherLabel(key) {
+  const w = WEATHER_TYPES.find(t => t.key === key);
+  return w ? w.emoji + ' ' + w.label : '';
 }
 
 function escapeHtml(str) {
@@ -694,7 +915,8 @@ function renderWaterfall() {
 
   container.innerHTML = dates.map(dateStr => {
     const day = data.days[dateStr];
-    const emoji = weatherEmoji(day.weather);
+    const fEmoji = feelingEmoji(day.feeling);
+    const wTag = day.weather ? `<span class="card-weather-tag">${weatherLabel(day.weather)}</span>` : '';
     const rel = relativeDate(dateStr);
     const notesHtml = day.notes.map(n =>
       `<li class="note-bubble">
@@ -705,9 +927,9 @@ function renderWaterfall() {
 
     return `<article class="day-card" data-date="${dateStr}">
       <div class="card-header">
-        <span class="card-weather">${emoji || '📝'}</span>
+        <span class="card-feeling">${fEmoji || '📝'}</span>
         <div class="card-date-group">
-          <div class="card-date">${formatDate(dateStr)}</div>
+          <div class="card-date">${formatDate(dateStr)}${wTag}</div>
           ${rel ? `<div class="card-relative">${rel}</div>` : ''}
         </div>
       </div>
@@ -746,7 +968,7 @@ function renderCalendar() {
     const dayData = data.days[dateStr];
     const isToday = dateStr === todayD;
     const hasRecord = !!dayData;
-    const emoji = dayData ? weatherEmoji(dayData.weather) : '';
+    const emoji = dayData ? feelingEmoji(dayData.feeling) : '';
     const hasNotes = dayData && dayData.notes.length > 0;
 
     const classes = ['cal-day'];
@@ -772,9 +994,16 @@ function openEditor(dateStr) {
   document.getElementById('modal-title').textContent = formatDate(dateStr);
 
   const dayData = getDayData(dateStr);
+  renderFeelingGrid(dayData ? dayData.feeling : null);
   renderWeatherGrid(dayData ? dayData.weather : null);
   renderModalNotes(dateStr);
   document.getElementById('note-input').value = '';
+
+  const addBtn = document.getElementById('note-add');
+  delete addBtn.dataset.editingId;
+  addBtn.textContent = '添加';
+
+  resetDeleteSection();
 
   modal.classList.add('open');
   setTimeout(() => document.getElementById('note-input').focus(), 350);
@@ -787,14 +1016,75 @@ function closeEditor() {
   renderCalendar();
 }
 
+/* ── Wheel helpers ── */
+function closeAllWheels() {
+  document.getElementById('feeling-col').classList.remove('open');
+  document.getElementById('weather-col').classList.remove('open');
+  removeWheelBackdrop();
+}
+
+function addWheelBackdrop() {
+  removeWheelBackdrop();
+  const bd = document.createElement('div');
+  bd.className = 'wheel-backdrop';
+  bd.id = 'wheel-backdrop';
+  bd.addEventListener('click', closeAllWheels);
+  document.body.appendChild(bd);
+}
+
+function removeWheelBackdrop() {
+  const bd = document.getElementById('wheel-backdrop');
+  if (bd) bd.remove();
+}
+
+function renderFeelingGrid(selectedKey) {
+  const col = document.getElementById('feeling-col');
+  const emojiEl = document.getElementById('feeling-emoji');
+  const sel = FEELING_TYPES.find(f => f.key === selectedKey);
+  emojiEl.textContent = sel ? sel.emoji : '😊';
+
+  col.querySelectorAll('.wheel-item').forEach(el => el.remove());
+  const radius = 78;
+  const count = FEELING_TYPES.length;
+  const step = 360 / count;
+  FEELING_TYPES.forEach((f, i) => {
+    const angle = (-90 + step * i) * Math.PI / 180;
+    const tx = Math.cos(angle) * radius;
+    const ty = Math.sin(angle) * radius;
+    const div = document.createElement('div');
+    div.className = 'wheel-item' + (f.key === selectedKey ? ' selected' : '');
+    div.dataset.feeling = f.key;
+    div.style.setProperty('--tx', tx + 'px');
+    div.style.setProperty('--ty', ty + 'px');
+    div.style.setProperty('--d', (i * 25) + 'ms');
+    div.innerHTML = `<span class="wheel-item__emoji">${f.emoji}</span><span class="wheel-item__label">${f.label}</span>`;
+    col.appendChild(div);
+  });
+}
+
 function renderWeatherGrid(selectedKey) {
-  const grid = document.getElementById('weather-grid');
-  grid.innerHTML = WEATHER_TYPES.map(w =>
-    `<div class="weather-option${w.key === selectedKey ? ' selected' : ''}" data-weather="${w.key}">
-      <span class="w-emoji">${w.emoji}</span>
-      <span class="w-label">${w.label}</span>
-    </div>`
-  ).join('');
+  const col = document.getElementById('weather-col');
+  const emojiEl = document.getElementById('weather-emoji');
+  const sel = WEATHER_TYPES.find(w => w.key === selectedKey);
+  emojiEl.textContent = sel ? sel.emoji : '☁️';
+
+  col.querySelectorAll('.wheel-item').forEach(el => el.remove());
+  const radius = 82;
+  const count = WEATHER_TYPES.length;
+  const step = 360 / count;
+  WEATHER_TYPES.forEach((w, i) => {
+    const angle = (-90 + step * i) * Math.PI / 180;
+    const tx = Math.cos(angle) * radius;
+    const ty = Math.sin(angle) * radius;
+    const div = document.createElement('div');
+    div.className = 'wheel-item' + (w.key === selectedKey ? ' selected' : '');
+    div.dataset.weather = w.key;
+    div.style.setProperty('--tx', tx + 'px');
+    div.style.setProperty('--ty', ty + 'px');
+    div.style.setProperty('--d', (i * 20) + 'ms');
+    div.innerHTML = `<span class="wheel-item__emoji">${w.emoji}</span><span class="wheel-item__label">${w.label}</span>`;
+    col.appendChild(div);
+  });
 }
 
 function renderModalNotes(dateStr) {
@@ -813,6 +1103,7 @@ function renderModalNotes(dateStr) {
           <div class="modal-note-text">${escapeHtml(n.text)}</div>
           <div class="modal-note-time">${formatTime(n.createdAt)}</div>
         </div>
+        <button class="note-edit-btn" data-note-id="${n.id}" data-note-text="${escapeHtml(n.text)}" title="编辑">✎</button>
         <button class="note-delete-btn" data-note-id="${n.id}" title="删除">&times;</button>
       </li>`
     ).join('');
@@ -868,8 +1159,20 @@ function restoreModalContent() {
       <button class="modal-close" id="modal-close">&times;</button>
     </div>
     <div class="modal-section">
-      <div class="modal-label">今天的天气</div>
-      <div class="weather-grid" id="weather-grid"></div>
+      <div class="picker-row">
+        <div class="picker-col" id="feeling-col">
+          <button class="wheel-trigger" id="feeling-trigger">
+            <span class="wheel-trigger__emoji" id="feeling-emoji">😊</span>
+            <span>体感</span>
+          </button>
+        </div>
+        <div class="picker-col" id="weather-col">
+          <button class="wheel-trigger" id="weather-trigger">
+            <span class="wheel-trigger__emoji" id="weather-emoji">☁️</span>
+            <span>天气</span>
+          </button>
+        </div>
+      </div>
     </div>
     <div class="modal-section">
       <div class="modal-label">碎碎念</div>
@@ -878,6 +1181,9 @@ function restoreModalContent() {
         <button class="note-add-btn" id="note-add">添加</button>
       </div>
       <ul class="modal-notes-list" id="modal-notes"></ul>
+    </div>
+    <div class="delete-day-section" id="delete-day-section">
+      <button class="delete-day-btn" id="delete-day-btn">删除此天记录</button>
     </div>`;
   bindModalEvents();
 }
@@ -922,23 +1228,68 @@ function bindCalendarClicks() {
 function bindModalEvents() {
   document.getElementById('modal-close').addEventListener('click', closeEditor);
 
-  document.getElementById('weather-grid').addEventListener('click', (e) => {
-    const option = e.target.closest('.weather-option');
-    if (option && currentEditDate) {
-      setWeather(currentEditDate, option.dataset.weather);
-      renderWeatherGrid(option.dataset.weather);
+  // Wheel Picker: Feeling
+  document.getElementById('feeling-trigger').addEventListener('click', () => {
+    const col = document.getElementById('feeling-col');
+    const otherCol = document.getElementById('weather-col');
+    const opening = !col.classList.contains('open');
+    col.classList.toggle('open');
+    otherCol.classList.remove('open');
+    if (opening) addWheelBackdrop();
+    else removeWheelBackdrop();
+  });
+  document.getElementById('feeling-col').addEventListener('click', (e) => {
+    const item = e.target.closest('.wheel-item');
+    if (item && currentEditDate) {
+      const key = item.dataset.feeling;
+      const dayData = getDayData(currentEditDate);
+      const current = dayData ? dayData.feeling : null;
+      const newVal = (current === key) ? null : key;
+      setFeeling(currentEditDate, newVal);
+      renderFeelingGrid(newVal);
+      closeAllWheels();
+    }
+  });
+
+  // Wheel Picker: Weather
+  document.getElementById('weather-trigger').addEventListener('click', () => {
+    const col = document.getElementById('weather-col');
+    const otherCol = document.getElementById('feeling-col');
+    const opening = !col.classList.contains('open');
+    col.classList.toggle('open');
+    otherCol.classList.remove('open');
+    if (opening) addWheelBackdrop();
+    else removeWheelBackdrop();
+  });
+  document.getElementById('weather-col').addEventListener('click', (e) => {
+    const item = e.target.closest('.wheel-item');
+    if (item && currentEditDate) {
+      const key = item.dataset.weather;
+      const dayData = getDayData(currentEditDate);
+      const current = dayData ? dayData.weather : null;
+      const newVal = (current === key) ? null : key;
+      setWeather(currentEditDate, newVal);
+      renderWeatherGrid(newVal);
+      closeAllWheels();
     }
   });
 
   document.getElementById('note-add').addEventListener('click', () => {
     const input = document.getElementById('note-input');
+    const addBtn = document.getElementById('note-add');
     const text = input.value.trim();
-    if (text && currentEditDate) {
+    if (!text || !currentEditDate) return;
+
+    if (addBtn.dataset.editingId) {
+      editNote(currentEditDate, addBtn.dataset.editingId, text);
+      delete addBtn.dataset.editingId;
+      addBtn.textContent = '添加';
+    } else {
       addNote(currentEditDate, text);
-      input.value = '';
-      renderModalNotes(currentEditDate);
-      input.focus();
     }
+    input.value = '';
+    renderModalNotes(currentEditDate);
+    input.focus();
   });
 
   document.getElementById('note-input').addEventListener('keydown', (e) => {
@@ -949,12 +1300,56 @@ function bindModalEvents() {
   });
 
   document.getElementById('modal-notes').addEventListener('click', (e) => {
-    const btn = e.target.closest('.note-delete-btn');
-    if (btn && currentEditDate) {
-      deleteNote(currentEditDate, btn.dataset.noteId);
+    const deleteBtn = e.target.closest('.note-delete-btn');
+    if (deleteBtn && currentEditDate) {
+      deleteNote(currentEditDate, deleteBtn.dataset.noteId);
       renderModalNotes(currentEditDate);
+      return;
+    }
+    const editBtn = e.target.closest('.note-edit-btn');
+    if (editBtn && currentEditDate) {
+      const noteId = editBtn.dataset.noteId;
+      const noteText = editBtn.dataset.noteText;
+      const input = document.getElementById('note-input');
+      const addBtn = document.getElementById('note-add');
+      input.value = noteText;
+      input.focus();
+      addBtn.textContent = '保存';
+      addBtn.dataset.editingId = noteId;
     }
   });
+
+  document.getElementById('delete-day-section').addEventListener('click', (e) => {
+    if (e.target.closest('#delete-day-btn')) {
+      showDeleteConfirm();
+      return;
+    }
+    if (e.target.closest('#confirm-delete-day')) {
+      if (currentEditDate) {
+        deleteDay(currentEditDate);
+        closeEditor();
+      }
+      return;
+    }
+    if (e.target.closest('#cancel-delete-day')) {
+      resetDeleteSection();
+    }
+  });
+}
+
+function resetDeleteSection() {
+  const section = document.getElementById('delete-day-section');
+  section.innerHTML = '<button class="delete-day-btn" id="delete-day-btn">删除此天记录</button>';
+}
+
+function showDeleteConfirm() {
+  const section = document.getElementById('delete-day-section');
+  section.innerHTML = `
+    <span style="font-size:0.8rem;color:var(--color-text-light);">确定删除此天所有记录？</span>
+    <div class="delete-confirm-row">
+      <button class="btn-confirm-delete" id="confirm-delete-day">确定删除</button>
+      <button class="btn-cancel-delete" id="cancel-delete-day">取消</button>
+    </div>`;
 }
 
 function bindModalOverlay() {
