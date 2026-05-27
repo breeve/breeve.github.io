@@ -1,1400 +1,1489 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Happy Every Day</title>
-<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🌸</text></svg>">
-<style>
-:root {
-  --bg-primary: #FFF8F0;
-  --bg-secondary: #FFF1E6;
-  --bg-card: #FFFFFF;
-  --color-peach: #FFCBA4;
-  --color-lavender: #E6D5F7;
-  --color-mint: #B5EAD7;
-  --color-sky: #C7CEEA;
-  --color-rose: #FFB7B2;
-  --color-accent: #FF9A76;
-  --color-accent-hover: #FF8A60;
-  --color-text: #5D4E37;
-  --color-text-light: #8B7D6B;
-  --color-border: rgba(93,78,55,0.1);
-  --shadow-card: 0 2px 12px rgba(93,78,55,0.08);
-  --shadow-hover: 0 6px 24px rgba(93,78,55,0.13);
-  --radius-sm: 8px;
-  --radius-md: 16px;
-  --radius-lg: 24px;
-  --sp-xs: 4px;
-  --sp-sm: 8px;
-  --sp-md: 16px;
-  --sp-lg: 24px;
-  --sp-xl: 32px;
-  --sp-2xl: 48px;
-  --font-stack: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans SC", "PingFang SC", "Hiragino Sans GB", sans-serif;
-  --ease-out: cubic-bezier(0.16,1,0.3,1);
-}
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <meta name="theme-color" content="#f8f4f0">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="树洞日记">
+  <title>树洞日记</title>
 
-*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
-
-body {
-  font-family: var(--font-stack);
-  background: var(--bg-primary);
-  color: var(--color-text);
-  line-height: 1.7;
-  font-size: clamp(0.875rem, 0.8rem + 0.4vw, 1rem);
-  min-height: 100vh;
-  -webkit-font-smoothing: antialiased;
-}
-
-/* ── Header ── */
-.app-header {
-  position: sticky;
-  top: 0;
-  z-index: 100;
-  background: rgba(255,248,240,0.85);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border-bottom: 1px solid var(--color-border);
-  padding: var(--sp-md) var(--sp-lg);
-}
-.header-inner {
-  max-width: 1200px;
-  margin: 0 auto;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: var(--sp-md);
-  flex-wrap: wrap;
-}
-.app-title {
-  font-size: clamp(1.2rem, 1rem + 1vw, 1.6rem);
-  font-weight: 700;
-  color: var(--color-accent);
-  line-height: 1.3;
-  white-space: nowrap;
-}
-.header-nav {
-  display: flex;
-  gap: var(--sp-xs);
-  background: var(--bg-secondary);
-  border-radius: var(--radius-lg);
-  padding: 3px;
-}
-.nav-btn {
-  border: none;
-  background: transparent;
-  color: var(--color-text-light);
-  font-family: inherit;
-  font-size: 0.85rem;
-  padding: 6px 16px;
-  border-radius: 20px;
-  cursor: pointer;
-  transition: all 0.25s var(--ease-out);
-}
-.nav-btn.active {
-  background: var(--bg-card);
-  color: var(--color-text);
-  box-shadow: 0 1px 4px rgba(93,78,55,0.1);
-}
-.header-actions {
-  display: flex;
-  gap: var(--sp-sm);
-  align-items: center;
-}
-.action-btn {
-  border: none;
-  background: var(--bg-secondary);
-  color: var(--color-text-light);
-  font-family: inherit;
-  font-size: 0.8rem;
-  padding: 6px 12px;
-  border-radius: var(--radius-sm);
-  cursor: pointer;
-  transition: all 0.2s var(--ease-out);
-}
-.action-btn:hover { background: var(--color-peach); color: var(--color-text); }
-
-/* ── Main ── */
-.app-main {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: var(--sp-lg);
-  padding-bottom: 100px;
-}
-
-/* ── Waterfall ── */
-.waterfall-container {
-  columns: 1;
-  column-gap: var(--sp-lg);
-}
-@media (min-width: 640px) { .waterfall-container { columns: 2; } }
-@media (min-width: 1024px) { .waterfall-container { columns: 3; } }
-
-.day-card {
-  break-inside: avoid;
-  background: var(--bg-card);
-  border-radius: var(--radius-md);
-  box-shadow: var(--shadow-card);
-  padding: var(--sp-lg);
-  margin-bottom: var(--sp-lg);
-  cursor: pointer;
-  transition: transform 0.3s var(--ease-out), box-shadow 0.3s var(--ease-out);
-  border: 1px solid transparent;
-}
-.day-card:hover {
-  transform: translateY(-3px);
-  box-shadow: var(--shadow-hover);
-  border-color: var(--color-border);
-}
-.card-header {
-  display: flex;
-  align-items: center;
-  gap: var(--sp-sm);
-  margin-bottom: var(--sp-md);
-}
-.card-feeling { font-size: 1.8rem; line-height: 1; }
-.card-date-group { flex: 1; }
-.card-date {
-  font-weight: 600;
-  font-size: 0.95rem;
-  color: var(--color-text);
-  display: flex;
-  align-items: center;
-  gap: var(--sp-sm);
-}
-.card-weather-tag {
-  font-size: 0.7rem;
-  background: var(--bg-secondary);
-  padding: 1px 6px;
-  border-radius: 10px;
-  color: var(--color-text-light);
-  font-weight: 400;
-}
-.card-relative {
-  font-size: 0.75rem;
-  color: var(--color-text-light);
-}
-.card-notes { list-style: none; display: flex; flex-direction: column; gap: var(--sp-sm); }
-.note-bubble {
-  background: var(--bg-secondary);
-  padding: var(--sp-sm) var(--sp-md);
-  border-radius: 0 var(--radius-md) var(--radius-md) var(--radius-md);
-  font-size: 0.9rem;
-  line-height: 1.6;
-  position: relative;
-}
-.note-time {
-  font-size: 0.7rem;
-  color: var(--color-text-light);
-  margin-top: 2px;
-}
-
-/* ── Calendar ── */
-.calendar-nav {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: var(--sp-lg);
-  margin-bottom: var(--sp-lg);
-}
-.cal-arrow {
-  border: none;
-  background: var(--bg-secondary);
-  width: 36px;
-  height: 36px;
-  border-radius: 50%;
-  font-size: 1rem;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: background 0.2s;
-  color: var(--color-text);
-}
-.cal-arrow:hover { background: var(--color-peach); }
-.cal-title {
-  font-size: 1.1rem;
-  font-weight: 600;
-  min-width: 140px;
-  text-align: center;
-}
-.calendar-grid {
-  display: grid;
-  grid-template-columns: repeat(7, 1fr);
-  gap: var(--sp-xs);
-  max-width: 560px;
-  margin: 0 auto;
-}
-.cal-weekday {
-  text-align: center;
-  font-size: 0.75rem;
-  color: var(--color-text-light);
-  padding: var(--sp-sm) 0;
-  font-weight: 600;
-}
-.cal-day {
-  aspect-ratio: 1;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  border-radius: var(--radius-sm);
-  font-size: 0.85rem;
-  cursor: pointer;
-  transition: all 0.2s var(--ease-out);
-  background: transparent;
-  border: 2px solid transparent;
-  position: relative;
-  gap: 2px;
-}
-.cal-day:hover { background: var(--bg-secondary); }
-.cal-day.today { border-color: var(--color-accent); font-weight: 700; }
-.cal-day.has-record { background: var(--bg-secondary); }
-.cal-day.empty { cursor: default; }
-.cal-day.empty:hover { background: transparent; }
-.cal-day .cal-emoji { font-size: 1.1rem; line-height: 1; }
-.cal-day .cal-num { font-size: 0.75rem; line-height: 1; }
-.cal-day .cal-dot {
-  width: 5px; height: 5px;
-  border-radius: 50%;
-  background: var(--color-accent);
-  position: absolute;
-  bottom: 4px;
-}
-
-/* ── Modal ── */
-.modal-overlay {
-  position: fixed;
-  inset: 0;
-  z-index: 200;
-  background: rgba(93,78,55,0.3);
-  backdrop-filter: blur(4px);
-  -webkit-backdrop-filter: blur(4px);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: var(--sp-lg);
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 0.3s var(--ease-out);
-}
-.modal-overlay.open { opacity: 1; pointer-events: auto; }
-.modal-card {
-  background: var(--bg-card);
-  border-radius: var(--radius-lg);
-  box-shadow: 0 16px 48px rgba(93,78,55,0.18);
-  width: 100%;
-  max-width: 480px;
-  max-height: 90vh;
-  overflow-y: auto;
-  overflow-x: hidden;
-  padding: var(--sp-xl);
-  transform: translateY(20px) scale(0.97);
-  transition: transform 0.35s var(--ease-out);
-}
-.modal-overlay.open .modal-card { transform: translateY(0) scale(1); }
-.modal-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: var(--sp-lg);
-}
-.modal-title { font-size: 1.15rem; font-weight: 700; }
-.modal-close {
-  border: none;
-  background: var(--bg-secondary);
-  width: 32px; height: 32px;
-  border-radius: 50%;
-  font-size: 1.1rem;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: var(--color-text-light);
-  transition: all 0.2s;
-}
-.modal-close:hover { background: var(--color-rose); color: var(--color-text); }
-.modal-section { margin-bottom: var(--sp-lg); overflow: visible; }
-.modal-label {
-  font-size: 0.8rem;
-  font-weight: 600;
-  color: var(--color-text-light);
-  margin-bottom: var(--sp-sm);
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-}
-
-/* ── Compact Wheel Picker ── */
-.picker-row {
-  display: flex;
-  gap: 10px;
-  align-items: center;
-  flex-wrap: wrap;
-  overflow: visible;
-}
-.picker-col {
-  position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: auto;
-  height: auto;
-  transition: width 0.35s var(--ease-out), height 0.35s var(--ease-out), margin 0.35s var(--ease-out);
-}
-.picker-col.open {
-  width: 210px;
-  height: 210px;
-  margin: 10px 0;
-}
-.wheel-trigger {
-  display: inline-flex;
-  align-items: center;
-  gap: 4px;
-  padding: 5px 12px;
-  border-radius: 16px;
-  border: 1.5px solid var(--color-border);
-  background: var(--bg-secondary);
-  color: var(--color-text-light);
-  font-family: inherit;
-  font-size: 0.78rem;
-  cursor: pointer;
-  transition: all 0.2s var(--ease-out);
-  user-select: none;
-  white-space: nowrap;
-  position: relative;
-  z-index: 2;
-}
-.wheel-trigger:hover { background: var(--color-peach); border-color: var(--color-peach); color: var(--color-text); }
-.wheel-trigger:active { transform: scale(0.95); }
-.picker-col.open .wheel-trigger {
-  background: var(--color-accent);
-  border-color: var(--color-accent);
-  color: #fff;
-  padding: 6px 10px;
-  border-radius: 50%;
-  width: 40px;
-  height: 40px;
-  justify-content: center;
-}
-.picker-col.open .wheel-trigger span:last-child { display: none; }
-.wheel-trigger__emoji { font-size: 1rem; line-height: 1; }
-.picker-col.open .wheel-trigger__emoji { font-size: 1.1rem; }
-.wheel-item {
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  margin-left: -22px;
-  margin-top: -24px;
-  width: 44px;
-  height: 48px;
-  border-radius: 14px;
-  background: var(--bg-card);
-  border: 1.5px solid var(--color-border);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 1px;
-  cursor: pointer;
-  box-shadow: 0 2px 6px rgba(93,78,55,0.08);
-  opacity: 0;
-  transform: scale(0);
-  transition: all 0.3s var(--ease-out);
-  transition-delay: var(--d, 0ms);
-  z-index: 1;
-}
-.wheel-item__emoji { font-size: 1.05rem; line-height: 1; }
-.wheel-item__label { font-size: 0.55rem; color: var(--color-text-light); line-height: 1; white-space: nowrap; }
-.picker-col.open .wheel-item {
-  opacity: 1;
-  transform: scale(1) translate(var(--tx), var(--ty));
-}
-.wheel-item:hover {
-  background: var(--color-peach);
-  border-color: var(--color-peach);
-  transform: scale(1.2) translate(var(--tx), var(--ty)) !important;
-  z-index: 3;
-}
-.wheel-item:active { transform: scale(0.9) translate(var(--tx), var(--ty)) !important; }
-.wheel-item.selected {
-  border-color: var(--color-accent);
-  background: var(--color-peach);
-}
-.wheel-item.selected .wheel-item__label { color: var(--color-text); font-weight: 600; }
-.wheel-backdrop {
-  position: fixed;
-  inset: 0;
-  z-index: 0;
-}
-
-.note-input-row {
-  display: flex;
-  gap: var(--sp-sm);
-}
-.note-input {
-  flex: 1;
-  border: 1.5px solid var(--color-border);
-  border-radius: var(--radius-sm);
-  padding: var(--sp-sm) var(--sp-md);
-  font-family: inherit;
-  font-size: 0.9rem;
-  background: var(--bg-primary);
-  color: var(--color-text);
-  outline: none;
-  transition: border-color 0.2s;
-}
-.note-input:focus { border-color: var(--color-accent); }
-.note-input::placeholder { color: var(--color-text-light); opacity: 0.6; }
-.note-add-btn {
-  border: none;
-  background: var(--color-accent);
-  color: #fff;
-  font-family: inherit;
-  font-size: 0.85rem;
-  padding: var(--sp-sm) var(--sp-md);
-  border-radius: var(--radius-sm);
-  cursor: pointer;
-  white-space: nowrap;
-  transition: background 0.2s;
-}
-.note-add-btn:hover { background: var(--color-accent-hover); }
-.modal-notes-list {
-  list-style: none;
-  display: flex;
-  flex-direction: column;
-  gap: var(--sp-sm);
-  margin-top: var(--sp-md);
-}
-.modal-note-item {
-  display: flex;
-  align-items: flex-start;
-  gap: var(--sp-sm);
-  background: var(--bg-secondary);
-  border-radius: var(--radius-sm);
-  padding: var(--sp-sm) var(--sp-md);
-}
-.modal-note-text { flex: 1; font-size: 0.9rem; word-break: break-word; }
-.modal-note-time { font-size: 0.7rem; color: var(--color-text-light); }
-.note-delete-btn {
-  border: none;
-  background: transparent;
-  color: var(--color-text-light);
-  cursor: pointer;
-  font-size: 0.9rem;
-  padding: 2px 4px;
-  border-radius: 4px;
-  transition: all 0.2s;
-  flex-shrink: 0;
-}
-.note-delete-btn:hover { color: #e74c3c; background: rgba(231,76,60,0.1); }
-.note-edit-btn {
-  border: none;
-  background: transparent;
-  color: var(--color-text-light);
-  cursor: pointer;
-  font-size: 0.85rem;
-  padding: 2px 4px;
-  border-radius: 4px;
-  transition: all 0.2s;
-  flex-shrink: 0;
-}
-.note-edit-btn:hover { color: var(--color-accent); background: rgba(255,154,118,0.1); }
-
-/* ── Delete Day ── */
-.delete-day-section {
-  margin-top: var(--sp-lg);
-  padding-top: var(--sp-lg);
-  border-top: 1px solid var(--color-border);
-  text-align: center;
-}
-.delete-day-btn {
-  border: 1.5px solid var(--color-rose);
-  background: transparent;
-  color: var(--color-text-light);
-  font-family: inherit;
-  font-size: 0.8rem;
-  padding: 6px 16px;
-  border-radius: var(--radius-sm);
-  cursor: pointer;
-  transition: all 0.2s;
-}
-.delete-day-btn:hover { background: var(--color-rose); color: var(--color-text); }
-.delete-confirm-row {
-  display: flex;
-  gap: var(--sp-sm);
-  justify-content: center;
-  margin-top: var(--sp-sm);
-}
-.delete-confirm-row button {
-  border: none;
-  font-family: inherit;
-  font-size: 0.8rem;
-  padding: 6px 14px;
-  border-radius: var(--radius-sm);
-  cursor: pointer;
-  transition: all 0.2s;
-}
-.btn-confirm-delete { background: #e74c3c; color: #fff; }
-.btn-confirm-delete:hover { background: #c0392b; }
-.btn-cancel-delete { background: var(--bg-secondary); color: var(--color-text-light); }
-.btn-cancel-delete:hover { background: var(--color-border); }
-
-/* ── FAB ── */
-.fab {
-  position: fixed;
-  bottom: var(--sp-xl);
-  right: var(--sp-xl);
-  width: 56px;
-  height: 56px;
-  border-radius: 50%;
-  border: none;
-  background: var(--color-accent);
-  color: #fff;
-  font-size: 1.6rem;
-  cursor: pointer;
-  box-shadow: 0 4px 16px rgba(255,154,118,0.4);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: all 0.3s var(--ease-out);
-  z-index: 50;
-}
-.fab:hover { transform: scale(1.1); box-shadow: 0 6px 24px rgba(255,154,118,0.5); }
-
-/* ── Empty state ── */
-.empty-state {
-  text-align: center;
-  padding: var(--sp-2xl) var(--sp-lg);
-  color: var(--color-text-light);
-}
-.empty-state .empty-icon { font-size: 3rem; margin-bottom: var(--sp-md); }
-.empty-state p { font-size: 0.95rem; line-height: 1.8; }
-
-/* ── Import confirm ── */
-.import-confirm {
-  display: flex;
-  gap: var(--sp-sm);
-  margin-top: var(--sp-md);
-  justify-content: center;
-}
-.import-confirm button {
-  border: none;
-  font-family: inherit;
-  font-size: 0.85rem;
-  padding: 8px 20px;
-  border-radius: var(--radius-sm);
-  cursor: pointer;
-  transition: all 0.2s;
-}
-.btn-merge { background: var(--color-mint); color: var(--color-text); }
-.btn-overwrite { background: var(--color-rose); color: var(--color-text); }
-.btn-cancel { background: var(--bg-secondary); color: var(--color-text-light); }
-
-/* ── Hidden file input ── */
-#import-file { display: none; }
-
-/* ── View toggle ── */
-.view-section { display: none; }
-.view-section.active { display: block; }
-
-/* ── Scrollbar ── */
-::-webkit-scrollbar { width: 6px; }
-::-webkit-scrollbar-track { background: transparent; }
-::-webkit-scrollbar-thumb { background: var(--color-border); border-radius: 3px; }
-</style>
-</head>
-<body>
-
-<header class="app-header">
-  <div class="header-inner">
-    <h1 class="app-title">Happy Every Day</h1>
-    <nav class="header-nav">
-      <button class="nav-btn active" data-view="waterfall">瀑布流</button>
-      <button class="nav-btn" data-view="calendar">日历</button>
-    </nav>
-    <div class="header-actions">
-      <button class="action-btn" id="btn-export">导出</button>
-      <button class="action-btn" id="btn-import">导入</button>
-      <input type="file" id="import-file" accept=".json">
-    </div>
-  </div>
-</header>
-
-<main class="app-main">
-  <section id="waterfall-view" class="view-section active">
-    <div class="waterfall-container" id="waterfall"></div>
-  </section>
-  <section id="calendar-view" class="view-section">
-    <div class="calendar-nav">
-      <button class="cal-arrow" id="cal-prev">&#8249;</button>
-      <span class="cal-title" id="cal-title"></span>
-      <button class="cal-arrow" id="cal-next">&#8250;</button>
-    </div>
-    <div class="calendar-grid" id="calendar-grid"></div>
-  </section>
-</main>
-
-<button class="fab" id="fab-today" title="记录今天">+</button>
-
-<div class="modal-overlay" id="modal">
-  <div class="modal-card">
-    <div class="modal-header">
-      <span class="modal-title" id="modal-title"></span>
-      <button class="modal-close" id="modal-close">&times;</button>
-    </div>
-    <div class="modal-section">
-      <div class="picker-row">
-        <div class="picker-col" id="feeling-col">
-          <button class="wheel-trigger" id="feeling-trigger">
-            <span class="wheel-trigger__emoji" id="feeling-emoji">😊</span>
-            <span>体感</span>
-          </button>
-        </div>
-        <div class="picker-col" id="weather-col">
-          <button class="wheel-trigger" id="weather-trigger">
-            <span class="wheel-trigger__emoji" id="weather-emoji">☁️</span>
-            <span>天气</span>
-          </button>
-        </div>
-      </div>
-    </div>
-    <div class="modal-section">
-      <div class="modal-label">碎碎念</div>
-      <div class="note-input-row">
-        <input class="note-input" id="note-input" placeholder="写点什么..." maxlength="500">
-        <button class="note-add-btn" id="note-add">添加</button>
-      </div>
-      <ul class="modal-notes-list" id="modal-notes"></ul>
-    </div>
-    <div class="delete-day-section" id="delete-day-section">
-      <button class="delete-day-btn" id="delete-day-btn">删除此天记录</button>
-    </div>
-  </div>
-</div>
-
-<script>
-/* ── Constants ── */
-const STORAGE_KEY = 'happy-every-day-data';
-const FEELING_TYPES = [
-  { key: 'freezing', emoji: '🥶', label: '很冷' },
-  { key: 'chilly',   emoji: '🧣', label: '略冷' },
-  { key: 'cool',     emoji: '🍃', label: '凉爽' },
-  { key: 'comfy',    emoji: '😊', label: '舒适' },
-  { key: 'warm',     emoji: '🌤️', label: '温暖' },
-  { key: 'humid',    emoji: '💧', label: '湿热' },
-  { key: 'hot',      emoji: '🔥', label: '炎热' }
-];
-const WEATHER_TYPES = [
-  { key: 'sunny',         emoji: '☀️', label: '晴' },
-  { key: 'partly-cloudy', emoji: '⛅', label: '少云' },
-  { key: 'cloudy',        emoji: '☁️', label: '多云' },
-  { key: 'overcast',      emoji: '🌫️', label: '阴' },
-  { key: 'light-rain',    emoji: '🌦️', label: '小雨' },
-  { key: 'heavy-rain',    emoji: '🌊', label: '大雨' },
-  { key: 'thunder',       emoji: '⛈️', label: '雷雨' },
-  { key: 'snow',          emoji: '🌨️', label: '雪' },
-  { key: 'sleet',         emoji: '🧊', label: '雨夹雪' },
-  { key: 'wind',          emoji: '🌬️', label: '大风' },
-  { key: 'fog',           emoji: '🌁', label: '雾' },
-  { key: 'hail',          emoji: '🫧', label: '冰雹' }
-];
-
-/* ── Data Layer ── */
-function loadData() {
-  try {
-    const raw = localStorage.getItem(STORAGE_KEY);
-    if (raw) {
-      const parsed = JSON.parse(raw);
-      if (parsed && typeof parsed.days === 'object') return parsed;
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            cream: '#f8f4f0',
+            warm: '#e8e0d8',
+            text: '#4a4543',
+            'text-light': '#8a8583',
+            accent: '#e07a5f',
+            'accent-light': '#f2a07b',
+          }
+        }
+      }
     }
-  } catch (_) { /* corrupted data, reset */ }
-  return { days: {}, version: 1 };
-}
+  </script>
 
-function saveData(data) {
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
-}
+  <!-- js-yaml for YAML parsing -->
+  <script src="https://cdn.jsdelivr.net/npm/js-yaml@4.1.0/dist/js-yaml.min.js"></script>
 
-function getDayData(dateStr) {
-  const data = loadData();
-  return data.days[dateStr] || null;
-}
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
-function ensureDay(data, dateStr) {
-  if (!data.days[dateStr]) {
-    data.days[dateStr] = { feeling: null, weather: null, notes: [] };
-  }
-  if (data.days[dateStr].feeling === undefined) {
-    data.days[dateStr].feeling = null;
-  }
-  return data;
-}
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600;700&family=Noto+Sans+SC:wght@300;400;500&display=swap');
 
-function setFeeling(dateStr, feelingKey) {
-  const data = loadData();
-  ensureDay(data, dateStr);
-  data.days[dateStr].feeling = feelingKey;
-  if (!feelingKey && !data.days[dateStr].weather && data.days[dateStr].notes.length === 0) {
-    delete data.days[dateStr];
-  }
-  saveData(data);
-}
+    :root {
+      --bg-primary: #f8f4f0;
+      --bg-secondary: #ede8e3;
+      --text-primary: #4a4543;
+      --text-secondary: #8a8583;
+      --accent: #e07a5f;
+      --accent-light: #f2a07b;
+      --card-bg: #ffffff;
+      --border: #e8e0d8;
+    }
 
-function setWeather(dateStr, weatherKey) {
-  const data = loadData();
-  ensureDay(data, dateStr);
-  data.days[dateStr].weather = weatherKey;
-  if (!weatherKey && !data.days[dateStr].feeling && data.days[dateStr].notes.length === 0) {
-    delete data.days[dateStr];
-  }
-  saveData(data);
-}
+    .dark {
+      --bg-primary: #1a1a1a;
+      --bg-secondary: #2d2d2d;
+      --text-primary: #e8e0d8;
+      --text-secondary: #8a8583;
+      --card-bg: #252525;
+      --border: #3d3d3d;
+    }
 
-function addNote(dateStr, text) {
-  const data = loadData();
-  ensureDay(data, dateStr);
-  data.days[dateStr].notes.push({
-    id: 'n_' + Date.now() + '_' + Math.random().toString(36).slice(2, 6),
-    text: text,
-    createdAt: new Date().toISOString()
-  });
-  saveData(data);
-}
+    body {
+      font-family: 'Noto Sans SC', sans-serif;
+      background: var(--bg-primary);
+      color: var(--text-primary);
+      min-height: 100dvh;
+      transition: background-color 0.3s, color 0.3s;
+    }
 
-function deleteNote(dateStr, noteId) {
-  const data = loadData();
-  const day = data.days[dateStr];
-  if (!day) return;
-  data.days[dateStr] = {
-    ...day,
-    notes: day.notes.filter(n => n.id !== noteId)
-  };
-  if (!data.days[dateStr].feeling && !data.days[dateStr].weather && data.days[dateStr].notes.length === 0) {
-    delete data.days[dateStr];
-  }
-  saveData(data);
-}
+    .font-serif { font-family: 'Noto Serif SC', serif; }
 
-function editNote(dateStr, noteId, newText) {
-  const data = loadData();
-  const day = data.days[dateStr];
-  if (!day) return;
-  data.days[dateStr] = {
-    ...day,
-    notes: day.notes.map(n => n.id === noteId ? { ...n, text: newText } : n)
-  };
-  saveData(data);
-}
+    .view { display: none; opacity: 0; transform: translateY(10px); transition: opacity 0.3s, transform 0.3s; }
+    .view.active { display: block; opacity: 1; transform: translateY(0); }
 
-function deleteDay(dateStr) {
-  const data = loadData();
-  delete data.days[dateStr];
-  saveData(data);
-}
+    .card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .card:active { transform: scale(0.98); }
 
-function exportData() {
-  const data = loadData();
-  const json = JSON.stringify(data, null, 2);
-  const blob = new Blob([json], { type: 'application/json' });
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement('a');
-  const dateStr = todayStr();
-  a.href = url;
-  a.download = `happy-every-day-backup-${dateStr}.json`;
-  document.body.appendChild(a);
-  a.click();
-  document.body.removeChild(a);
-  URL.revokeObjectURL(url);
-}
+    .mood-btn { transition: transform 0.15s, filter 0.15s; }
+    .mood-btn:hover { transform: scale(1.15); }
+    .mood-btn.selected { transform: scale(1.2); filter: drop-shadow(0 2px 8px rgba(224, 122, 95, 0.4)); }
 
-function importData(file) {
-  const reader = new FileReader();
-  reader.onload = function(e) {
-    try {
-      const imported = JSON.parse(e.target.result);
-      if (!imported || typeof imported.days !== 'object') {
-        alert('文件格式不正确');
+    .weather-btn { transition: transform 0.15s, background-color 0.15s; }
+    .weather-btn:hover { transform: scale(1.05); }
+    .weather-btn.selected { background-color: var(--accent); color: white; }
+
+    .btn-primary {
+      background: var(--accent);
+      color: white;
+      transition: transform 0.15s, filter 0.15s;
+    }
+    .btn-primary:hover { filter: brightness(1.1); }
+    .btn-primary:active { transform: scale(0.96); }
+
+    .calendar-day.has-entry {
+      background: linear-gradient(135deg, var(--accent), var(--accent-light));
+      color: white;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes slideUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .fade-in { animation: fadeIn 0.3s forwards; }
+    .slide-up { animation: slideUp 0.3s forwards; }
+
+    .modal-overlay { backdrop-filter: blur(4px); }
+    .safe-area-top { padding-top: env(safe-area-inset-top, 0); }
+    .safe-area-bottom { padding-bottom: env(safe-area-inset-bottom, 0); }
+
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+  </style>
+
+  <!-- PWA Manifest -->
+  <link rel="manifest" href="data:application/json,%7B%22name%22%3A%22%E6%A0%91%E6%B4%9E%E6%97%A5%E8%AE%B0%22%2C%22short_name%22%3A%22%E6%A0%91%E6%B4%9E%22%2C%22start_url%22%3A%22.%22%2C%22display%22%3A%22standalone%22%2C%22background_color%22%3A%22%23f8f4f0%22%2C%22theme_color%22%3A%22%23e07a5f%22%2C%22icons%22%3A%5B%7B%22src%22%3A%22data%3Aimage%2Fsvg%2Bxml%2C%253Csvg%2520xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%2520viewBox%3D%270%25200%2520100%2520100%27%253E%253Crect%2520fill%3D%27%2523e07a5f%27%2520width%3D%27100%27%2520height%3D%27100%27%2520rx%3D%2720%27%2F%253E%253Ctext%2520x%3D%2750%27%2520y%3D%2765%27%2520font-size%3D%2750%27%2520text-anchor%3D%27middle%27%253E%25E5%25A4%259C%253C%2Ftext%253E%253C%2Fsvg%253E%22%2C%22sizes%22%3A%22192x192%22%2C%22type%22%3A%22image%2Fsvg%2Bxml%22%7D%5D%7D">
+</head>
+<body class="flex flex-col min-h-screen">
+  <!-- Header -->
+  <header class="safe-area-top sticky top-0 z-40 px-4 py-3 border-b border-[var(--border)] bg-[var(--bg-primary)]/95 backdrop-blur-sm">
+    <div class="flex items-center justify-between">
+      <h1 class="font-serif text-2xl font-semibold tracking-wide">
+        <i class="fa-solid fa-moon text-[var(--accent)] mr-2"></i>
+        树洞日记
+      </h1>
+      <div class="flex items-center gap-2">
+        <button id="wishBtn" class="w-10 h-10 rounded-full flex items-center justify-center hover:bg-[var(--bg-secondary)] transition-colors" title="许愿池">
+          <i class="fa-solid fa-star text-[var(--text-secondary)]"></i>
+        </button>
+        <button id="settingsBtn" class="w-10 h-10 rounded-full flex items-center justify-center hover:bg-[var(--bg-secondary)] transition-colors" title="设置">
+          <i class="fa-solid fa-gear text-[var(--text-secondary)]"></i>
+        </button>
+        <button id="themeToggle" class="w-10 h-10 rounded-full flex items-center justify-center hover:bg-[var(--bg-secondary)] transition-colors">
+          <i class="fa-solid fa-sun text-[var(--text-secondary)] dark:hidden"></i>
+          <i class="fa-solid fa-moon text-[var(--text-secondary)] hidden dark:block"></i>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main class="flex-1 overflow-y-auto pb-20">
+    <!-- Home View -->
+    <div id="homeView" class="view active p-4">
+      <!-- View Toggle -->
+      <div class="flex justify-center mb-6">
+        <div class="bg-[var(--bg-secondary)] p-1 rounded-full inline-flex">
+          <button id="viewMyBtn" class="px-6 py-1.5 rounded-full text-sm font-medium bg-[var(--card-bg)] shadow-sm transition-all">我的日记</button>
+          <button id="viewFamilyBtn" class="px-6 py-1.5 rounded-full text-sm font-medium text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-all">家庭全记录</button>
+        </div>
+      </div>
+
+      <!-- Today Card -->
+      <div id="todayCard" class="mb-6"></div>
+
+      <!-- Calendar -->
+      <div class="card rounded-2xl p-4 mb-6">
+        <div class="flex items-center justify-between mb-4">
+          <h2 class="font-serif text-lg font-semibold">
+            <i class="fa-solid fa-calendar-days text-[var(--accent)] mr-2"></i>
+            <span id="currentMonth"></span>
+          </h2>
+          <div class="flex gap-2">
+            <button id="prevMonth" class="w-8 h-8 rounded-full flex items-center justify-center hover:bg-[var(--bg-secondary)] transition-colors">
+              <i class="fa-solid fa-chevron-left text-sm text-[var(--text-secondary)]"></i>
+            </button>
+            <button id="nextMonth" class="w-8 h-8 rounded-full flex items-center justify-center hover:bg-[var(--bg-secondary)] transition-colors">
+              <i class="fa-solid fa-chevron-right text-sm text-[var(--text-secondary)]"></i>
+            </button>
+          </div>
+        </div>
+        <div class="grid grid-cols-7 gap-1 text-center mb-2">
+          <div class="text-xs text-[var(--text-secondary)]">日</div>
+          <div class="text-xs text-[var(--text-secondary)]">一</div>
+          <div class="text-xs text-[var(--text-secondary)]">二</div>
+          <div class="text-xs text-[var(--text-secondary)]">三</div>
+          <div class="text-xs text-[var(--text-secondary)]">四</div>
+          <div class="text-xs text-[var(--text-secondary)]">五</div>
+          <div class="text-xs text-[var(--text-secondary)]">六</div>
+        </div>
+        <div id="calendarGrid" class="grid grid-cols-7 gap-1"></div>
+      </div>
+
+      <!-- Recent List -->
+      <div class="mb-4">
+        <h2 class="font-serif text-lg font-semibold mb-3">
+          <i class="fa-solid fa-clock-rotate-left text-[var(--accent)] mr-2"></i>
+          最近日记
+        </h2>
+        <div id="recentList" class="space-y-3"></div>
+        <div id="emptyRecent" class="hidden text-center py-8 text-[var(--text-secondary)]">
+          <i class="fa-solid fa-feather text-4xl mb-3 opacity-50"></i>
+          <p>还没有写日记呢</p>
+          <p class="text-sm mt-1">从今天开始记录吧</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Detail View -->
+    <div id="detailView" class="view p-4">
+      <button id="backToList" class="flex items-center gap-2 text-[var(--text-secondary)] mb-4 hover:text-[var(--accent)] transition-colors">
+        <i class="fa-solid fa-arrow-left"></i>
+        返回
+      </button>
+      <div id="detailContent"></div>
+    </div>
+    <!-- Wish View -->
+    <div id="wishView" class="view p-4">
+      <div class="flex items-center justify-between mb-6">
+        <h2 class="font-serif text-2xl font-semibold">
+          <i class="fa-solid fa-star text-yellow-400 mr-2"></i>
+          家庭许愿池
+        </h2>
+        <button id="backFromWish" class="text-[var(--text-secondary)] hover:text-[var(--accent)] transition-colors">
+          关闭
+        </button>
+      </div>
+      <div id="wishList" class="space-y-4"></div>
+      <div id="emptyWish" class="hidden text-center py-12 text-[var(--text-secondary)]">
+        <i class="fa-solid fa-seedling text-4xl mb-3 opacity-50"></i>
+        <p>许愿池空空的</p>
+        <p class="text-sm mt-1">许下第一个愿望吧</p>
+      </div>
+    </div>
+  </main>
+
+  <!-- FAB -->
+  <button id="addBtn" class="fixed bottom-6 right-6 w-14 h-14 rounded-full btn-primary shadow-lg flex items-center justify-center z-30">
+    <i class="fa-solid fa-plus text-xl"></i>
+  </button>
+
+  <!-- Modal -->
+  <div id="modal" class="fixed inset-0 z-50 hidden">
+    <div class="absolute inset-0 bg-black/30 modal-overlay" id="modalOverlay"></div>
+    <div class="absolute bottom-0 left-0 right-0 bg-[var(--card-bg)] rounded-t-3xl p-5 safe-area-bottom max-h-[90vh] overflow-y-auto transform translate-y-full transition-transform duration-300" id="modalContent">
+      <div id="entryForm">
+        <div class="flex items-center justify-between mb-5">
+          <h2 class="font-serif text-xl font-semibold" id="formTitle">写日记</h2>
+          <button id="closeModal" class="w-8 h-8 rounded-full flex items-center justify-center hover:bg-[var(--bg-secondary)]">
+            <i class="fa-solid fa-xmark text-lg text-[var(--text-secondary)]"></i>
+          </button>
+        </div>
+
+        <div class="mb-5 text-center">
+          <p class="text-2xl font-serif font-semibold" id="formDate"></p>
+        </div>
+
+        <!-- Weather -->
+        <div class="mb-5">
+          <label class="block text-sm text-[var(--text-secondary)] mb-2">
+            <i class="fa-solid fa-cloud-sun mr-1"></i> 今天天气
+          </label>
+          <div class="flex justify-center gap-3">
+            <button class="weather-btn w-12 h-12 rounded-xl flex flex-col items-center justify-center text-sm" data-weather="sunny">
+              <i class="fa-solid fa-sun text-xl text-yellow-400"></i>
+            </button>
+            <button class="weather-btn w-12 h-12 rounded-xl flex flex-col items-center justify-center text-sm" data-weather="cloudy">
+              <i class="fa-solid fa-cloud text-xl text-gray-400"></i>
+            </button>
+            <button class="weather-btn w-12 h-12 rounded-xl flex flex-col items-center justify-center text-sm" data-weather="rainy">
+              <i class="fa-solid fa-cloud-rain text-xl text-blue-400"></i>
+            </button>
+            <button class="weather-btn w-12 h-12 rounded-xl flex flex-col items-center justify-center text-sm" data-weather="snowy">
+              <i class="fa-solid fa-snowflake text-xl text-cyan-300"></i>
+            </button>
+            <button class="weather-btn w-12 h-12 rounded-xl flex flex-col items-center justify-center text-sm" data-weather="foggy">
+              <i class="fa-solid fa-smog text-xl text-gray-400"></i>
+            </button>
+          </div>
+        </div>
+
+        <!-- Mood -->
+        <div class="mb-5">
+          <label class="block text-sm text-[var(--text-secondary)] mb-2">
+            <i class="fa-solid fa-heart mr-1"></i> 今日心情
+          </label>
+          <div class="flex justify-center gap-4">
+            <button class="mood-btn text-3xl" data-mood="1">😢</button>
+            <button class="mood-btn text-3xl" data-mood="2">😔</button>
+            <button class="mood-btn text-3xl" data-mood="3">😐</button>
+            <button class="mood-btn text-3xl" data-mood="4">😊</button>
+            <button class="mood-btn text-3xl" data-mood="5">🥰</button>
+          </div>
+        </div>
+
+        <!-- Content -->
+        <div class="mb-5">
+          <label class="block text-sm text-[var(--text-secondary)] mb-2">
+            <i class="fa-solid fa-pen mr-1"></i> 碎碎念
+          </label>
+          <textarea id="diaryContent" rows="5" placeholder="今天发生了什么..."
+            class="w-full p-3 rounded-xl border border-[var(--border)] bg-[var(--bg-secondary)] resize-none focus:outline-none focus:ring-2 focus:ring-[var(--accent)]/30 transition-shadow"></textarea>
+        </div>
+
+        <!-- Actions -->
+        <div class="flex gap-3">
+          <button id="deleteEntry" class="hidden flex-1 py-3 rounded-xl border border-red-400 text-red-400 hover:bg-red-50 transition-colors">
+            <i class="fa-solid fa-trash-can mr-2"></i>删除
+          </button>
+          <button id="saveEntry" class="flex-1 py-3 rounded-xl btn-primary">
+            <i class="fa-solid fa-check mr-2"></i>保存
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Settings Modal -->
+  <div id="settingsModal" class="fixed inset-0 z-50 hidden">
+    <div class="absolute inset-0 bg-black/30 modal-overlay" id="settingsOverlay"></div>
+    <div class="absolute bottom-0 left-0 right-0 bg-[var(--card-bg)] rounded-t-3xl p-5 safe-area-bottom max-h-[90vh] overflow-y-auto transform translate-y-full transition-transform duration-300" id="settingsContent">
+      <div id="settingsPanel">
+        <div class="flex items-center justify-between mb-5">
+          <h2 class="font-serif text-xl font-semibold">设置</h2>
+          <button id="closeSettings" class="w-8 h-8 rounded-full flex items-center justify-center hover:bg-[var(--bg-secondary)]">
+            <i class="fa-solid fa-xmark text-lg text-[var(--text-secondary)]"></i>
+          </button>
+        </div>
+
+        <!-- Storage Mode -->
+        <div class="mb-6">
+          <label class="block text-sm text-[var(--text-secondary)] mb-3">
+            <i class="fa-solid fa-folder-open mr-1"></i> 存储方式
+          </label>
+          <div class="space-y-2">
+            <label class="flex items-center gap-3 p-3 rounded-xl border border-[var(--border)] cursor-pointer hover:bg-[var(--bg-secondary)] transition-colors">
+              <input type="radio" name="storageMode" value="localStorage" class="accent-[var(--accent)]">
+              <div>
+                <p class="font-medium">浏览器存储</p>
+                <p class="text-xs text-[var(--text-secondary)]">数据保存在本地浏览器，清除浏览器数据会丢失</p>
+              </div>
+            </label>
+            <label id="fileStorageLabel" class="flex items-center gap-3 p-3 rounded-xl border border-[var(--border)] cursor-pointer hover:bg-[var(--bg-secondary)] transition-colors">
+              <input type="radio" name="storageMode" value="fileSystem" class="accent-[var(--accent)]">
+              <div>
+                <p class="font-medium">文件系统存储</p>
+                <p id="fileStorageDesc" class="text-xs text-[var(--text-secondary)]">数据保存在本地 YAML 文件，需要选择保存位置</p>
+              </div>
+            </label>
+          </div>
+        </div>
+
+        <!-- File Handle Info -->
+        <div id="fileHandleInfo" class="hidden mb-6 p-3 rounded-xl bg-[var(--bg-secondary)]">
+          <div class="flex items-center justify-between">
+            <div class="flex items-center gap-2">
+              <i class="fa-solid fa-file-lines text-[var(--accent)]"></i>
+              <span id="fileNameDisplay" class="text-sm truncate max-w-[200px]">treehole-diaries.yaml</span>
+            </div>
+            <button id="changeFileBtn" class="text-sm text-[var(--accent)] hover:underline">更换</button>
+          </div>
+        </div>
+
+        <!-- File System API Warning -->
+        <div id="fsApiWarning" class="hidden mb-6 p-3 rounded-xl bg-yellow-50 border border-yellow-200 text-sm">
+          <i class="fa-solid fa-triangle-exclamation text-yellow-500 mr-2"></i>
+          <span class="text-yellow-700">您的浏览器不支持 File System Access API，请使用 Chrome、Edge 或 Arc 浏览器</span>
+        </div>
+
+        <!-- Actions -->
+        <div class="flex gap-3">
+          <button id="importBtn" class="flex-1 py-3 rounded-xl border border-[var(--border)] hover:bg-[var(--bg-secondary)] transition-colors">
+            <i class="fa-solid fa-file-import mr-2"></i>导入
+          </button>
+          <button id="exportBtn" class="flex-1 py-3 rounded-xl border border-[var(--border)] hover:bg-[var(--bg-secondary)] transition-colors">
+            <i class="fa-solid fa-file-export mr-2"></i>导出
+          </button>
+        </div>
+
+        <!-- Import/Export Info -->
+        <p class="mt-3 text-xs text-[var(--text-secondary)] text-center">
+          <i class="fa-solid fa-info-circle mr-1"></i>
+          支持从本地存储导入/导出 YAML 格式数据
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Wish Modal -->
+  <div id="wishModal" class="fixed inset-0 z-50 hidden">
+    <div class="absolute inset-0 bg-black/30 modal-overlay" id="wishModalOverlay"></div>
+    <div class="absolute bottom-0 left-0 right-0 bg-[var(--card-bg)] rounded-t-3xl p-5 safe-area-bottom max-h-[90vh] overflow-y-auto transform translate-y-full transition-transform duration-300" id="wishModalContent">
+      <div class="flex items-center justify-between mb-5">
+        <h2 class="font-serif text-xl font-semibold" id="wishFormTitle">抛硬币许愿</h2>
+        <button id="closeWishModal" class="w-8 h-8 rounded-full flex items-center justify-center hover:bg-[var(--bg-secondary)]">
+          <i class="fa-solid fa-xmark text-lg text-[var(--text-secondary)]"></i>
+        </button>
+      </div>
+      <div class="mb-4">
+        <label class="block text-sm text-[var(--text-secondary)] mb-2">愿望标题</label>
+        <input type="text" id="wishTitle" placeholder="想要什么功能或心愿..." class="w-full p-3 rounded-xl border border-[var(--border)] bg-[var(--bg-secondary)] focus:outline-none focus:ring-2 focus:ring-[var(--accent)]/30 transition-shadow">
+      </div>
+      <div class="mb-5">
+        <label class="block text-sm text-[var(--text-secondary)] mb-2">详情描述</label>
+        <textarea id="wishContent" rows="4" placeholder="补充一些细节..." class="w-full p-3 rounded-xl border border-[var(--border)] bg-[var(--bg-secondary)] resize-none focus:outline-none focus:ring-2 focus:ring-[var(--accent)]/30 transition-shadow"></textarea>
+      </div>
+      <div class="mb-5" id="wishStatusGroup" style="display:none;">
+        <label class="block text-sm text-[var(--text-secondary)] mb-2">状态</label>
+        <select id="wishStatus" class="w-full p-3 rounded-xl border border-[var(--border)] bg-[var(--bg-secondary)] focus:outline-none">
+          <option value="pending">🆕 待实现</option>
+          <option value="doing">🚧 建设中</option>
+          <option value="completed">✅ 已实现</option>
+        </select>
+      </div>
+      <div class="flex gap-3">
+        <button id="deleteWishBtn" class="hidden flex-1 py-3 rounded-xl border border-red-400 text-red-400 hover:bg-red-50 transition-colors">
+          <i class="fa-solid fa-trash-can mr-2"></i>删除
+        </button>
+        <button id="saveWishBtn" class="flex-1 py-3 rounded-xl btn-primary">
+          <i class="fa-solid fa-check mr-2"></i>保存
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Identity Modal -->
+  <div id="identityModal" class="fixed inset-0 z-50 hidden">
+    <div class="absolute inset-0 bg-black/60 backdrop-blur-sm"></div>
+    <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-11/12 max-w-sm bg-[var(--card-bg)] rounded-3xl p-6 shadow-2xl">
+      <div class="text-center mb-6">
+        <i class="fa-solid fa-users text-4xl text-[var(--accent)] mb-4"></i>
+        <h2 class="font-serif text-2xl font-semibold mb-2">欢迎来到树洞</h2>
+        <p class="text-[var(--text-secondary)] text-sm">请告诉我，你是谁？</p>
+      </div>
+      <div class="mb-6">
+        <input type="text" id="identityInput" placeholder="例如：爸爸、妈妈、宝宝..." class="w-full p-4 rounded-xl border-2 border-[var(--border)] bg-[var(--bg-secondary)] text-center text-lg focus:outline-none focus:border-[var(--accent)] transition-colors">
+      </div>
+      <button id="saveIdentityBtn" class="w-full py-3.5 rounded-xl btn-primary text-lg font-medium shadow-md">
+        进入日记本
+      </button>
+    </div>
+  </div>
+
+  <script>
+    // ============ Storage ============
+    const STORAGE_KEY = 'treehole_diaries';
+    const STORAGE_MODE_KEY = 'treehole_storage_mode';
+    const FILE_HANDLE_KEY = 'treehole_file_handle';
+    const CURRENT_USER_KEY = 'treehole_current_user';
+
+    function getCurrentUser() {
+      return localStorage.getItem(CURRENT_USER_KEY) || 'Me';
+    }
+
+    function setCurrentUser(name) {
+      localStorage.setItem(CURRENT_USER_KEY, name);
+    }
+
+    function migrateV1ToV2(data) {
+      if (!data || data.version === 2) {
+        if (!data) return { version: 2, diaries: {}, wishes: {} };
+        data.diaries = data.diaries || {};
+        data.wishes = data.wishes || {};
+        return data;
+      }
+      
+      const v2Data = { version: 2, diaries: {}, wishes: {} };
+      const author = getCurrentUser();
+      
+      for (const [key, entry] of Object.entries(data)) {
+        if (key === 'version' || key === 'diaries' || key === 'wishes') continue;
+        const newId = `${key}_${author}`;
+        v2Data.diaries[newId] = {
+          ...entry,
+          id: newId,
+          date: entry.id || key,
+          author: author
+        };
+      }
+      return v2Data;
+    }
+
+    // File System Storage
+    const FileStorage = {
+      handle: null,
+      isSupported: 'showOpenFilePicker' in window,
+
+      async init() {
+        const saved = localStorage.getItem(FILE_HANDLE_KEY);
+        if (saved) {
+          try {
+            const handle = await window.storageManager.getStoredHandle();
+            if (handle) {
+              this.handle = handle;
+              return true;
+            }
+          } catch {
+            localStorage.removeItem(FILE_HANDLE_KEY);
+          }
+        }
+        return false;
+      },
+
+      async pickFile() {
+        try {
+          const handle = await window.showSaveFilePicker({
+            suggestedName: 'treehole-diaries.yaml',
+            types: [{
+              description: 'YAML Files',
+              accept: { 'text/yaml': ['.yaml', '.yml'] }
+            }]
+          });
+          this.handle = handle;
+          localStorage.setItem(FILE_HANDLE_KEY, 'persisted');
+          await handle.requestPermission({ mode: 'readwrite' });
+          return true;
+        } catch (e) {
+          if (e.name !== 'AbortError') console.error('File pick failed:', e);
+          return false;
+        }
+      },
+
+      async getAll() {
+        if (!this.handle) return { version: 2, diaries: {}, wishes: {} };
+        try {
+          const file = await this.handle.getFile();
+          const text = await file.text();
+          let data = jsyaml.load(text) || {};
+          if (data.version !== 2) {
+            data = migrateV1ToV2(data);
+            await this.save(data);
+          } else {
+            data.diaries = data.diaries || {};
+            data.wishes = data.wishes || {};
+          }
+          return data;
+        } catch {
+          return { version: 2, diaries: {}, wishes: {} };
+        }
+      },
+
+      async save(data) {
+        if (!this.handle) {
+          await this.pickFile();
+          if (!this.handle) return false;
+        }
+        try {
+          const writable = await this.handle.createWritable();
+          const yaml = jsyaml.dump(data, { allowUnicode: true, flowLevel: -1 });
+          await writable.write(yaml);
+          await writable.close();
+          return true;
+        } catch (e) {
+          console.error('Save failed:', e);
+          return false;
+        }
+      },
+
+      async getEntry(date, author) {
+        const data = await this.getAll();
+        const id = `${date}_${author}`;
+        return data.diaries[id] || null;
+      },
+
+      async saveEntry(date, entry) {
+        const data = await this.getAll();
+        const author = getCurrentUser();
+        const id = `${date}_${author}`;
+        data.diaries[id] = {
+          ...entry,
+          id,
+          date,
+          author,
+          updatedAt: Date.now()
+        };
+        if (!data.diaries[id].createdAt) {
+          data.diaries[id].createdAt = Date.now();
+        }
+        await this.save(data);
+        return data.diaries[id];
+      },
+
+      async deleteEntry(date, author) {
+        const data = await this.getAll();
+        const id = `${date}_${author}`;
+        delete data.diaries[id];
+        await this.save(data);
+      },
+
+      async getEntries() {
+        const data = await this.getAll();
+        return Object.values(data.diaries).sort((a, b) => b.updatedAt - a.updatedAt);
+      },
+
+      async getWish(id) {
+        const data = await this.getAll();
+        return data.wishes[id] || null;
+      },
+
+      async saveWish(wish) {
+        const data = await this.getAll();
+        const id = wish.id || `wish_${Date.now()}`;
+        data.wishes[id] = {
+          ...wish,
+          id,
+          updatedAt: Date.now()
+        };
+        if (!data.wishes[id].createdAt) {
+          data.wishes[id].createdAt = Date.now();
+        }
+        await this.save(data);
+        return data.wishes[id];
+      },
+
+      async deleteWish(id) {
+        const data = await this.getAll();
+        delete data.wishes[id];
+        await this.save(data);
+      },
+
+      async getWishes() {
+        const data = await this.getAll();
+        return Object.values(data.wishes).sort((a, b) => b.updatedAt - a.updatedAt);
+      }
+    };
+
+    // LocalStorage fallback
+    const LocalStorage = {
+      getAll() {
+        try {
+          let data = JSON.parse(localStorage.getItem(STORAGE_KEY) || 'null');
+          if (!data) data = { version: 2, diaries: {}, wishes: {} };
+          if (data.version !== 2) {
+            data = migrateV1ToV2(data);
+            this.save(data);
+          } else {
+            data.diaries = data.diaries || {};
+            data.wishes = data.wishes || {};
+          }
+          return data;
+        } catch {
+          return { version: 2, diaries: {}, wishes: {} };
+        }
+      },
+
+      save(data) {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+      },
+
+      getEntry(date, author) {
+        const data = this.getAll();
+        const id = `${date}_${author}`;
+        return data.diaries[id] || null;
+      },
+
+      saveEntry(date, entry) {
+        const data = this.getAll();
+        const author = getCurrentUser();
+        const id = `${date}_${author}`;
+        data.diaries[id] = {
+          ...entry,
+          id,
+          date,
+          author,
+          updatedAt: Date.now()
+        };
+        if (!data.diaries[id].createdAt) {
+          data.diaries[id].createdAt = Date.now();
+        }
+        this.save(data);
+        return data.diaries[id];
+      },
+
+      deleteEntry(date, author) {
+        const data = this.getAll();
+        const id = `${date}_${author}`;
+        delete data.diaries[id];
+        this.save(data);
+      },
+
+      getEntries() {
+        return Object.values(this.getAll().diaries).sort((a, b) => b.updatedAt - a.updatedAt);
+      },
+
+      getWish(id) {
+        const data = this.getAll();
+        return data.wishes[id] || null;
+      },
+
+      saveWish(wish) {
+        const data = this.getAll();
+        const id = wish.id || `wish_${Date.now()}`;
+        data.wishes[id] = {
+          ...wish,
+          id,
+          updatedAt: Date.now()
+        };
+        if (!data.wishes[id].createdAt) {
+          data.wishes[id].createdAt = Date.now();
+        }
+        this.save(data);
+        return data.wishes[id];
+      },
+
+      deleteWish(id) {
+        const data = this.getAll();
+        delete data.wishes[id];
+        this.save(data);
+      },
+
+      getWishes() {
+        return Object.values(this.getAll().wishes).sort((a, b) => b.updatedAt - a.updatedAt);
+      }
+    };
+
+    // Storage Manager - wraps either FileStorage or LocalStorage
+    window.storageManager = {
+      currentStorage: null,
+      fileHandle: null,
+
+      async init() {
+        const mode = localStorage.getItem(STORAGE_MODE_KEY) || 'localStorage';
+        this.setMode(mode);
+      },
+
+      setMode(mode) {
+        this.currentStorage = mode === 'fileSystem' && FileStorage.isSupported ? FileStorage : LocalStorage;
+        localStorage.setItem(STORAGE_MODE_KEY, mode);
+        if (this.currentStorage === FileStorage && !FileStorage.handle) {
+          FileStorage.init();
+        }
+      },
+
+      getMode() {
+        return this.currentStorage === FileStorage ? 'fileSystem' : 'localStorage';
+      },
+
+      getAll() {
+        return this.currentStorage.getAll();
+      },
+
+      save(data) {
+        return this.currentStorage.save(data);
+      },
+
+      async getEntry(date, author = getCurrentUser()) {
+        return await this.currentStorage.getEntry(date, author);
+      },
+
+      async saveEntry(date, entry) {
+        return await this.currentStorage.saveEntry(date, entry);
+      },
+
+      async deleteEntry(date, author = getCurrentUser()) {
+        return await this.currentStorage.deleteEntry(date, author);
+      },
+
+      async getEntries() {
+        return await this.currentStorage.getEntries();
+      },
+
+      async getWish(id) {
+        return await this.currentStorage.getWish(id);
+      },
+
+      async saveWish(wish) {
+        return await this.currentStorage.saveWish(wish);
+      },
+
+      async deleteWish(id) {
+        return await this.currentStorage.deleteWish(id);
+      },
+
+      async getWishes() {
+        return await this.currentStorage.getWishes();
+      },
+
+      async getStoredHandle() {
+        try {
+          const handle = await navigator.storage.getDirectory();
+          const dirHandle = await handle.getDirectoryHandle('treehole', { create: true });
+          return await dirHandle.getFileHandle('treehole-diaries.yaml', { create: true });
+        } catch {
+          return null;
+        }
+      },
+
+      async importData() {
+        try {
+          const handle = await window.showOpenFilePicker({
+            types: [{
+              description: 'YAML Files',
+              accept: { 'text/yaml': ['.yaml', '.yml'], 'text/plain': ['.txt'] }
+            }]
+          });
+          const file = await handle[0].getFile();
+          const text = await file.text();
+          let data = jsyaml.load(text);
+          if (data && typeof data === 'object') {
+            if (data.version !== 2) {
+              data = migrateV1ToV2(data);
+            }
+            this.currentStorage.save(data);
+            return true;
+          }
+        } catch (e) {
+          if (e.name !== 'AbortError') console.error('Import failed:', e);
+        }
+        return false;
+      },
+
+      async exportData() {
+        try {
+          const data = await this.getAll();
+          const yaml = jsyaml.dump(data, { allowUnicode: true, flowLevel: -1 });
+          const blob = new Blob([yaml], { type: 'text/yaml' });
+          const url = URL.createObjectURL(blob);
+          const a = document.createElement('a');
+          a.href = url;
+          a.download = `treehole-diaries-${new Date().toISOString().split('T')[0]}.yaml`;
+          a.click();
+          URL.revokeObjectURL(url);
+          return true;
+        } catch (e) {
+          console.error('Export failed:', e);
+          return false;
+        }
+      }
+    };
+
+    // ============ Constants ============
+    const weatherIcons = {
+      sunny: { icon: 'fa-sun', color: 'text-yellow-400', label: '晴' },
+      cloudy: { icon: 'fa-cloud', color: 'text-gray-400', label: '阴' },
+      rainy: { icon: 'fa-cloud-rain', color: 'text-blue-400', label: '雨' },
+      snowy: { icon: 'fa-snowflake', color: 'text-cyan-300', label: '雪' },
+      foggy: { icon: 'fa-smog', color: 'text-gray-400', label: '雾' }
+    };
+
+    const moodEmojis = ['', '😢', '😔', '😐', '😊', '🥰'];
+
+    // ============ State ============
+    let currentView = 'home';
+    let currentMonth = new Date();
+    let editingDate = null;
+    let currentViewMode = 'my';
+    let editingWishId = null;
+
+    // ============ DOM ============
+    const homeView = document.getElementById('homeView');
+    const detailView = document.getElementById('detailView');
+    const wishView = document.getElementById('wishView');
+    const modal = document.getElementById('modal');
+    const modalContent = document.getElementById('modalContent');
+    const modalOverlay = document.getElementById('modalOverlay');
+    const themeToggle = document.getElementById('themeToggle');
+    const addBtn = document.getElementById('addBtn');
+    const todayCard = document.getElementById('todayCard');
+    const calendarGrid = document.getElementById('calendarGrid');
+    const currentMonthEl = document.getElementById('currentMonth');
+    const recentList = document.getElementById('recentList');
+    const emptyRecent = document.getElementById('emptyRecent');
+    const detailContent = document.getElementById('detailContent');
+    
+    const viewMyBtn = document.getElementById('viewMyBtn');
+    const viewFamilyBtn = document.getElementById('viewFamilyBtn');
+    const wishBtn = document.getElementById('wishBtn');
+    const backFromWish = document.getElementById('backFromWish');
+    const wishList = document.getElementById('wishList');
+    const emptyWish = document.getElementById('emptyWish');
+    
+    const wishModal = document.getElementById('wishModal');
+    const wishModalContent = document.getElementById('wishModalContent');
+    const identityModal = document.getElementById('identityModal');
+
+    // ============ Theme ============
+    function initTheme() {
+      const isDark = localStorage.getItem('treehole_theme') === 'dark';
+      document.documentElement.classList.toggle('dark', isDark);
+    }
+
+    function toggleTheme() {
+      const isDark = document.documentElement.classList.toggle('dark');
+      localStorage.setItem('treehole_theme', isDark ? 'dark' : 'light');
+    }
+
+    themeToggle.addEventListener('click', toggleTheme);
+    initTheme();
+
+    // ============ Views ============
+    function showView(viewName) {
+      currentView = viewName;
+      homeView.classList.toggle('active', viewName === 'home');
+      detailView.classList.toggle('active', viewName === 'detail');
+      wishView.classList.toggle('active', viewName === 'wish');
+      
+      if (viewName === 'wish') {
+        renderWishes();
+        addBtn.innerHTML = '<i class="fa-solid fa-plus text-xl"></i>';
+        addBtn.onclick = () => openWishModal();
+        addBtn.style.display = 'flex';
+      } else if (viewName === 'home') {
+        addBtn.innerHTML = '<i class="fa-solid fa-plus text-xl"></i>';
+        addBtn.onclick = () => openNewModal(formatDateKey(new Date()));
+        addBtn.style.display = 'flex';
+      } else {
+        addBtn.style.display = 'none';
+      }
+    }
+    
+    viewMyBtn.addEventListener('click', () => {
+      currentViewMode = 'my';
+      viewMyBtn.classList.add('bg-[var(--card-bg)]', 'shadow-sm', 'text-[var(--text-primary)]');
+      viewMyBtn.classList.remove('text-[var(--text-secondary)]', 'hover:text-[var(--text-primary)]');
+      viewFamilyBtn.classList.remove('bg-[var(--card-bg)]', 'shadow-sm', 'text-[var(--text-primary)]');
+      viewFamilyBtn.classList.add('text-[var(--text-secondary)]', 'hover:text-[var(--text-primary)]');
+      renderAll();
+    });
+    
+    viewFamilyBtn.addEventListener('click', () => {
+      currentViewMode = 'family';
+      viewFamilyBtn.classList.add('bg-[var(--card-bg)]', 'shadow-sm', 'text-[var(--text-primary)]');
+      viewFamilyBtn.classList.remove('text-[var(--text-secondary)]', 'hover:text-[var(--text-primary)]');
+      viewMyBtn.classList.remove('bg-[var(--card-bg)]', 'shadow-sm', 'text-[var(--text-primary)]');
+      viewMyBtn.classList.add('text-[var(--text-secondary)]', 'hover:text-[var(--text-primary)]');
+      renderAll();
+    });
+    
+    wishBtn.addEventListener('click', () => showView('wish'));
+    backFromWish.addEventListener('click', () => showView('home'));
+
+    // ============ Render Today Card ============
+    async function renderTodayCard() {
+      const today = new Date();
+      const todayStr = formatDateKey(today);
+      const entry = await storageManager.getEntry(todayStr, getCurrentUser());
+
+      if (entry) {
+        const weather = weatherIcons[entry.weather] || weatherIcons.sunny;
+        todayCard.innerHTML = `
+          <div class="card rounded-2xl p-5 slide-up">
+            <div class="flex items-start justify-between mb-3">
+              <div>
+                <p class="text-sm text-[var(--text-secondary)]">今天</p>
+                <p class="font-serif text-xl font-semibold">${todayStr}</p>
+              </div>
+              <div class="text-right">
+                <i class="fa-solid ${weather.icon} text-2xl ${weather.color}"></i>
+                <p class="text-xs text-[var(--text-secondary)] mt-1">${weather.label}</p>
+              </div>
+            </div>
+            <p class="text-3xl mb-2">${moodEmojis[entry.mood]}</p>
+            <p class="text-[var(--text-secondary)] line-clamp-3">${entry.content || '还没有写内容...'}</p>
+            <button onclick="openEditModal('${todayStr}', '${entry.author}')" class="mt-3 text-[var(--accent)] text-sm hover:underline">
+              <i class="fa-solid fa-pen mr-1"></i>编辑日记
+            </button>
+          </div>
+        `;
+      } else {
+        todayCard.innerHTML = `
+          <div class="card rounded-2xl p-5 text-center slide-up">
+            <div class="w-16 h-16 mx-auto mb-3 rounded-full bg-[var(--bg-secondary)] flex items-center justify-center">
+              <i class="fa-solid fa-feather text-2xl text-[var(--text-secondary)]"></i>
+            </div>
+            <p class="font-serif text-lg font-semibold mb-1">${todayStr}</p>
+            <p class="text-[var(--text-secondary)] mb-4">今天还没有写日记</p>
+            <button onclick="openNewModal('${todayStr}')" class="btn-primary px-6 py-2 rounded-full">
+              <i class="fa-solid fa-pen mr-2"></i>开始记录
+            </button>
+          </div>
+        `;
+      }
+    }
+
+    // ============ Calendar ============
+    async function renderCalendar() {
+      const year = currentMonth.getFullYear();
+      const month = currentMonth.getMonth();
+      const today = new Date();
+
+      currentMonthEl.textContent = `${year}年${month + 1}月`;
+
+      const firstDay = new Date(year, month, 1);
+      const lastDay = new Date(year, month + 1, 0);
+      const startWeekday = firstDay.getDay();
+      const totalDays = lastDay.getDate();
+
+      const entries = await storageManager.getEntries();
+      const entriesMap = {};
+      entries.forEach(e => {
+        if (currentViewMode === 'my' && e.author !== getCurrentUser()) return;
+        entriesMap[e.date] = true;
+      });
+
+      let html = '';
+      for (let i = 0; i < startWeekday; i++) {
+        html += '<div class="h-10"></div>';
+      }
+
+      for (let day = 1; day <= totalDays; day++) {
+        const dateStr = `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+        const hasEntry = entriesMap[dateStr];
+        const isToday = dateStr === formatDateKey(today);
+
+        html += `
+          <div class="calendar-day h-10 rounded-lg flex items-center justify-center text-sm cursor-pointer transition-colors
+               ${hasEntry ? 'has-entry' : 'hover:bg-[var(--bg-secondary)]'}
+               ${isToday ? 'ring-2 ring-[var(--accent)]' : ''}"
+               onclick="onCalendarDayClick('${dateStr}')">
+            ${day}
+          </div>
+        `;
+      }
+
+      calendarGrid.innerHTML = html;
+    }
+
+    window.onCalendarDayClick = async function(dateStr) {
+      if (currentViewMode === 'my') {
+        const entry = await storageManager.getEntry(dateStr, getCurrentUser());
+        if (entry) {
+          showDetail(entry.id);
+        } else {
+          openNewModal(dateStr);
+        }
+      } else {
+        const entries = await storageManager.getEntries();
+        const dayEntries = entries.filter(e => e.date === dateStr);
+        if (dayEntries.length > 0) {
+          showDetail(dayEntries[0].id);
+        }
+      }
+    }
+
+    document.getElementById('prevMonth').addEventListener('click', () => {
+      currentMonth.setMonth(currentMonth.getMonth() - 1);
+      renderCalendar();
+    });
+
+    document.getElementById('nextMonth').addEventListener('click', () => {
+      currentMonth.setMonth(currentMonth.getMonth() + 1);
+      renderCalendar();
+    });
+
+    // ============ Recent List ============
+    async function renderRecentList() {
+      let entries = await storageManager.getEntries();
+      if (currentViewMode === 'my') {
+        entries = entries.filter(e => e.author === getCurrentUser());
+      }
+      entries = entries.slice(0, 10);
+
+      if (entries.length === 0) {
+        recentList.innerHTML = '';
+        emptyRecent.classList.remove('hidden');
         return;
       }
-      showImportConfirm(imported);
-    } catch (_) {
-      alert('文件解析失败');
-    }
-  };
-  reader.readAsText(file);
-}
 
-function mergeData(imported) {
-  const current = loadData();
-  Object.entries(imported.days).forEach(([dateStr, dayData]) => {
-    if (!current.days[dateStr]) {
-      current.days[dateStr] = dayData;
-    } else {
-      if (dayData.feeling && !current.days[dateStr].feeling) {
-        current.days[dateStr].feeling = dayData.feeling;
+      emptyRecent.classList.add('hidden');
+      recentList.innerHTML = entries.map((entry, index) => {
+        const weather = weatherIcons[entry.weather] || weatherIcons.sunny;
+        return `
+          <div class="card rounded-xl p-4 cursor-pointer fade-in" style="animation-delay: ${index * 50}ms" onclick="showDetail('${entry.id}')">
+            <div class="flex items-center justify-between mb-2">
+              <div class="flex items-center gap-2">
+                <span class="font-serif font-semibold">${entry.date}</span>
+                <i class="fa-solid ${weather.icon} text-sm ${weather.color}"></i>
+                ${currentViewMode === 'family' ? `<span class="px-2 py-0.5 bg-[var(--bg-secondary)] rounded-full text-xs text-[var(--accent)] ml-2">${entry.author}</span>` : ''}
+              </div>
+              <span class="text-2xl">${moodEmojis[entry.mood]}</span>
+            </div>
+            <p class="text-sm text-[var(--text-secondary)] line-clamp-2">${entry.content || '无内容'}</p>
+          </div>
+        `;
+      }).join('');
+    }
+
+    // ============ Wish Pool ============
+    async function renderWishes() {
+      const wishes = await storageManager.getWishes();
+      if (wishes.length === 0) {
+        wishList.innerHTML = '';
+        emptyWish.classList.remove('hidden');
+        return;
       }
-      if (dayData.weather && !current.days[dateStr].weather) {
-        current.days[dateStr].weather = dayData.weather;
-      }
-      const existingIds = new Set(current.days[dateStr].notes.map(n => n.id));
-      dayData.notes.forEach(note => {
-        if (!existingIds.has(note.id)) {
-          current.days[dateStr].notes.push(note);
-        }
+      emptyWish.classList.add('hidden');
+      
+      const statusMap = {
+        'pending': '<span class="px-2 py-1 bg-gray-100 text-gray-600 rounded text-xs dark:bg-gray-800">🆕 待实现</span>',
+        'doing': '<span class="px-2 py-1 bg-blue-100 text-blue-600 rounded text-xs dark:bg-blue-900/30">🚧 建设中</span>',
+        'completed': '<span class="px-2 py-1 bg-green-100 text-green-600 rounded text-xs dark:bg-green-900/30">✅ 已实现</span>'
+      };
+
+      wishList.innerHTML = wishes.map((wish, index) => `
+        <div class="card rounded-xl p-4 cursor-pointer fade-in hover:border-[var(--accent)] transition-colors" style="animation-delay: ${index * 50}ms" onclick="openWishModal('${wish.id}')">
+          <div class="flex items-start justify-between mb-2">
+            <h3 class="font-medium text-lg">${wish.title}</h3>
+            ${statusMap[wish.status || 'pending']}
+          </div>
+          <p class="text-sm text-[var(--text-secondary)] mb-3">${wish.description || ''}</p>
+          <div class="flex items-center justify-between text-xs text-[var(--text-secondary)]">
+            <div class="flex items-center gap-1">
+              <i class="fa-solid fa-user-circle"></i> ${wish.author}
+            </div>
+            <span>${new Date(wish.createdAt).toLocaleDateString()}</span>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    // ============ Detail View ============
+    window.showDetail = async function(id) {
+      const entries = await storageManager.getEntries();
+      const entry = entries.find(e => e.id === id);
+      if (!entry) return;
+
+      const weather = weatherIcons[entry.weather] || weatherIcons.sunny;
+      const isMine = entry.author === getCurrentUser();
+
+      detailContent.innerHTML = `
+        <div class="slide-up">
+          <div class="flex items-center gap-4 mb-6">
+            <i class="fa-solid ${weather.icon} text-4xl ${weather.color}"></i>
+            <div>
+              <p class="font-serif text-2xl font-semibold">${entry.date}</p>
+              <p class="text-[var(--text-secondary)]">${weather.label} · ${moodEmojis[entry.mood]} · 作者: ${entry.author}</p>
+            </div>
+          </div>
+          <div class="card rounded-2xl p-5 mb-4">
+            <p class="text-lg leading-relaxed whitespace-pre-wrap">${entry.content || '无内容'}</p>
+          </div>
+          ${isMine ? `
+          <button onclick="openEditModal('${entry.date}', '${entry.author}')" class="w-full py-3 rounded-xl border border-[var(--accent)] text-[var(--accent)] hover:bg-[var(--accent)]/5 transition-colors">
+            <i class="fa-solid fa-pen mr-2"></i>编辑
+          </button>` : ''}
+        </div>
+      `;
+
+      showView('detail');
+    }
+
+    document.getElementById('backToList').addEventListener('click', () => {
+      showView('home');
+    });
+
+    // ============ Modal ============
+    function openModal() {
+      modal.classList.remove('hidden');
+      requestAnimationFrame(() => {
+        modalContent.style.transform = 'translateY(0)';
       });
     }
-  });
-  saveData(current);
-}
 
-/* ── Helpers ── */
-function todayStr() {
-  const d = new Date();
-  return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
-}
-
-function formatDate(dateStr) {
-  const [y, m, d] = dateStr.split('-').map(Number);
-  return `${y}年${m}月${d}日`;
-}
-
-function relativeDate(dateStr) {
-  const target = new Date(dateStr + 'T00:00:00');
-  const today = new Date();
-  today.setHours(0, 0, 0, 0);
-  const diff = Math.round((today - target) / 86400000);
-  if (diff === 0) return '今天';
-  if (diff === 1) return '昨天';
-  if (diff === 2) return '前天';
-  if (diff > 0 && diff <= 30) return `${diff}天前`;
-  if (diff < 0 && diff >= -1) return '明天';
-  return '';
-}
-
-function formatTime(isoStr) {
-  const d = new Date(isoStr);
-  return `${String(d.getHours()).padStart(2,'0')}:${String(d.getMinutes()).padStart(2,'0')}`;
-}
-
-function feelingEmoji(key) {
-  const f = FEELING_TYPES.find(t => t.key === key);
-  return f ? f.emoji : '';
-}
-
-function weatherEmoji(key) {
-  const w = WEATHER_TYPES.find(t => t.key === key);
-  return w ? w.emoji : '';
-}
-
-function weatherLabel(key) {
-  const w = WEATHER_TYPES.find(t => t.key === key);
-  return w ? w.emoji + ' ' + w.label : '';
-}
-
-function escapeHtml(str) {
-  const div = document.createElement('div');
-  div.textContent = str;
-  return div.innerHTML;
-}
-
-/* ── Waterfall View ── */
-function renderWaterfall() {
-  const container = document.getElementById('waterfall');
-  const data = loadData();
-  const dates = Object.keys(data.days).sort((a, b) => b.localeCompare(a));
-
-  if (dates.length === 0) {
-    container.innerHTML = `
-      <div class="empty-state">
-        <div class="empty-icon">🌱</div>
-        <p>还没有任何记录<br>点击右下角开始记录今天吧~</p>
-      </div>`;
-    return;
-  }
-
-  container.innerHTML = dates.map(dateStr => {
-    const day = data.days[dateStr];
-    const fEmoji = feelingEmoji(day.feeling);
-    const wTag = day.weather ? `<span class="card-weather-tag">${weatherLabel(day.weather)}</span>` : '';
-    const rel = relativeDate(dateStr);
-    const notesHtml = day.notes.map(n =>
-      `<li class="note-bubble">
-        ${escapeHtml(n.text)}
-        <div class="note-time">${formatTime(n.createdAt)}</div>
-      </li>`
-    ).join('');
-
-    return `<article class="day-card" data-date="${dateStr}">
-      <div class="card-header">
-        <span class="card-feeling">${fEmoji || '📝'}</span>
-        <div class="card-date-group">
-          <div class="card-date">${formatDate(dateStr)}${wTag}</div>
-          ${rel ? `<div class="card-relative">${rel}</div>` : ''}
-        </div>
-      </div>
-      ${notesHtml ? `<ul class="card-notes">${notesHtml}</ul>` : ''}
-    </article>`;
-  }).join('');
-}
-
-/* ── Calendar View ── */
-let calYear, calMonth;
-
-function initCalendar() {
-  const now = new Date();
-  calYear = now.getFullYear();
-  calMonth = now.getMonth();
-  renderCalendar();
-}
-
-function renderCalendar() {
-  document.getElementById('cal-title').textContent = `${calYear}年${calMonth + 1}月`;
-  const grid = document.getElementById('calendar-grid');
-  const data = loadData();
-  const weekdays = ['日', '一', '二', '三', '四', '五', '六'];
-  const firstDay = new Date(calYear, calMonth, 1).getDay();
-  const daysInMonth = new Date(calYear, calMonth + 1, 0).getDate();
-  const todayD = todayStr();
-
-  let html = weekdays.map(w => `<div class="cal-weekday">${w}</div>`).join('');
-
-  for (let i = 0; i < firstDay; i++) {
-    html += '<div class="cal-day empty"></div>';
-  }
-
-  for (let d = 1; d <= daysInMonth; d++) {
-    const dateStr = `${calYear}-${String(calMonth + 1).padStart(2, '0')}-${String(d).padStart(2, '0')}`;
-    const dayData = data.days[dateStr];
-    const isToday = dateStr === todayD;
-    const hasRecord = !!dayData;
-    const emoji = dayData ? feelingEmoji(dayData.feeling) : '';
-    const hasNotes = dayData && dayData.notes.length > 0;
-
-    const classes = ['cal-day'];
-    if (isToday) classes.push('today');
-    if (hasRecord) classes.push('has-record');
-
-    html += `<div class="${classes.join(' ')}" data-date="${dateStr}">
-      ${emoji ? `<span class="cal-emoji">${emoji}</span>` : ''}
-      <span class="cal-num">${d}</span>
-      ${hasNotes ? '<span class="cal-dot"></span>' : ''}
-    </div>`;
-  }
-
-  grid.innerHTML = html;
-}
-
-/* ── Modal ── */
-let currentEditDate = null;
-
-function openEditor(dateStr) {
-  currentEditDate = dateStr;
-  const modal = document.getElementById('modal');
-  document.getElementById('modal-title').textContent = formatDate(dateStr);
-
-  const dayData = getDayData(dateStr);
-  renderFeelingGrid(dayData ? dayData.feeling : null);
-  renderWeatherGrid(dayData ? dayData.weather : null);
-  renderModalNotes(dateStr);
-  document.getElementById('note-input').value = '';
-
-  const addBtn = document.getElementById('note-add');
-  delete addBtn.dataset.editingId;
-  addBtn.textContent = '添加';
-
-  resetDeleteSection();
-
-  modal.classList.add('open');
-  setTimeout(() => document.getElementById('note-input').focus(), 350);
-}
-
-function closeEditor() {
-  document.getElementById('modal').classList.remove('open');
-  currentEditDate = null;
-  renderWaterfall();
-  renderCalendar();
-}
-
-/* ── Wheel helpers ── */
-function closeAllWheels() {
-  document.getElementById('feeling-col').classList.remove('open');
-  document.getElementById('weather-col').classList.remove('open');
-  removeWheelBackdrop();
-}
-
-function addWheelBackdrop() {
-  removeWheelBackdrop();
-  const bd = document.createElement('div');
-  bd.className = 'wheel-backdrop';
-  bd.id = 'wheel-backdrop';
-  bd.addEventListener('click', closeAllWheels);
-  document.body.appendChild(bd);
-}
-
-function removeWheelBackdrop() {
-  const bd = document.getElementById('wheel-backdrop');
-  if (bd) bd.remove();
-}
-
-function renderFeelingGrid(selectedKey) {
-  const col = document.getElementById('feeling-col');
-  const emojiEl = document.getElementById('feeling-emoji');
-  const sel = FEELING_TYPES.find(f => f.key === selectedKey);
-  emojiEl.textContent = sel ? sel.emoji : '😊';
-
-  col.querySelectorAll('.wheel-item').forEach(el => el.remove());
-  const radius = 78;
-  const count = FEELING_TYPES.length;
-  const step = 360 / count;
-  FEELING_TYPES.forEach((f, i) => {
-    const angle = (-90 + step * i) * Math.PI / 180;
-    const tx = Math.cos(angle) * radius;
-    const ty = Math.sin(angle) * radius;
-    const div = document.createElement('div');
-    div.className = 'wheel-item' + (f.key === selectedKey ? ' selected' : '');
-    div.dataset.feeling = f.key;
-    div.style.setProperty('--tx', tx + 'px');
-    div.style.setProperty('--ty', ty + 'px');
-    div.style.setProperty('--d', (i * 25) + 'ms');
-    div.innerHTML = `<span class="wheel-item__emoji">${f.emoji}</span><span class="wheel-item__label">${f.label}</span>`;
-    col.appendChild(div);
-  });
-}
-
-function renderWeatherGrid(selectedKey) {
-  const col = document.getElementById('weather-col');
-  const emojiEl = document.getElementById('weather-emoji');
-  const sel = WEATHER_TYPES.find(w => w.key === selectedKey);
-  emojiEl.textContent = sel ? sel.emoji : '☁️';
-
-  col.querySelectorAll('.wheel-item').forEach(el => el.remove());
-  const radius = 82;
-  const count = WEATHER_TYPES.length;
-  const step = 360 / count;
-  WEATHER_TYPES.forEach((w, i) => {
-    const angle = (-90 + step * i) * Math.PI / 180;
-    const tx = Math.cos(angle) * radius;
-    const ty = Math.sin(angle) * radius;
-    const div = document.createElement('div');
-    div.className = 'wheel-item' + (w.key === selectedKey ? ' selected' : '');
-    div.dataset.weather = w.key;
-    div.style.setProperty('--tx', tx + 'px');
-    div.style.setProperty('--ty', ty + 'px');
-    div.style.setProperty('--d', (i * 20) + 'ms');
-    div.innerHTML = `<span class="wheel-item__emoji">${w.emoji}</span><span class="wheel-item__label">${w.label}</span>`;
-    col.appendChild(div);
-  });
-}
-
-function renderModalNotes(dateStr) {
-  const list = document.getElementById('modal-notes');
-  const dayData = getDayData(dateStr);
-  if (!dayData || dayData.notes.length === 0) {
-    list.innerHTML = '';
-    return;
-  }
-  list.innerHTML = dayData.notes
-    .slice()
-    .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
-    .map(n =>
-      `<li class="modal-note-item">
-        <div>
-          <div class="modal-note-text">${escapeHtml(n.text)}</div>
-          <div class="modal-note-time">${formatTime(n.createdAt)}</div>
-        </div>
-        <button class="note-edit-btn" data-note-id="${n.id}" data-note-text="${escapeHtml(n.text)}" title="编辑">✎</button>
-        <button class="note-delete-btn" data-note-id="${n.id}" title="删除">&times;</button>
-      </li>`
-    ).join('');
-}
-
-/* ── Import Confirm ── */
-function showImportConfirm(imported) {
-  const count = Object.keys(imported.days).length;
-  const modal = document.getElementById('modal');
-  const card = modal.querySelector('.modal-card');
-
-  card.innerHTML = `
-    <div class="modal-header">
-      <span class="modal-title">导入数据</span>
-      <button class="modal-close" id="modal-close">&times;</button>
-    </div>
-    <div class="modal-section" style="text-align:center;">
-      <p>检测到 <strong>${count}</strong> 天的记录</p>
-      <div class="import-confirm">
-        <button class="btn-merge" id="import-merge">合并</button>
-        <button class="btn-overwrite" id="import-overwrite">覆盖</button>
-        <button class="btn-cancel" id="import-cancel">取消</button>
-      </div>
-    </div>`;
-
-  modal.classList.add('open');
-
-  document.getElementById('import-merge').onclick = () => {
-    mergeData(imported);
-    closeImportModal();
-  };
-  document.getElementById('import-overwrite').onclick = () => {
-    saveData(imported);
-    closeImportModal();
-  };
-  document.getElementById('import-cancel').onclick = closeImportModal;
-  document.getElementById('modal-close').onclick = closeImportModal;
-}
-
-function closeImportModal() {
-  const modal = document.getElementById('modal');
-  modal.classList.remove('open');
-  restoreModalContent();
-  renderWaterfall();
-  renderCalendar();
-}
-
-function restoreModalContent() {
-  const card = document.querySelector('.modal-card');
-  card.innerHTML = `
-    <div class="modal-header">
-      <span class="modal-title" id="modal-title"></span>
-      <button class="modal-close" id="modal-close">&times;</button>
-    </div>
-    <div class="modal-section">
-      <div class="picker-row">
-        <div class="picker-col" id="feeling-col">
-          <button class="wheel-trigger" id="feeling-trigger">
-            <span class="wheel-trigger__emoji" id="feeling-emoji">😊</span>
-            <span>体感</span>
-          </button>
-        </div>
-        <div class="picker-col" id="weather-col">
-          <button class="wheel-trigger" id="weather-trigger">
-            <span class="wheel-trigger__emoji" id="weather-emoji">☁️</span>
-            <span>天气</span>
-          </button>
-        </div>
-      </div>
-    </div>
-    <div class="modal-section">
-      <div class="modal-label">碎碎念</div>
-      <div class="note-input-row">
-        <input class="note-input" id="note-input" placeholder="写点什么..." maxlength="500">
-        <button class="note-add-btn" id="note-add">添加</button>
-      </div>
-      <ul class="modal-notes-list" id="modal-notes"></ul>
-    </div>
-    <div class="delete-day-section" id="delete-day-section">
-      <button class="delete-day-btn" id="delete-day-btn">删除此天记录</button>
-    </div>`;
-  bindModalEvents();
-}
-
-/* ── Event Binding ── */
-function bindViewSwitch() {
-  document.querySelectorAll('.nav-btn').forEach(btn => {
-    btn.addEventListener('click', () => {
-      document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
-      const view = btn.dataset.view;
-      document.querySelectorAll('.view-section').forEach(s => s.classList.remove('active'));
-      document.getElementById(`${view}-view`).classList.add('active');
-    });
-  });
-}
-
-function bindWaterfallClicks() {
-  document.getElementById('waterfall').addEventListener('click', (e) => {
-    const card = e.target.closest('.day-card');
-    if (card) openEditor(card.dataset.date);
-  });
-}
-
-function bindCalendarClicks() {
-  document.getElementById('calendar-grid').addEventListener('click', (e) => {
-    const day = e.target.closest('.cal-day:not(.empty)');
-    if (day) openEditor(day.dataset.date);
-  });
-  document.getElementById('cal-prev').addEventListener('click', () => {
-    calMonth--;
-    if (calMonth < 0) { calMonth = 11; calYear--; }
-    renderCalendar();
-  });
-  document.getElementById('cal-next').addEventListener('click', () => {
-    calMonth++;
-    if (calMonth > 11) { calMonth = 0; calYear++; }
-    renderCalendar();
-  });
-}
-
-function bindModalEvents() {
-  document.getElementById('modal-close').addEventListener('click', closeEditor);
-
-  // Wheel Picker: Feeling
-  document.getElementById('feeling-trigger').addEventListener('click', () => {
-    const col = document.getElementById('feeling-col');
-    const otherCol = document.getElementById('weather-col');
-    const opening = !col.classList.contains('open');
-    col.classList.toggle('open');
-    otherCol.classList.remove('open');
-    if (opening) addWheelBackdrop();
-    else removeWheelBackdrop();
-  });
-  document.getElementById('feeling-col').addEventListener('click', (e) => {
-    const item = e.target.closest('.wheel-item');
-    if (item && currentEditDate) {
-      const key = item.dataset.feeling;
-      const dayData = getDayData(currentEditDate);
-      const current = dayData ? dayData.feeling : null;
-      const newVal = (current === key) ? null : key;
-      setFeeling(currentEditDate, newVal);
-      renderFeelingGrid(newVal);
-      closeAllWheels();
+    function closeModal() {
+      modalContent.style.transform = 'translateY(100%)';
+      setTimeout(() => {
+        modal.classList.add('hidden');
+        resetForm();
+      }, 300);
     }
-  });
 
-  // Wheel Picker: Weather
-  document.getElementById('weather-trigger').addEventListener('click', () => {
-    const col = document.getElementById('weather-col');
-    const otherCol = document.getElementById('feeling-col');
-    const opening = !col.classList.contains('open');
-    col.classList.toggle('open');
-    otherCol.classList.remove('open');
-    if (opening) addWheelBackdrop();
-    else removeWheelBackdrop();
-  });
-  document.getElementById('weather-col').addEventListener('click', (e) => {
-    const item = e.target.closest('.wheel-item');
-    if (item && currentEditDate) {
-      const key = item.dataset.weather;
-      const dayData = getDayData(currentEditDate);
-      const current = dayData ? dayData.weather : null;
-      const newVal = (current === key) ? null : key;
-      setWeather(currentEditDate, newVal);
-      renderWeatherGrid(newVal);
-      closeAllWheels();
+    function resetForm() {
+      editingDate = null;
+      document.getElementById('diaryContent').value = '';
+      document.querySelectorAll('.weather-btn').forEach(btn => btn.classList.remove('selected'));
+      document.querySelectorAll('.mood-btn').forEach(btn => btn.classList.remove('selected'));
+      document.getElementById('deleteEntry').classList.add('hidden');
+      document.getElementById('formTitle').textContent = '写日记';
     }
-  });
 
-  document.getElementById('note-add').addEventListener('click', () => {
-    const input = document.getElementById('note-input');
-    const addBtn = document.getElementById('note-add');
-    const text = input.value.trim();
-    if (!text || !currentEditDate) return;
+    window.openNewModal = function(dateStr) {
+      resetForm();
+      editingDate = dateStr;
+      document.getElementById('formTitle').textContent = '写日记';
+      document.getElementById('formDate').textContent = dateStr;
+      openModal();
+    }
 
-    if (addBtn.dataset.editingId) {
-      editNote(currentEditDate, addBtn.dataset.editingId, text);
-      delete addBtn.dataset.editingId;
-      addBtn.textContent = '添加';
-    } else {
-      addNote(currentEditDate, text);
-    }
-    input.value = '';
-    renderModalNotes(currentEditDate);
-    input.focus();
-  });
+    window.openEditModal = async function(dateStr, author) {
+      const entry = await storageManager.getEntry(dateStr, author);
+      if (!entry) return;
 
-  document.getElementById('note-input').addEventListener('keydown', (e) => {
-    if (e.key === 'Enter' && !e.isComposing) {
-      e.preventDefault();
-      document.getElementById('note-add').click();
-    }
-  });
+      resetForm();
+      editingDate = dateStr;
+      document.getElementById('formTitle').textContent = '编辑日记';
+      document.getElementById('formDate').textContent = dateStr;
+      document.getElementById('diaryContent').value = entry.content || '';
 
-  document.getElementById('modal-notes').addEventListener('click', (e) => {
-    const deleteBtn = e.target.closest('.note-delete-btn');
-    if (deleteBtn && currentEditDate) {
-      deleteNote(currentEditDate, deleteBtn.dataset.noteId);
-      renderModalNotes(currentEditDate);
-      return;
-    }
-    const editBtn = e.target.closest('.note-edit-btn');
-    if (editBtn && currentEditDate) {
-      const noteId = editBtn.dataset.noteId;
-      const noteText = editBtn.dataset.noteText;
-      const input = document.getElementById('note-input');
-      const addBtn = document.getElementById('note-add');
-      input.value = noteText;
-      input.focus();
-      addBtn.textContent = '保存';
-      addBtn.dataset.editingId = noteId;
-    }
-  });
-
-  document.getElementById('delete-day-section').addEventListener('click', (e) => {
-    if (e.target.closest('#delete-day-btn')) {
-      showDeleteConfirm();
-      return;
-    }
-    if (e.target.closest('#confirm-delete-day')) {
-      if (currentEditDate) {
-        deleteDay(currentEditDate);
-        closeEditor();
+      if (entry.weather) {
+        const btn = document.querySelector(`.weather-btn[data-weather="${entry.weather}"]`);
+        if (btn) btn.classList.add('selected');
       }
-      return;
+
+      if (entry.mood) {
+        const btn = document.querySelector(`.mood-btn[data-mood="${entry.mood}"]`);
+        if (btn) btn.classList.add('selected');
+      }
+
+      document.getElementById('deleteEntry').classList.remove('hidden');
+      openModal();
+    };
+
+    document.getElementById('closeModal').addEventListener('click', closeModal);
+    modalOverlay.addEventListener('click', closeModal);
+
+    document.querySelectorAll('.weather-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.weather-btn').forEach(b => b.classList.remove('selected'));
+        btn.classList.add('selected');
+      });
+    });
+
+    document.querySelectorAll('.mood-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.mood-btn').forEach(b => b.classList.remove('selected'));
+        btn.classList.add('selected');
+      });
+    });
+
+    document.getElementById('saveEntry').addEventListener('click', async () => {
+      const selectedWeather = document.querySelector('.weather-btn.selected');
+      const selectedMood = document.querySelector('.mood-btn.selected');
+      const content = document.getElementById('diaryContent').value.trim();
+
+      const entry = {
+        weather: selectedWeather?.dataset.weather || 'sunny',
+        mood: parseInt(selectedMood?.dataset.mood) || 3,
+        content
+      };
+
+      await storageManager.saveEntry(editingDate, entry);
+      closeModal();
+      renderAll();
+      showToast('保存成功');
+    });
+
+    document.getElementById('deleteEntry').addEventListener('click', async () => {
+      if (confirm('确定要删除这篇日记吗？')) {
+        await storageManager.deleteEntry(editingDate, getCurrentUser());
+        closeModal();
+        showView('home');
+        renderAll();
+        showToast('已删除');
+      }
+    });
+    
+    // Wish Modal logic
+    window.openWishModal = async function(wishId = null) {
+      editingWishId = wishId;
+      document.getElementById('wishTitle').value = '';
+      document.getElementById('wishContent').value = '';
+      document.getElementById('wishStatus').value = 'pending';
+      
+      if (wishId) {
+        document.getElementById('wishFormTitle').textContent = '编辑愿望';
+        const wish = await storageManager.getWish(wishId);
+        if (wish) {
+           document.getElementById('wishTitle').value = wish.title || '';
+           document.getElementById('wishContent').value = wish.description || '';
+           document.getElementById('wishStatus').value = wish.status || 'pending';
+        }
+        document.getElementById('wishStatusGroup').style.display = 'block';
+        document.getElementById('deleteWishBtn').classList.remove('hidden');
+      } else {
+        document.getElementById('wishFormTitle').textContent = '抛硬币许愿';
+        document.getElementById('wishStatusGroup').style.display = 'none';
+        document.getElementById('deleteWishBtn').classList.add('hidden');
+      }
+      
+      wishModal.classList.remove('hidden');
+      requestAnimationFrame(() => {
+        wishModalContent.style.transform = 'translateY(0)';
+      });
     }
-    if (e.target.closest('#cancel-delete-day')) {
-      resetDeleteSection();
+    
+    function closeWishModal() {
+      wishModalContent.style.transform = 'translateY(100%)';
+      setTimeout(() => {
+        wishModal.classList.add('hidden');
+      }, 300);
     }
-  });
-}
+    
+    document.getElementById('closeWishModal').addEventListener('click', closeWishModal);
+    document.getElementById('wishModalOverlay').addEventListener('click', closeWishModal);
+    
+    document.getElementById('saveWishBtn').addEventListener('click', async () => {
+      const title = document.getElementById('wishTitle').value.trim();
+      const description = document.getElementById('wishContent').value.trim();
+      const status = document.getElementById('wishStatus').value;
+      
+      if (!title) {
+         showToast('标题不能为空');
+         return;
+      }
+      
+      const wish = {
+         id: editingWishId,
+         title,
+         description,
+         status: editingWishId ? status : 'pending',
+         author: editingWishId ? (await storageManager.getWish(editingWishId))?.author || getCurrentUser() : getCurrentUser()
+      };
+      
+      await storageManager.saveWish(wish);
+      closeWishModal();
+      renderWishes();
+      showToast('许愿成功 🌟');
+    });
+    
+    document.getElementById('deleteWishBtn').addEventListener('click', async () => {
+      if (confirm('确定要删除这个愿望吗？')) {
+        await storageManager.deleteWish(editingWishId);
+        closeWishModal();
+        renderWishes();
+        showToast('已删除');
+      }
+    });
 
-function resetDeleteSection() {
-  const section = document.getElementById('delete-day-section');
-  section.innerHTML = '<button class="delete-day-btn" id="delete-day-btn">删除此天记录</button>';
-}
-
-function showDeleteConfirm() {
-  const section = document.getElementById('delete-day-section');
-  section.innerHTML = `
-    <span style="font-size:0.8rem;color:var(--color-text-light);">确定删除此天所有记录？</span>
-    <div class="delete-confirm-row">
-      <button class="btn-confirm-delete" id="confirm-delete-day">确定删除</button>
-      <button class="btn-cancel-delete" id="cancel-delete-day">取消</button>
-    </div>`;
-}
-
-function bindModalOverlay() {
-  document.getElementById('modal').addEventListener('click', (e) => {
-    if (e.target === e.currentTarget) {
-      if (currentEditDate) closeEditor();
-      else closeImportModal();
+    // ============ Utilities ============
+    function formatDateKey(date) {
+      const year = date.getFullYear();
+      const month = String(date.getMonth() + 1).padStart(2, '0');
+      const day = String(date.getDate()).padStart(2, '0');
+      return `${year}-${month}-${day}`;
     }
-  });
-}
 
-function bindFab() {
-  document.getElementById('fab-today').addEventListener('click', () => {
-    openEditor(todayStr());
-  });
-}
-
-function bindExportImport() {
-  document.getElementById('btn-export').addEventListener('click', exportData);
-  document.getElementById('btn-import').addEventListener('click', () => {
-    document.getElementById('import-file').click();
-  });
-  document.getElementById('import-file').addEventListener('change', (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      importData(file);
-      e.target.value = '';
+    function showToast(message) {
+      const toast = document.createElement('div');
+      toast.className = 'fixed top-20 left-1/2 -translate-x-1/2 px-4 py-2 rounded-full bg-[var(--accent)] text-white text-sm z-50 fade-in';
+      toast.textContent = message;
+      document.body.appendChild(toast);
+      setTimeout(() => {
+        toast.style.opacity = '0';
+        toast.style.transform = 'translate(-50%, -10px)';
+        setTimeout(() => toast.remove(), 300);
+      }, 1500);
     }
-  });
-}
 
-/* ── Init ── */
-function init() {
-  bindViewSwitch();
-  bindWaterfallClicks();
-  bindCalendarClicks();
-  bindModalEvents();
-  bindModalOverlay();
-  bindFab();
-  bindExportImport();
-  renderWaterfall();
-  initCalendar();
-}
+    // ============ Settings ============
+    const settingsModal = document.getElementById('settingsModal');
+    const settingsContent = document.getElementById('settingsContent');
+    const settingsOverlay = document.getElementById('settingsOverlay');
+    const settingsBtn = document.getElementById('settingsBtn');
+    const closeSettings = document.getElementById('closeSettings');
+    const fsApiWarning = document.getElementById('fsApiWarning');
+    const fileStorageLabel = document.getElementById('fileStorageLabel');
+    const fileStorageDesc = document.getElementById('fileStorageDesc');
+    const fileHandleInfo = document.getElementById('fileHandleInfo');
+    const fileNameDisplay = document.getElementById('fileNameDisplay');
+    const changeFileBtn = document.getElementById('changeFileBtn');
+    const importBtn = document.getElementById('importBtn');
+    const exportBtn = document.getElementById('exportBtn');
 
-document.addEventListener('DOMContentLoaded', init);
-</script>
+    function openSettings() {
+      settingsModal.classList.remove('hidden');
+      requestAnimationFrame(() => {
+        settingsContent.style.transform = 'translateY(0)';
+      });
+      updateSettingsUI();
+    }
+
+    function closeSettingsModal() {
+      settingsContent.style.transform = 'translateY(100%)';
+      setTimeout(() => {
+        settingsModal.classList.add('hidden');
+      }, 300);
+    }
+
+    function updateSettingsUI() {
+      const mode = storageManager.getMode();
+
+      // Update radio buttons
+      document.querySelectorAll('input[name="storageMode"]').forEach(radio => {
+        radio.checked = radio.value === mode;
+      });
+
+      // Show/hide API warning
+      if (!FileStorage.isSupported) {
+        fsApiWarning.classList.remove('hidden');
+        fileStorageLabel.classList.add('opacity-50', 'pointer-events-none');
+      } else {
+        fsApiWarning.classList.add('hidden');
+        fileStorageLabel.classList.remove('opacity-50', 'pointer-events-none');
+      }
+
+      // Show/hide file handle info
+      if (mode === 'fileSystem' && FileStorage.handle) {
+        fileHandleInfo.classList.remove('hidden');
+        fileNameDisplay.textContent = 'treehole-diaries.yaml';
+      } else {
+        fileHandleInfo.classList.add('hidden');
+      }
+    }
+
+    // Settings event listeners
+    settingsBtn.addEventListener('click', openSettings);
+    closeSettings.addEventListener('click', closeSettingsModal);
+    settingsOverlay.addEventListener('click', closeSettingsModal);
+
+    // Storage mode change
+    document.querySelectorAll('input[name="storageMode"]').forEach(radio => {
+      radio.addEventListener('change', async (e) => {
+        const mode = e.target.value;
+        if (mode === 'fileSystem' && !FileStorage.handle) {
+          const picked = await FileStorage.pickFile();
+          if (!picked) {
+            updateSettingsUI();
+            return;
+          }
+        }
+        storageManager.setMode(mode);
+        updateSettingsUI();
+        renderAll();
+        showToast(mode === 'fileSystem' ? '已切换到文件系统存储' : '已切换到浏览器存储');
+      });
+    });
+
+    // Change file
+    changeFileBtn.addEventListener('click', async () => {
+      const picked = await FileStorage.pickFile();
+      if (picked) {
+        updateSettingsUI();
+        showToast('文件已更换');
+      }
+    });
+
+    // Import
+    importBtn.addEventListener('click', async () => {
+      const success = await storageManager.importData();
+      if (success) {
+        renderAll();
+        showToast('导入成功');
+      }
+    });
+
+    // Export
+    exportBtn.addEventListener('click', async () => {
+      const success = await storageManager.exportData();
+      if (success) {
+        showToast('导出成功');
+      }
+    });
+
+    // ============ Init ============
+    addBtn.onclick = () => openNewModal(formatDateKey(new Date()));
+    
+    async function checkIdentity() {
+      const user = localStorage.getItem(CURRENT_USER_KEY);
+      if (!user) {
+        identityModal.classList.remove('hidden');
+        document.getElementById('saveIdentityBtn').addEventListener('click', () => {
+          const input = document.getElementById('identityInput').value.trim();
+          if (input) {
+            setCurrentUser(input);
+            identityModal.classList.add('hidden');
+            renderAll();
+          } else {
+            showToast('请填写您的身份');
+          }
+        });
+      } else {
+        renderAll();
+      }
+    }
+
+    async function renderAll() {
+      await storageManager.init();
+      renderTodayCard();
+      renderCalendar();
+      renderRecentList();
+      if (currentView === 'wish') renderWishes();
+    }
+
+    checkIdentity();
+
+    // PWA Service Worker
+    if ('serviceWorker' in navigator) {
+      const swCode = `
+        const CACHE_NAME = 'treehole-v1';
+        self.addEventListener('install', e => self.skipWaiting());
+        self.addEventListener('activate', e => e.waitUntil(clients.claim()));
+        self.addEventListener('fetch', e => {
+          e.respondWith(fetch(e.request).catch(() => caches.match(e.request)));
+        });
+      `;
+      const blob = new Blob([swCode], { type: 'application/javascript' });
+      navigator.serviceWorker.register(URL.createObjectURL(blob)).catch(() => {});
+    }
+  </script>
 </body>
 </html>
