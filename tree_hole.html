@@ -1,1990 +1,2532 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
+
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<title>Happy Every Day</title>
-<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🌸</text></svg>">
-<link rel="manifest" href="manifest.json">
-<meta name="theme-color" content="#FFF8F0">
-<meta name="mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="default">
-<meta name="apple-mobile-web-app-title" content="Happy Every Day">
-<link rel="apple-touch-icon" href="apple-touch-icon.png">
-<style>
-:root {
-  --bg-primary: #FFF8F0;
-  --bg-secondary: #FFF1E6;
-  --bg-card: #FFFFFF;
-  --color-peach: #FFCBA4;
-  --color-lavender: #E6D5F7;
-  --color-mint: #B5EAD7;
-  --color-sky: #C7CEEA;
-  --color-rose: #FFB7B2;
-  --color-accent: #FF9A76;
-  --color-accent-hover: #FF8A60;
-  --color-text: #5D4E37;
-  --color-text-light: #8B7D6B;
-  --color-border: rgba(93,78,55,0.1);
-  --shadow-card: 0 2px 12px rgba(93,78,55,0.08);
-  --shadow-hover: 0 6px 24px rgba(93,78,55,0.13);
-  --radius-sm: 8px;
-  --radius-md: 16px;
-  --radius-lg: 24px;
-  --sp-xs: 4px;
-  --sp-sm: 8px;
-  --sp-md: 16px;
-  --sp-lg: 24px;
-  --sp-xl: 32px;
-  --sp-2xl: 48px;
-  --font-stack: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans SC", "PingFang SC", "Hiragino Sans GB", sans-serif;
-  --ease-out: cubic-bezier(0.16,1,0.3,1);
-}
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+	<title>Happy Every Day</title>
+	<link rel="icon"
+		href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🌸</text></svg>">
+	<link rel="manifest" href="manifest.json">
+	<meta name="theme-color" content="#FFF8F0">
+	<meta name="mobile-web-app-capable" content="yes">
+	<meta name="apple-mobile-web-app-capable" content="yes">
+	<meta name="apple-mobile-web-app-status-bar-style" content="default">
+	<meta name="apple-mobile-web-app-title" content="Happy Every Day">
+	<link rel="apple-touch-icon" href="apple-touch-icon.png">
+	<style>
+		:root {
+			--bg-primary: #FFF8F0;
+			--bg-secondary: #FFF1E6;
+			--bg-card: #FFFFFF;
+			--color-peach: #FFCBA4;
+			--color-lavender: #E6D5F7;
+			--color-mint: #B5EAD7;
+			--color-sky: #C7CEEA;
+			--color-rose: #FFB7B2;
+			--color-accent: #FF9A76;
+			--color-accent-hover: #FF8A60;
+			--color-text: #5D4E37;
+			--color-text-light: #8B7D6B;
+			--color-border: rgba(93, 78, 55, 0.1);
+			--shadow-card: 0 2px 12px rgba(93, 78, 55, 0.08);
+			--shadow-hover: 0 6px 24px rgba(93, 78, 55, 0.13);
+			--radius-sm: 8px;
+			--radius-md: 16px;
+			--radius-lg: 24px;
+			--sp-xs: 4px;
+			--sp-sm: 8px;
+			--sp-md: 16px;
+			--sp-lg: 24px;
+			--sp-xl: 32px;
+			--sp-2xl: 48px;
+			--font-stack: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans SC", "PingFang SC", "Hiragino Sans GB", sans-serif;
+			--ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+		}
 
-*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+		*,
+		*::before,
+		*::after {
+			margin: 0;
+			padding: 0;
+			box-sizing: border-box;
+		}
 
-body {
-  font-family: var(--font-stack);
-  background: var(--bg-primary);
-  color: var(--color-text);
-  line-height: 1.7;
-  font-size: clamp(0.875rem, 0.8rem + 0.4vw, 1rem);
-  min-height: 100vh;
-  -webkit-font-smoothing: antialiased;
-}
+		body {
+			font-family: var(--font-stack);
+			background: var(--bg-primary);
+			color: var(--color-text);
+			line-height: 1.7;
+			font-size: clamp(0.875rem, 0.8rem + 0.4vw, 1rem);
+			min-height: 100vh;
+			-webkit-font-smoothing: antialiased;
+		}
 
-/* ── Header ── */
-.app-header {
-  position: sticky;
-  top: 0;
-  z-index: 100;
-  background: rgba(255,248,240,0.85);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border-bottom: 1px solid var(--color-border);
-  padding: var(--sp-md) var(--sp-lg);
-}
-.header-inner {
-  max-width: 1200px;
-  margin: 0 auto;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: var(--sp-md);
-  flex-wrap: wrap;
-}
-.app-title {
-  font-size: clamp(1.2rem, 1rem + 1vw, 1.6rem);
-  font-weight: 700;
-  color: var(--color-accent);
-  line-height: 1.3;
-  white-space: nowrap;
-}
-.header-nav {
-  display: flex;
-  gap: var(--sp-xs);
-  background: var(--bg-secondary);
-  border-radius: var(--radius-lg);
-  padding: 3px;
-}
-.nav-btn {
-  border: none;
-  background: transparent;
-  color: var(--color-text-light);
-  font-family: inherit;
-  font-size: 0.85rem;
-  padding: 6px 16px;
-  border-radius: 20px;
-  cursor: pointer;
-  transition: all 0.25s var(--ease-out);
-}
-.nav-btn.active {
-  background: var(--bg-card);
-  color: var(--color-text);
-  box-shadow: 0 1px 4px rgba(93,78,55,0.1);
-}
-.header-actions {
-  display: flex;
-  gap: var(--sp-sm);
-  align-items: center;
-}
-.action-btn {
-  border: none;
-  background: var(--bg-secondary);
-  color: var(--color-text-light);
-  font-family: inherit;
-  font-size: 0.8rem;
-  padding: 6px 12px;
-  border-radius: var(--radius-sm);
-  cursor: pointer;
-  transition: all 0.2s var(--ease-out);
-}
-.action-btn:hover { background: var(--color-peach); color: var(--color-text); }
+		/* ── Header ── */
+		.app-header {
+			position: sticky;
+			top: 0;
+			z-index: 100;
+			background: rgba(255, 248, 240, 0.85);
+			backdrop-filter: blur(16px);
+			-webkit-backdrop-filter: blur(16px);
+			border-bottom: 1px solid var(--color-border);
+			padding: var(--sp-md) var(--sp-lg);
+		}
 
-/* ── Main ── */
-.app-main {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: var(--sp-lg);
-  padding-bottom: 100px;
-}
+		.header-inner {
+			max-width: 1200px;
+			margin: 0 auto;
+			display: flex;
+			align-items: center;
+			justify-content: space-between;
+			gap: var(--sp-md);
+			flex-wrap: wrap;
+		}
 
-/* ── Waterfall ── */
-.waterfall-container {
-  columns: 1;
-  column-gap: var(--sp-lg);
-}
-@media (min-width: 640px) { .waterfall-container { columns: 2; } }
-@media (min-width: 1024px) { .waterfall-container { columns: 3; } }
+		.app-title {
+			font-size: clamp(1.2rem, 1rem + 1vw, 1.6rem);
+			font-weight: 700;
+			color: var(--color-accent);
+			line-height: 1.3;
+			white-space: nowrap;
+		}
 
-.day-card {
-  break-inside: avoid;
-  background: var(--bg-card);
-  border-radius: var(--radius-md);
-  box-shadow: var(--shadow-card);
-  padding: var(--sp-lg);
-  margin-bottom: var(--sp-lg);
-  cursor: pointer;
-  transition: transform 0.3s var(--ease-out), box-shadow 0.3s var(--ease-out);
-  border: 1px solid transparent;
-}
-.day-card:hover {
-  transform: translateY(-3px);
-  box-shadow: var(--shadow-hover);
-  border-color: var(--color-border);
-}
-.card-header {
-  display: flex;
-  align-items: center;
-  gap: var(--sp-sm);
-  margin-bottom: var(--sp-md);
-}
-.card-feeling { font-size: 1.8rem; line-height: 1; }
-.card-date-group { flex: 1; }
-.card-date {
-  font-weight: 600;
-  font-size: 0.95rem;
-  color: var(--color-text);
-  display: flex;
-  align-items: center;
-  gap: var(--sp-sm);
-}
-.card-weather-tag {
-  font-size: 0.7rem;
-  background: var(--bg-secondary);
-  padding: 1px 6px;
-  border-radius: 10px;
-  color: var(--color-text-light);
-  font-weight: 400;
-}
-.card-relative {
-  font-size: 0.75rem;
-  color: var(--color-text-light);
-}
-.card-notes { list-style: none; display: flex; flex-direction: column; gap: var(--sp-sm); }
-.note-bubble {
-  background: var(--bg-secondary);
-  padding: var(--sp-sm) var(--sp-md);
-  border-radius: 0 var(--radius-md) var(--radius-md) var(--radius-md);
-  font-size: 0.9rem;
-  line-height: 1.6;
-  position: relative;
-}
-.note-time {
-  font-size: 0.7rem;
-  color: var(--color-text-light);
-  margin-top: 2px;
-}
+		.header-nav {
+			display: flex;
+			gap: var(--sp-xs);
+			background: var(--bg-secondary);
+			border-radius: var(--radius-lg);
+			padding: 3px;
+		}
 
-/* ── Calendar ── */
-.calendar-nav {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: var(--sp-lg);
-  margin-bottom: var(--sp-lg);
-}
-.cal-arrow {
-  border: none;
-  background: var(--bg-secondary);
-  width: 36px;
-  height: 36px;
-  border-radius: 50%;
-  font-size: 1rem;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: background 0.2s;
-  color: var(--color-text);
-}
-.cal-arrow:hover { background: var(--color-peach); }
-.cal-title {
-  font-size: 1.1rem;
-  font-weight: 600;
-  min-width: 140px;
-  text-align: center;
-}
-.calendar-grid {
-  display: grid;
-  grid-template-columns: repeat(7, 1fr);
-  gap: var(--sp-xs);
-  max-width: 560px;
-  margin: 0 auto;
-}
-.cal-weekday {
-  text-align: center;
-  font-size: 0.75rem;
-  color: var(--color-text-light);
-  padding: var(--sp-sm) 0;
-  font-weight: 600;
-}
-.cal-day {
-  aspect-ratio: 1;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  border-radius: var(--radius-sm);
-  font-size: 0.85rem;
-  cursor: pointer;
-  transition: all 0.2s var(--ease-out);
-  background: transparent;
-  border: 2px solid transparent;
-  position: relative;
-  gap: 2px;
-}
-.cal-day:hover { background: var(--bg-secondary); }
-.cal-day.today { border-color: var(--color-accent); font-weight: 700; }
-.cal-day.has-record { background: var(--bg-secondary); }
-.cal-day.empty { cursor: default; }
-.cal-day.empty:hover { background: transparent; }
-.cal-day .cal-emoji { font-size: 1.1rem; line-height: 1; }
-.cal-day .cal-num { font-size: 0.75rem; line-height: 1; }
-.cal-day .cal-dot {
-  width: 5px; height: 5px;
-  border-radius: 50%;
-  background: var(--color-accent);
-  position: absolute;
-  bottom: 4px;
-}
+		.nav-btn {
+			border: none;
+			background: transparent;
+			color: var(--color-text-light);
+			font-family: inherit;
+			font-size: 0.85rem;
+			padding: 6px 16px;
+			border-radius: 20px;
+			cursor: pointer;
+			transition: all 0.25s var(--ease-out);
+		}
 
-/* ── Modal ── */
-.modal-overlay {
-  position: fixed;
-  inset: 0;
-  z-index: 200;
-  background: rgba(93,78,55,0.3);
-  backdrop-filter: blur(4px);
-  -webkit-backdrop-filter: blur(4px);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: var(--sp-lg);
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 0.3s var(--ease-out);
-}
-.modal-overlay.open { opacity: 1; pointer-events: auto; }
-.modal-card {
-  background: var(--bg-card);
-  border-radius: var(--radius-lg);
-  box-shadow: 0 16px 48px rgba(93,78,55,0.18);
-  width: 100%;
-  max-width: 480px;
-  max-height: 90vh;
-  overflow-y: auto;
-  overflow-x: hidden;
-  padding: var(--sp-xl);
-  transform: translateY(20px) scale(0.97);
-  transition: transform 0.35s var(--ease-out);
-}
-.modal-overlay.open .modal-card { transform: translateY(0) scale(1); }
-.modal-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: var(--sp-lg);
-}
-.modal-title { font-size: 1.15rem; font-weight: 700; }
-.modal-close {
-  border: none;
-  background: var(--bg-secondary);
-  width: 32px; height: 32px;
-  border-radius: 50%;
-  font-size: 1.1rem;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: var(--color-text-light);
-  transition: all 0.2s;
-}
-.modal-close:hover { background: var(--color-rose); color: var(--color-text); }
-.modal-section { margin-bottom: var(--sp-lg); overflow: visible; }
-.modal-label {
-  font-size: 0.8rem;
-  font-weight: 600;
-  color: var(--color-text-light);
-  margin-bottom: var(--sp-sm);
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-}
+		.nav-btn.active {
+			background: var(--bg-card);
+			color: var(--color-text);
+			box-shadow: 0 1px 4px rgba(93, 78, 55, 0.1);
+		}
 
-/* ── Compact Wheel Picker ── */
-.picker-row {
-  display: flex;
-  gap: 10px;
-  align-items: center;
-  flex-wrap: wrap;
-  overflow: visible;
-}
-.picker-col {
-  position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: auto;
-  height: auto;
-  transition: width 0.35s var(--ease-out), height 0.35s var(--ease-out), margin 0.35s var(--ease-out);
-}
-.picker-col.open {
-  width: 210px;
-  height: 210px;
-  margin: 10px 0;
-}
-.wheel-trigger {
-  display: inline-flex;
-  align-items: center;
-  gap: 4px;
-  padding: 5px 12px;
-  border-radius: 16px;
-  border: 1.5px solid var(--color-border);
-  background: var(--bg-secondary);
-  color: var(--color-text-light);
-  font-family: inherit;
-  font-size: 0.78rem;
-  cursor: pointer;
-  transition: all 0.2s var(--ease-out);
-  user-select: none;
-  white-space: nowrap;
-  position: relative;
-  z-index: 2;
-}
-.wheel-trigger:hover { background: var(--color-peach); border-color: var(--color-peach); color: var(--color-text); }
-.wheel-trigger:active { transform: scale(0.95); }
-.picker-col.open .wheel-trigger {
-  background: var(--color-accent);
-  border-color: var(--color-accent);
-  color: #fff;
-  padding: 6px 10px;
-  border-radius: 50%;
-  width: 40px;
-  height: 40px;
-  justify-content: center;
-}
-.picker-col.open .wheel-trigger span:last-child { display: none; }
-.wheel-trigger__emoji { font-size: 1rem; line-height: 1; }
-.picker-col.open .wheel-trigger__emoji { font-size: 1.1rem; }
-.wheel-item {
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  margin-left: -22px;
-  margin-top: -24px;
-  width: 44px;
-  height: 48px;
-  border-radius: 14px;
-  background: var(--bg-card);
-  border: 1.5px solid var(--color-border);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 1px;
-  cursor: pointer;
-  box-shadow: 0 2px 6px rgba(93,78,55,0.08);
-  opacity: 0;
-  transform: scale(0);
-  transition: all 0.3s var(--ease-out);
-  transition-delay: var(--d, 0ms);
-  z-index: 1;
-}
-.wheel-item__emoji { font-size: 1.05rem; line-height: 1; }
-.wheel-item__label { font-size: 0.55rem; color: var(--color-text-light); line-height: 1; white-space: nowrap; }
-.picker-col.open .wheel-item {
-  opacity: 1;
-  transform: scale(1) translate(var(--tx), var(--ty));
-}
-.wheel-item:hover {
-  background: var(--color-peach);
-  border-color: var(--color-peach);
-  transform: scale(1.2) translate(var(--tx), var(--ty)) !important;
-  z-index: 3;
-}
-.wheel-item:active { transform: scale(0.9) translate(var(--tx), var(--ty)) !important; }
-.wheel-item.selected {
-  border-color: var(--color-accent);
-  background: var(--color-peach);
-}
-.wheel-item.selected .wheel-item__label { color: var(--color-text); font-weight: 600; }
-.wheel-backdrop {
-  position: fixed;
-  inset: 0;
-  z-index: 0;
-}
+		.header-actions {
+			display: flex;
+			gap: var(--sp-sm);
+			align-items: center;
+		}
 
-.note-input-row {
-  display: flex;
-  gap: var(--sp-sm);
-}
-.note-input {
-  flex: 1;
-  border: 1.5px solid var(--color-border);
-  border-radius: var(--radius-sm);
-  padding: var(--sp-sm) var(--sp-md);
-  font-family: inherit;
-  font-size: 0.9rem;
-  background: var(--bg-primary);
-  color: var(--color-text);
-  outline: none;
-  transition: border-color 0.2s;
-}
-.note-input:focus { border-color: var(--color-accent); }
-.note-input::placeholder { color: var(--color-text-light); opacity: 0.6; }
-.note-add-btn {
-  border: none;
-  background: var(--color-accent);
-  color: #fff;
-  font-family: inherit;
-  font-size: 0.85rem;
-  padding: var(--sp-sm) var(--sp-md);
-  border-radius: var(--radius-sm);
-  cursor: pointer;
-  white-space: nowrap;
-  transition: background 0.2s;
-}
-.note-add-btn:hover { background: var(--color-accent-hover); }
-.modal-notes-list {
-  list-style: none;
-  display: flex;
-  flex-direction: column;
-  gap: var(--sp-sm);
-  margin-top: var(--sp-md);
-}
-.modal-note-item {
-  display: flex;
-  align-items: flex-start;
-  gap: var(--sp-sm);
-  background: var(--bg-secondary);
-  border-radius: var(--radius-sm);
-  padding: var(--sp-sm) var(--sp-md);
-}
-.modal-note-text { flex: 1; font-size: 0.9rem; word-break: break-word; }
-.modal-note-time { font-size: 0.7rem; color: var(--color-text-light); }
-.note-delete-btn {
-  border: none;
-  background: transparent;
-  color: var(--color-text-light);
-  cursor: pointer;
-  font-size: 0.9rem;
-  padding: 2px 4px;
-  border-radius: 4px;
-  transition: all 0.2s;
-  flex-shrink: 0;
-}
-.note-delete-btn:hover { color: #e74c3c; background: rgba(231,76,60,0.1); }
-.note-edit-btn {
-  border: none;
-  background: transparent;
-  color: var(--color-text-light);
-  cursor: pointer;
-  font-size: 0.85rem;
-  padding: 2px 4px;
-  border-radius: 4px;
-  transition: all 0.2s;
-  flex-shrink: 0;
-}
-.note-edit-btn:hover { color: var(--color-accent); background: rgba(255,154,118,0.1); }
+		.action-btn {
+			border: none;
+			background: var(--bg-secondary);
+			color: var(--color-text-light);
+			font-family: inherit;
+			font-size: 0.8rem;
+			padding: 6px 12px;
+			border-radius: var(--radius-sm);
+			cursor: pointer;
+			transition: all 0.2s var(--ease-out);
+		}
 
-/* ── Delete Day ── */
-.delete-day-section {
-  margin-top: var(--sp-lg);
-  padding-top: var(--sp-lg);
-  border-top: 1px solid var(--color-border);
-  text-align: center;
-}
-.delete-day-btn {
-  border: 1.5px solid var(--color-rose);
-  background: transparent;
-  color: var(--color-text-light);
-  font-family: inherit;
-  font-size: 0.8rem;
-  padding: 6px 16px;
-  border-radius: var(--radius-sm);
-  cursor: pointer;
-  transition: all 0.2s;
-}
-.delete-day-btn:hover { background: var(--color-rose); color: var(--color-text); }
-.delete-confirm-row {
-  display: flex;
-  gap: var(--sp-sm);
-  justify-content: center;
-  margin-top: var(--sp-sm);
-}
-.delete-confirm-row button {
-  border: none;
-  font-family: inherit;
-  font-size: 0.8rem;
-  padding: 6px 14px;
-  border-radius: var(--radius-sm);
-  cursor: pointer;
-  transition: all 0.2s;
-}
-.btn-confirm-delete { background: #e74c3c; color: #fff; }
-.btn-confirm-delete:hover { background: #c0392b; }
-.btn-cancel-delete { background: var(--bg-secondary); color: var(--color-text-light); }
-.btn-cancel-delete:hover { background: var(--color-border); }
+		.action-btn:hover {
+			background: var(--color-peach);
+			color: var(--color-text);
+		}
 
-/* ── FAB ── */
-.fab {
-  position: fixed;
-  bottom: var(--sp-xl);
-  right: var(--sp-xl);
-  width: 56px;
-  height: 56px;
-  border-radius: 50%;
-  border: none;
-  background: var(--color-accent);
-  color: #fff;
-  font-size: 1.6rem;
-  cursor: pointer;
-  box-shadow: 0 4px 16px rgba(255,154,118,0.4);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: all 0.3s var(--ease-out);
-  z-index: 50;
-}
-.fab:hover { transform: scale(1.1); box-shadow: 0 6px 24px rgba(255,154,118,0.5); }
+		/* ── Main ── */
+		.app-main {
+			max-width: 1200px;
+			margin: 0 auto;
+			padding: var(--sp-lg);
+			padding-bottom: 100px;
+		}
 
-/* ── Empty state ── */
-.empty-state {
-  text-align: center;
-  padding: var(--sp-2xl) var(--sp-lg);
-  color: var(--color-text-light);
-}
-.empty-state .empty-icon { font-size: 3rem; margin-bottom: var(--sp-md); }
-.empty-state p { font-size: 0.95rem; line-height: 1.8; }
+		/* ── Waterfall ── */
+		.waterfall-container {
+			columns: 1;
+			column-gap: var(--sp-lg);
+		}
 
-/* ── Import confirm ── */
-.import-confirm {
-  display: flex;
-  gap: var(--sp-sm);
-  margin-top: var(--sp-md);
-  justify-content: center;
-}
-.import-confirm button {
-  border: none;
-  font-family: inherit;
-  font-size: 0.85rem;
-  padding: 8px 20px;
-  border-radius: var(--radius-sm);
-  cursor: pointer;
-  transition: all 0.2s;
-}
-.btn-merge { background: var(--color-mint); color: var(--color-text); }
-.btn-overwrite { background: var(--color-rose); color: var(--color-text); }
-.btn-cancel { background: var(--bg-secondary); color: var(--color-text-light); }
+		@media (min-width: 640px) {
+			.waterfall-container {
+				columns: 2;
+			}
+		}
 
-/* ── Hidden file input ── */
-#import-file { display: none; }
+		@media (min-width: 1024px) {
+			.waterfall-container {
+				columns: 3;
+			}
+		}
 
-/* ── View toggle ── */
-.view-section { display: none; }
-.view-section.active { display: block; }
+		.day-card {
+			break-inside: avoid;
+			background: var(--bg-card);
+			border-radius: var(--radius-md);
+			box-shadow: var(--shadow-card);
+			padding: var(--sp-lg);
+			margin-bottom: var(--sp-lg);
+			cursor: pointer;
+			transition: transform 0.3s var(--ease-out), box-shadow 0.3s var(--ease-out);
+			border: 1px solid transparent;
+		}
 
-/* ── Diet Panel ── */
-.diet-panel {
-  overflow: hidden;
-  max-height: 0;
-  transition: max-height 0.3s var(--ease-out), opacity 0.25s var(--ease-out);
-  opacity: 0;
-}
-.diet-panel.open {
-  max-height: 80px;
-  opacity: 1;
-}
-.diet-bar {
-  display: flex;
-  gap: 3px;
-  margin-top: var(--sp-sm);
-  height: 52px;
-  align-items: stretch;
-}
-.diet-option {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 3px;
-  border: none;
-  cursor: pointer;
-  font-family: inherit;
-  border-radius: 6px;
-  transition: all 0.2s var(--ease-out);
-  position: relative;
-}
-.diet-option:first-child { border-radius: var(--radius-sm) 6px 6px var(--radius-sm); }
-.diet-option:last-child  { border-radius: 6px var(--radius-sm) var(--radius-sm) 6px; }
-.diet-option[data-diet="great"]   { background: #b7ebca; }
-.diet-option[data-diet="ok"]      { background: #fde68a; }
-.diet-option[data-diet="indulge"] { background: #fdc9a0; }
-.diet-option[data-diet="doomed"]  { background: #fcb8b8; }
-.diet-option:hover { filter: brightness(0.93); transform: translateY(-2px); }
-.diet-option.selected { transform: translateY(-4px); box-shadow: 0 4px 12px rgba(93,78,55,0.18); filter: brightness(0.88); }
-.diet-option__emoji { font-size: 1.1rem; line-height: 1; }
-.diet-option__label { font-size: 0.62rem; color: var(--color-text); font-weight: 500; }
+		.day-card:hover {
+			transform: translateY(-3px);
+			box-shadow: var(--shadow-hover);
+			border-color: var(--color-border);
+		}
 
-/* ── Wishing Pool ── */
-.wish-toolbar {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: var(--sp-lg);
-  flex-wrap: wrap;
-  gap: var(--sp-sm);
-}
-.wish-filter-tabs {
-  display: flex;
-  gap: 2px;
-  background: var(--bg-secondary);
-  border-radius: var(--radius-lg);
-  padding: 3px;
-}
-.wish-filter-btn {
-  border: none;
-  background: transparent;
-  color: var(--color-text-light);
-  font-family: inherit;
-  font-size: 0.82rem;
-  padding: 4px 14px;
-  border-radius: 20px;
-  cursor: pointer;
-  transition: all 0.2s var(--ease-out);
-}
-.wish-filter-btn.active {
-  background: var(--bg-card);
-  color: var(--color-text);
-  box-shadow: 0 1px 4px rgba(93,78,55,0.1);
-}
-.wish-add-form {
-  background: var(--bg-card);
-  border-radius: var(--radius-md);
-  box-shadow: var(--shadow-card);
-  padding: var(--sp-lg);
-  margin-bottom: var(--sp-lg);
-  border: 1px solid var(--color-border);
-}
-.wish-form-title {
-  font-size: 0.8rem;
-  font-weight: 600;
-  color: var(--color-text-light);
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  margin-bottom: var(--sp-sm);
-}
-.wish-form-row {
-  display: flex;
-  gap: var(--sp-sm);
-  flex-wrap: wrap;
-}
-.wish-text-input {
-  flex: 2;
-  min-width: 160px;
-  border: 1.5px solid var(--color-border);
-  border-radius: var(--radius-sm);
-  padding: var(--sp-sm) var(--sp-md);
-  font-family: inherit;
-  font-size: 0.9rem;
-  background: var(--bg-primary);
-  color: var(--color-text);
-  outline: none;
-  transition: border-color 0.2s;
-}
-.wish-text-input:focus { border-color: var(--color-accent); }
-.wish-text-input::placeholder { color: var(--color-text-light); opacity: 0.6; }
-.wish-assignee-select {
-  flex: 1;
-  min-width: 100px;
-  border: 1.5px solid var(--color-border);
-  border-radius: var(--radius-sm);
-  padding: var(--sp-sm) var(--sp-md);
-  font-family: inherit;
-  font-size: 0.9rem;
-  background: var(--bg-primary);
-  color: var(--color-text);
-  outline: none;
-  cursor: pointer;
-  transition: border-color 0.2s;
-  appearance: none;
-  -webkit-appearance: none;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' fill='none'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%238B7D6B' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
-  background-repeat: no-repeat;
-  background-position: right 10px center;
-  padding-right: 28px;
-}
-.wish-assignee-select:focus { border-color: var(--color-accent); }
-.wish-submit-btn {
-  border: none;
-  background: var(--color-accent);
-  color: #fff;
-  font-family: inherit;
-  font-size: 0.85rem;
-  padding: var(--sp-sm) var(--sp-lg);
-  border-radius: var(--radius-sm);
-  cursor: pointer;
-  white-space: nowrap;
-  transition: background 0.2s;
-  flex-shrink: 0;
-}
-.wish-submit-btn:hover { background: var(--color-accent-hover); }
-.wish-list {
-  display: flex;
-  flex-direction: column;
-  gap: var(--sp-md);
-}
-.wish-card {
-  background: var(--bg-card);
-  border-radius: var(--radius-md);
-  box-shadow: var(--shadow-card);
-  padding: var(--sp-md) var(--sp-lg);
-  border: 1px solid transparent;
-  transition: all 0.25s var(--ease-out);
-  display: flex;
-  align-items: flex-start;
-  gap: var(--sp-md);
-}
-.wish-card:hover { box-shadow: var(--shadow-hover); border-color: var(--color-border); }
-.wish-card.fulfilled {
-  opacity: 0.6;
-  background: var(--bg-secondary);
-}
-.wish-card.fulfilled .wish-text { text-decoration: line-through; color: var(--color-text-light); }
-.wish-check {
-  width: 22px;
-  height: 22px;
-  border-radius: 50%;
-  border: 2px solid var(--color-border);
-  background: transparent;
-  cursor: pointer;
-  flex-shrink: 0;
-  margin-top: 2px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 0.75rem;
-  transition: all 0.2s var(--ease-out);
-  color: transparent;
-}
-.wish-check:hover { border-color: var(--color-mint); background: rgba(181,234,215,0.2); color: #4caf7d; }
-.wish-card.fulfilled .wish-check {
-  border-color: #4caf7d;
-  background: rgba(181,234,215,0.4);
-  color: #4caf7d;
-}
-.wish-body { flex: 1; min-width: 0; }
-.wish-text {
-  font-size: 0.95rem;
-  line-height: 1.6;
-  color: var(--color-text);
-  word-break: break-word;
-}
-.wish-meta {
-  display: flex;
-  align-items: center;
-  gap: var(--sp-sm);
-  margin-top: 4px;
-  flex-wrap: wrap;
-}
-.wish-creator {
-  font-size: 0.72rem;
-  color: var(--color-text-light);
-}
-.wish-assignee-tag {
-  font-size: 0.72rem;
-  background: var(--color-lavender);
-  color: var(--color-text);
-  padding: 1px 8px;
-  border-radius: 10px;
-  font-weight: 500;
-}
-.wish-date {
-  font-size: 0.7rem;
-  color: var(--color-text-light);
-}
-.wish-fulfilled-badge {
-  font-size: 0.68rem;
-  background: rgba(181,234,215,0.5);
-  color: #3a9962;
-  padding: 1px 7px;
-  border-radius: 10px;
-  font-weight: 600;
-}
-.wish-actions {
-  display: flex;
-  gap: 2px;
-  flex-shrink: 0;
-}
-.wish-del-btn {
-  border: none;
-  background: transparent;
-  color: var(--color-text-light);
-  cursor: pointer;
-  font-size: 0.85rem;
-  padding: 3px 5px;
-  border-radius: 4px;
-  transition: all 0.2s;
-}
-.wish-del-btn:hover { color: #e74c3c; background: rgba(231,76,60,0.1); }
-.wish-pool-empty {
-  text-align: center;
-  padding: var(--sp-2xl) var(--sp-lg);
-  color: var(--color-text-light);
-}
-.wish-pool-empty .empty-icon { font-size: 3rem; margin-bottom: var(--sp-md); }
-.wish-pool-empty p { font-size: 0.95rem; line-height: 1.8; }
+		.card-header {
+			display: flex;
+			align-items: center;
+			gap: var(--sp-sm);
+			margin-bottom: var(--sp-md);
+		}
 
-/* ── Scrollbar ── */
-::-webkit-scrollbar { width: 6px; }
-::-webkit-scrollbar-track { background: transparent; }
-::-webkit-scrollbar-thumb { background: var(--color-border); border-radius: 3px; }
+		.card-feeling {
+			font-size: 1.8rem;
+			line-height: 1;
+		}
 
-/* ── View mode toggle (我的 / 所有) ── */
-.view-mode-toggle {
-  display: flex;
-  gap: 2px;
-  background: var(--bg-secondary);
-  border-radius: var(--radius-lg);
-  padding: 3px;
-}
-.view-mode-btn {
-  border: none;
-  background: transparent;
-  color: var(--color-text-light);
-  font-family: inherit;
-  font-size: 0.82rem;
-  padding: 4px 12px;
-  border-radius: 20px;
-  cursor: pointer;
-  transition: all 0.2s var(--ease-out);
-}
-.view-mode-btn.active {
-  background: var(--bg-card);
-  color: var(--color-text);
-  box-shadow: 0 1px 4px rgba(93,78,55,0.1);
-}
+		.card-date-group {
+			flex: 1;
+		}
 
-/* ── User badge ── */
-.user-badge {
-  width: 32px;
-  height: 32px;
-  border-radius: 50%;
-  background: var(--color-lavender);
-  border: none;
-  font-family: inherit;
-  font-weight: 700;
-  font-size: 0.85rem;
-  color: var(--color-text);
-  cursor: pointer;
-  transition: all 0.2s;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-}
-.user-badge:hover { background: var(--color-peach); transform: scale(1.05); }
+		.card-date {
+			font-weight: 600;
+			font-size: 0.95rem;
+			color: var(--color-text);
+			display: flex;
+			align-items: center;
+			gap: var(--sp-sm);
+		}
 
-/* ── Sync status ── */
-.sync-status {
-  font-size: 0.85rem;
-  width: 20px;
-  text-align: center;
-}
-.sync-status.syncing { color: var(--color-text-light); display: inline-block; animation: spin 1.2s linear infinite; }
-.sync-status.synced  { color: #67b07c; }
-.sync-status.error   { color: #e07070; }
-@keyframes spin { to { transform: rotate(360deg); } }
+		.card-weather-tag {
+			font-size: 0.7rem;
+			background: var(--bg-secondary);
+			padding: 1px 6px;
+			border-radius: 10px;
+			color: var(--color-text-light);
+			font-weight: 400;
+		}
 
-.sync-btn { font-size: 0.8rem; padding: 4px 10px; }
-.sync-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+		.card-relative {
+			font-size: 0.75rem;
+			color: var(--color-text-light);
+		}
 
-.builtin-hint { background: var(--color-sky); border-left: 3px solid #7ab8e8; }
+		.card-notes {
+			list-style: none;
+			display: flex;
+			flex-direction: column;
+			gap: var(--sp-sm);
+		}
 
-/* ── All-mode user entries ── */
-.user-entry {
-  padding: var(--sp-sm) 0;
-  border-top: 1px solid var(--color-border);
-}
-.user-entry:first-child { border-top: none; }
-.user-entry-header {
-  display: flex;
-  align-items: center;
-  gap: var(--sp-xs);
-  flex-wrap: wrap;
-  margin-bottom: 4px;
-}
-.user-tag {
-  background: var(--color-lavender);
-  color: var(--color-text);
-  font-size: 0.7rem;
-  padding: 2px 8px;
-  border-radius: 10px;
-  font-weight: 600;
-}
-.card-feeling-sm { font-size: 1.2rem; line-height: 1; }
+		.note-bubble {
+			background: var(--bg-secondary);
+			padding: var(--sp-sm) var(--sp-md);
+			border-radius: 0 var(--radius-md) var(--radius-md) var(--radius-md);
+			font-size: 0.9rem;
+			line-height: 1.6;
+			position: relative;
+		}
 
-/* ── User select overlay ── */
-.user-select-overlay {
-  position: fixed;
-  inset: 0;
-  background: rgba(255,248,240,0.96);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 300;
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 0.3s var(--ease-out);
-}
-.user-select-overlay.open { opacity: 1; pointer-events: all; }
-.user-select-card {
-  background: var(--bg-card);
-  border-radius: var(--radius-lg);
-  padding: var(--sp-xl) var(--sp-xl) var(--sp-lg);
-  box-shadow: var(--shadow-hover);
-  width: min(360px, 90vw);
-  text-align: center;
-}
-.user-select-title {
-  font-size: 1.5rem;
-  font-weight: 700;
-  color: var(--color-text);
-  margin-bottom: 4px;
-}
-.user-select-subtitle {
-  font-size: 0.85rem;
-  color: var(--color-text-light);
-  margin-bottom: var(--sp-lg);
-}
-.user-select-list {
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--sp-sm);
-  justify-content: center;
-  margin-bottom: var(--sp-lg);
-  min-height: 36px;
-}
-.user-select-btn {
-  background: var(--bg-secondary);
-  border: 2px solid transparent;
-  border-radius: var(--radius-md);
-  padding: var(--sp-sm) var(--sp-lg);
-  font-family: inherit;
-  font-size: 1rem;
-  color: var(--color-text);
-  cursor: pointer;
-  transition: all 0.2s var(--ease-out);
-}
-.user-select-btn:hover { border-color: var(--color-accent); background: var(--color-peach); }
-.user-select-divider {
-  font-size: 0.75rem;
-  color: var(--color-text-light);
-  margin-bottom: var(--sp-sm);
-}
-.user-select-add-row {
-  display: flex;
-  gap: var(--sp-sm);
-}
-.user-select-input {
-  flex: 1;
-  border: 1.5px solid var(--color-border);
-  border-radius: var(--radius-sm);
-  padding: 8px 12px;
-  font-family: inherit;
-  font-size: 0.9rem;
-  background: var(--bg-secondary);
-  color: var(--color-text);
-  outline: none;
-  transition: border-color 0.2s;
-}
-.user-select-input:focus { border-color: var(--color-accent); }
-.user-select-add-btn {
-  background: var(--color-accent);
-  color: #fff;
-  border: none;
-  border-radius: var(--radius-sm);
-  padding: 8px 16px;
-  font-family: inherit;
-  font-size: 0.9rem;
-  cursor: pointer;
-  white-space: nowrap;
-  transition: background 0.2s;
-}
-.user-select-add-btn:hover { background: var(--color-accent-hover); }
+		.note-time {
+			font-size: 0.7rem;
+			color: var(--color-text-light);
+			margin-top: 2px;
+		}
 
-/* ── Settings modal ── */
-.settings-card {
-  max-width: 420px;
-}
-.settings-tabs {
-  display: flex;
-  border-bottom: 1px solid var(--color-border);
-  margin: 0 calc(-1 * var(--sp-xl)) var(--sp-md);
-  padding: 0 var(--sp-xl);
-}
-.settings-tab {
-  border: none;
-  background: transparent;
-  font-family: inherit;
-  font-size: 0.9rem;
-  padding: var(--sp-sm) var(--sp-md);
-  color: var(--color-text-light);
-  cursor: pointer;
-  border-bottom: 2px solid transparent;
-  margin-bottom: -1px;
-  transition: all 0.2s;
-}
-.settings-tab.active { color: var(--color-accent); border-bottom-color: var(--color-accent); }
-.settings-panel { padding-top: var(--sp-sm); }
-.settings-panel.hidden { display: none; }
-.settings-section-label {
-  font-size: 0.75rem;
-  font-weight: 600;
-  color: var(--color-text-light);
-  text-transform: uppercase;
-  letter-spacing: 0.06em;
-  margin-bottom: var(--sp-sm);
-}
-.settings-user-row {
-  display: flex;
-  align-items: center;
-  gap: var(--sp-sm);
-  padding: 6px 0;
-  border-bottom: 1px solid var(--color-border);
-}
-.settings-user-name { flex: 1; font-size: 0.95rem; }
-.settings-user-name.current { font-weight: 700; color: var(--color-accent); }
-.settings-add-row {
-  display: flex;
-  gap: var(--sp-sm);
-  margin-top: var(--sp-md);
-}
-.settings-field { margin-bottom: var(--sp-md); }
-.settings-field label {
-  display: block;
-  font-size: 0.78rem;
-  font-weight: 600;
-  color: var(--color-text-light);
-  margin-bottom: 4px;
-  text-transform: uppercase;
-  letter-spacing: 0.04em;
-}
-.settings-input {
-  width: 100%;
-  border: 1.5px solid var(--color-border);
-  border-radius: var(--radius-sm);
-  padding: 8px 12px;
-  font-family: inherit;
-  font-size: 0.9rem;
-  background: var(--bg-secondary);
-  color: var(--color-text);
-  outline: none;
-  transition: border-color 0.2s;
-}
-.settings-input:focus { border-color: var(--color-accent); }
-.settings-input[readonly] { background: var(--color-border); color: var(--color-text-light); cursor: default; border-style: dashed; }
-.settings-input[readonly]:focus { border-color: var(--color-border); }
-.settings-builtin-badge { display:inline-flex;align-items:center;gap:6px;font-size:0.78rem;color:#67b07c;background:#e8f7ed;border:1px solid #b5e2c4;border-radius:20px;padding:3px 10px;margin-bottom:var(--sp-md); }
-.settings-actions {
-  display: flex;
-  gap: var(--sp-sm);
-  flex-wrap: wrap;
-  margin-top: var(--sp-md);
-}
-.settings-btn-sm {
-  border: 1.5px solid var(--color-border);
-  background: var(--bg-secondary);
-  color: var(--color-text-light);
-  border-radius: var(--radius-sm);
-  padding: 6px 12px;
-  font-family: inherit;
-  font-size: 0.8rem;
-  cursor: pointer;
-  transition: all 0.2s;
-  white-space: nowrap;
-}
-.settings-btn-sm:hover { border-color: var(--color-accent); color: var(--color-text); }
-.settings-text-link { background: none; border: none; color: var(--color-text-light); font-family: inherit; font-size: 0.8rem; cursor: pointer; text-decoration: underline; padding: 0; }
-.settings-text-link:hover { color: var(--color-text); }
-.settings-btn-primary {
-  background: var(--color-accent);
-  color: #fff;
-  border: none;
-  border-radius: var(--radius-sm);
-  padding: 6px 18px;
-  font-family: inherit;
-  font-size: 0.85rem;
-  cursor: pointer;
-  transition: background 0.2s;
-  white-space: nowrap;
-}
-.settings-btn-primary:hover { background: var(--color-accent-hover); }
-.settings-user-switch, .settings-user-remove {
-  border: 1px solid var(--color-border);
-  background: transparent;
-  border-radius: var(--radius-sm);
-  padding: 3px 8px;
-  font-size: 0.75rem;
-  font-family: inherit;
-  cursor: pointer;
-  color: var(--color-text-light);
-  transition: all 0.15s;
-}
-.settings-user-switch:hover { color: var(--color-accent); border-color: var(--color-accent); }
-.settings-user-remove:hover { color: #e07070; border-color: #e07070; }
-.settings-status {
-  font-size: 0.82rem;
-  color: var(--color-text-light);
-  min-height: 22px;
-  margin-top: var(--sp-sm);
-}
-.settings-hint {
-  font-size: 0.78rem;
-  color: var(--color-text-light);
-  line-height: 1.6;
-  margin-bottom: var(--sp-md);
-  padding: var(--sp-sm) var(--sp-md);
-  background: var(--bg-secondary);
-  border-radius: var(--radius-sm);
-}
-.settings-divider {
-  border: none;
-  border-top: 1px solid var(--color-border);
-  margin: var(--sp-lg) 0 var(--sp-md);
-}
-.settings-textarea {
-  width: 100%;
-  border: 1.5px solid var(--color-border);
-  border-radius: var(--radius-sm);
-  padding: 8px 12px;
-  font-family: var(--font-stack);
-  font-size: 0.75rem;
-  background: var(--bg-secondary);
-  color: var(--color-text);
-  resize: vertical;
-  outline: none;
-}
-.settings-textarea:focus { border-color: var(--color-accent); }
+		/* ── Calendar ── */
+		.calendar-nav {
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			gap: var(--sp-lg);
+			margin-bottom: var(--sp-lg);
+		}
 
-/* ── Unlock overlay ── */
-.unlock-overlay {
-  position: fixed;
-  inset: 0;
-  background: rgba(255,248,240,0.97);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 400;
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 0.3s var(--ease-out);
-}
-.unlock-overlay.open { opacity: 1; pointer-events: all; }
-.unlock-card {
-  background: var(--bg-card);
-  border-radius: var(--radius-lg);
-  padding: var(--sp-xl);
-  box-shadow: var(--shadow-hover);
-  width: min(320px, 90vw);
-  text-align: center;
-}
-.unlock-icon { font-size: 2.4rem; margin-bottom: var(--sp-sm); }
-.unlock-title { font-size: 1.3rem; font-weight: 700; margin-bottom: 4px; }
-.unlock-subtitle { font-size: 0.82rem; color: var(--color-text-light); margin-bottom: var(--sp-lg); }
-.unlock-input {
-  width: 100%;
-  border: 1.5px solid var(--color-border);
-  border-radius: var(--radius-sm);
-  padding: 10px 14px;
-  font-family: inherit;
-  font-size: 1rem;
-  background: var(--bg-secondary);
-  color: var(--color-text);
-  outline: none;
-  text-align: center;
-  letter-spacing: 0.1em;
-  transition: border-color 0.2s;
-  margin-bottom: var(--sp-sm);
-}
-.unlock-input:focus { border-color: var(--color-accent); }
-.unlock-btn {
-  width: 100%;
-  background: var(--color-accent);
-  color: #fff;
-  border: none;
-  border-radius: var(--radius-sm);
-  padding: 10px;
-  font-family: inherit;
-  font-size: 0.95rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: background 0.2s;
-  margin-bottom: var(--sp-sm);
-}
-.unlock-btn:hover { background: var(--color-accent-hover); }
-.unlock-error {
-  font-size: 0.8rem;
-  color: #e07070;
-  min-height: 18px;
-  margin-bottom: var(--sp-xs);
-}
-.unlock-skip {
-  border: none;
-  background: transparent;
-  color: var(--color-text-light);
-  font-family: inherit;
-  font-size: 0.8rem;
-  cursor: pointer;
-  text-decoration: underline;
-  padding: 0;
-}
-.unlock-skip:hover { color: var(--color-text); }
-</style>
+		.cal-arrow {
+			border: none;
+			background: var(--bg-secondary);
+			width: 36px;
+			height: 36px;
+			border-radius: 50%;
+			font-size: 1rem;
+			cursor: pointer;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			transition: background 0.2s;
+			color: var(--color-text);
+		}
+
+		.cal-arrow:hover {
+			background: var(--color-peach);
+		}
+
+		.cal-title {
+			font-size: 1.1rem;
+			font-weight: 600;
+			min-width: 140px;
+			text-align: center;
+		}
+
+		.calendar-grid {
+			display: grid;
+			grid-template-columns: repeat(7, 1fr);
+			gap: var(--sp-xs);
+			max-width: 560px;
+			margin: 0 auto;
+		}
+
+		.cal-weekday {
+			text-align: center;
+			font-size: 0.75rem;
+			color: var(--color-text-light);
+			padding: var(--sp-sm) 0;
+			font-weight: 600;
+		}
+
+		.cal-day {
+			aspect-ratio: 1;
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+			justify-content: center;
+			border-radius: var(--radius-sm);
+			font-size: 0.85rem;
+			cursor: pointer;
+			transition: all 0.2s var(--ease-out);
+			background: transparent;
+			border: 2px solid transparent;
+			position: relative;
+			gap: 2px;
+		}
+
+		.cal-day:hover {
+			background: var(--bg-secondary);
+		}
+
+		.cal-day.today {
+			border-color: var(--color-accent);
+			font-weight: 700;
+		}
+
+		.cal-day.has-record {
+			background: var(--bg-secondary);
+		}
+
+		.cal-day.empty {
+			cursor: default;
+		}
+
+		.cal-day.empty:hover {
+			background: transparent;
+		}
+
+		.cal-day .cal-emoji {
+			font-size: 1.1rem;
+			line-height: 1;
+		}
+
+		.cal-day .cal-num {
+			font-size: 0.75rem;
+			line-height: 1;
+		}
+
+		.cal-day .cal-dot {
+			width: 5px;
+			height: 5px;
+			border-radius: 50%;
+			background: var(--color-accent);
+			position: absolute;
+			bottom: 4px;
+		}
+
+		/* ── Modal ── */
+		.modal-overlay {
+			position: fixed;
+			inset: 0;
+			z-index: 200;
+			background: rgba(93, 78, 55, 0.3);
+			backdrop-filter: blur(4px);
+			-webkit-backdrop-filter: blur(4px);
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			padding: var(--sp-lg);
+			opacity: 0;
+			pointer-events: none;
+			transition: opacity 0.3s var(--ease-out);
+		}
+
+		.modal-overlay.open {
+			opacity: 1;
+			pointer-events: auto;
+		}
+
+		.modal-card {
+			background: var(--bg-card);
+			border-radius: var(--radius-lg);
+			box-shadow: 0 16px 48px rgba(93, 78, 55, 0.18);
+			width: 100%;
+			max-width: 480px;
+			max-height: 90vh;
+			overflow-y: auto;
+			overflow-x: hidden;
+			padding: var(--sp-xl);
+			transform: translateY(20px) scale(0.97);
+			transition: transform 0.35s var(--ease-out);
+		}
+
+		.modal-overlay.open .modal-card {
+			transform: translateY(0) scale(1);
+		}
+
+		.modal-header {
+			display: flex;
+			align-items: center;
+			justify-content: space-between;
+			margin-bottom: var(--sp-lg);
+		}
+
+		.modal-title {
+			font-size: 1.15rem;
+			font-weight: 700;
+		}
+
+		.modal-close {
+			border: none;
+			background: var(--bg-secondary);
+			width: 32px;
+			height: 32px;
+			border-radius: 50%;
+			font-size: 1.1rem;
+			cursor: pointer;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			color: var(--color-text-light);
+			transition: all 0.2s;
+		}
+
+		.modal-close:hover {
+			background: var(--color-rose);
+			color: var(--color-text);
+		}
+
+		.modal-section {
+			margin-bottom: var(--sp-lg);
+			overflow: visible;
+		}
+
+		.modal-label {
+			font-size: 0.8rem;
+			font-weight: 600;
+			color: var(--color-text-light);
+			margin-bottom: var(--sp-sm);
+			text-transform: uppercase;
+			letter-spacing: 0.05em;
+		}
+
+		/* ── Compact Wheel Picker ── */
+		.picker-row {
+			display: flex;
+			gap: 10px;
+			align-items: center;
+			flex-wrap: wrap;
+			overflow: visible;
+		}
+
+		.picker-col {
+			position: relative;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			width: auto;
+			height: auto;
+			transition: width 0.35s var(--ease-out), height 0.35s var(--ease-out), margin 0.35s var(--ease-out);
+		}
+
+		.picker-col.open {
+			width: 210px;
+			height: 210px;
+			margin: 10px 0;
+		}
+
+		.wheel-trigger {
+			display: inline-flex;
+			align-items: center;
+			gap: 4px;
+			padding: 5px 12px;
+			border-radius: 16px;
+			border: 1.5px solid var(--color-border);
+			background: var(--bg-secondary);
+			color: var(--color-text-light);
+			font-family: inherit;
+			font-size: 0.78rem;
+			cursor: pointer;
+			transition: all 0.2s var(--ease-out);
+			user-select: none;
+			white-space: nowrap;
+			position: relative;
+			z-index: 2;
+		}
+
+		.wheel-trigger:hover {
+			background: var(--color-peach);
+			border-color: var(--color-peach);
+			color: var(--color-text);
+		}
+
+		.wheel-trigger:active {
+			transform: scale(0.95);
+		}
+
+		.picker-col.open .wheel-trigger {
+			background: var(--color-accent);
+			border-color: var(--color-accent);
+			color: #fff;
+			padding: 6px 10px;
+			border-radius: 50%;
+			width: 40px;
+			height: 40px;
+			justify-content: center;
+		}
+
+		.picker-col.open .wheel-trigger span:last-child {
+			display: none;
+		}
+
+		.wheel-trigger__emoji {
+			font-size: 1rem;
+			line-height: 1;
+		}
+
+		.picker-col.open .wheel-trigger__emoji {
+			font-size: 1.1rem;
+		}
+
+		.wheel-item {
+			position: absolute;
+			left: 50%;
+			top: 50%;
+			margin-left: -22px;
+			margin-top: -24px;
+			width: 44px;
+			height: 48px;
+			border-radius: 14px;
+			background: var(--bg-card);
+			border: 1.5px solid var(--color-border);
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+			justify-content: center;
+			gap: 1px;
+			cursor: pointer;
+			box-shadow: 0 2px 6px rgba(93, 78, 55, 0.08);
+			opacity: 0;
+			transform: scale(0);
+			transition: all 0.3s var(--ease-out);
+			transition-delay: var(--d, 0ms);
+			z-index: 1;
+		}
+
+		.wheel-item__emoji {
+			font-size: 1.05rem;
+			line-height: 1;
+		}
+
+		.wheel-item__label {
+			font-size: 0.55rem;
+			color: var(--color-text-light);
+			line-height: 1;
+			white-space: nowrap;
+		}
+
+		.picker-col.open .wheel-item {
+			opacity: 1;
+			transform: scale(1) translate(var(--tx), var(--ty));
+		}
+
+		.wheel-item:hover {
+			background: var(--color-peach);
+			border-color: var(--color-peach);
+			transform: scale(1.2) translate(var(--tx), var(--ty)) !important;
+			z-index: 3;
+		}
+
+		.wheel-item:active {
+			transform: scale(0.9) translate(var(--tx), var(--ty)) !important;
+		}
+
+		.wheel-item.selected {
+			border-color: var(--color-accent);
+			background: var(--color-peach);
+		}
+
+		.wheel-item.selected .wheel-item__label {
+			color: var(--color-text);
+			font-weight: 600;
+		}
+
+		.wheel-backdrop {
+			position: fixed;
+			inset: 0;
+			z-index: 0;
+		}
+
+		.note-input-row {
+			display: flex;
+			gap: var(--sp-sm);
+		}
+
+		.note-input {
+			flex: 1;
+			border: 1.5px solid var(--color-border);
+			border-radius: var(--radius-sm);
+			padding: var(--sp-sm) var(--sp-md);
+			font-family: inherit;
+			font-size: 0.9rem;
+			background: var(--bg-primary);
+			color: var(--color-text);
+			outline: none;
+			transition: border-color 0.2s;
+		}
+
+		.note-input:focus {
+			border-color: var(--color-accent);
+		}
+
+		.note-input::placeholder {
+			color: var(--color-text-light);
+			opacity: 0.6;
+		}
+
+		.note-add-btn {
+			border: none;
+			background: var(--color-accent);
+			color: #fff;
+			font-family: inherit;
+			font-size: 0.85rem;
+			padding: var(--sp-sm) var(--sp-md);
+			border-radius: var(--radius-sm);
+			cursor: pointer;
+			white-space: nowrap;
+			transition: background 0.2s;
+		}
+
+		.note-add-btn:hover {
+			background: var(--color-accent-hover);
+		}
+
+		.modal-notes-list {
+			list-style: none;
+			display: flex;
+			flex-direction: column;
+			gap: var(--sp-sm);
+			margin-top: var(--sp-md);
+		}
+
+		.modal-note-item {
+			display: flex;
+			align-items: flex-start;
+			gap: var(--sp-sm);
+			background: var(--bg-secondary);
+			border-radius: var(--radius-sm);
+			padding: var(--sp-sm) var(--sp-md);
+		}
+
+		.modal-note-text {
+			flex: 1;
+			font-size: 0.9rem;
+			word-break: break-word;
+		}
+
+		.modal-note-time {
+			font-size: 0.7rem;
+			color: var(--color-text-light);
+		}
+
+		.note-delete-btn {
+			border: none;
+			background: transparent;
+			color: var(--color-text-light);
+			cursor: pointer;
+			font-size: 0.9rem;
+			padding: 2px 4px;
+			border-radius: 4px;
+			transition: all 0.2s;
+			flex-shrink: 0;
+		}
+
+		.note-delete-btn:hover {
+			color: #e74c3c;
+			background: rgba(231, 76, 60, 0.1);
+		}
+
+		.note-edit-btn {
+			border: none;
+			background: transparent;
+			color: var(--color-text-light);
+			cursor: pointer;
+			font-size: 0.85rem;
+			padding: 2px 4px;
+			border-radius: 4px;
+			transition: all 0.2s;
+			flex-shrink: 0;
+		}
+
+		.note-edit-btn:hover {
+			color: var(--color-accent);
+			background: rgba(255, 154, 118, 0.1);
+		}
+
+		/* ── Delete Day ── */
+		.delete-day-section {
+			margin-top: var(--sp-lg);
+			padding-top: var(--sp-lg);
+			border-top: 1px solid var(--color-border);
+			text-align: center;
+		}
+
+		.delete-day-btn {
+			border: 1.5px solid var(--color-rose);
+			background: transparent;
+			color: var(--color-text-light);
+			font-family: inherit;
+			font-size: 0.8rem;
+			padding: 6px 16px;
+			border-radius: var(--radius-sm);
+			cursor: pointer;
+			transition: all 0.2s;
+		}
+
+		.delete-day-btn:hover {
+			background: var(--color-rose);
+			color: var(--color-text);
+		}
+
+		.delete-confirm-row {
+			display: flex;
+			gap: var(--sp-sm);
+			justify-content: center;
+			margin-top: var(--sp-sm);
+		}
+
+		.delete-confirm-row button {
+			border: none;
+			font-family: inherit;
+			font-size: 0.8rem;
+			padding: 6px 14px;
+			border-radius: var(--radius-sm);
+			cursor: pointer;
+			transition: all 0.2s;
+		}
+
+		.btn-confirm-delete {
+			background: #e74c3c;
+			color: #fff;
+		}
+
+		.btn-confirm-delete:hover {
+			background: #c0392b;
+		}
+
+		.btn-cancel-delete {
+			background: var(--bg-secondary);
+			color: var(--color-text-light);
+		}
+
+		.btn-cancel-delete:hover {
+			background: var(--color-border);
+		}
+
+		/* ── FAB ── */
+		.fab {
+			position: fixed;
+			bottom: var(--sp-xl);
+			right: var(--sp-xl);
+			width: 56px;
+			height: 56px;
+			border-radius: 50%;
+			border: none;
+			background: var(--color-accent);
+			color: #fff;
+			font-size: 1.6rem;
+			cursor: pointer;
+			box-shadow: 0 4px 16px rgba(255, 154, 118, 0.4);
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			transition: all 0.3s var(--ease-out);
+			z-index: 50;
+		}
+
+		.fab:hover {
+			transform: scale(1.1);
+			box-shadow: 0 6px 24px rgba(255, 154, 118, 0.5);
+		}
+
+		/* ── Empty state ── */
+		.empty-state {
+			text-align: center;
+			padding: var(--sp-2xl) var(--sp-lg);
+			color: var(--color-text-light);
+		}
+
+		.empty-state .empty-icon {
+			font-size: 3rem;
+			margin-bottom: var(--sp-md);
+		}
+
+		.empty-state p {
+			font-size: 0.95rem;
+			line-height: 1.8;
+		}
+
+		/* ── Import confirm ── */
+		.import-confirm {
+			display: flex;
+			gap: var(--sp-sm);
+			margin-top: var(--sp-md);
+			justify-content: center;
+		}
+
+		.import-confirm button {
+			border: none;
+			font-family: inherit;
+			font-size: 0.85rem;
+			padding: 8px 20px;
+			border-radius: var(--radius-sm);
+			cursor: pointer;
+			transition: all 0.2s;
+		}
+
+		.btn-merge {
+			background: var(--color-mint);
+			color: var(--color-text);
+		}
+
+		.btn-overwrite {
+			background: var(--color-rose);
+			color: var(--color-text);
+		}
+
+		.btn-cancel {
+			background: var(--bg-secondary);
+			color: var(--color-text-light);
+		}
+
+		/* ── Hidden file input ── */
+		#import-file {
+			display: none;
+		}
+
+		/* ── View toggle ── */
+		.view-section {
+			display: none;
+		}
+
+		.view-section.active {
+			display: block;
+		}
+
+		/* ── Diet Panel ── */
+		.diet-panel {
+			overflow: hidden;
+			max-height: 0;
+			transition: max-height 0.3s var(--ease-out), opacity 0.25s var(--ease-out);
+			opacity: 0;
+		}
+
+		.diet-panel.open {
+			max-height: 80px;
+			opacity: 1;
+		}
+
+		.diet-bar {
+			display: flex;
+			gap: 3px;
+			margin-top: var(--sp-sm);
+			height: 52px;
+			align-items: stretch;
+		}
+
+		.diet-option {
+			flex: 1;
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+			justify-content: center;
+			gap: 3px;
+			border: none;
+			cursor: pointer;
+			font-family: inherit;
+			border-radius: 6px;
+			transition: all 0.2s var(--ease-out);
+			position: relative;
+		}
+
+		.diet-option:first-child {
+			border-radius: var(--radius-sm) 6px 6px var(--radius-sm);
+		}
+
+		.diet-option:last-child {
+			border-radius: 6px var(--radius-sm) var(--radius-sm) 6px;
+		}
+
+		.diet-option[data-diet="great"] {
+			background: #b7ebca;
+		}
+
+		.diet-option[data-diet="ok"] {
+			background: #fde68a;
+		}
+
+		.diet-option[data-diet="indulge"] {
+			background: #fdc9a0;
+		}
+
+		.diet-option[data-diet="doomed"] {
+			background: #fcb8b8;
+		}
+
+		.diet-option:hover {
+			filter: brightness(0.93);
+			transform: translateY(-2px);
+		}
+
+		.diet-option.selected {
+			transform: translateY(-4px);
+			box-shadow: 0 4px 12px rgba(93, 78, 55, 0.18);
+			filter: brightness(0.88);
+		}
+
+		.diet-option__emoji {
+			font-size: 1.1rem;
+			line-height: 1;
+		}
+
+		.diet-option__label {
+			font-size: 0.62rem;
+			color: var(--color-text);
+			font-weight: 500;
+		}
+
+		/* ── Wishing Pool ── */
+		.wish-toolbar {
+			display: flex;
+			align-items: center;
+			justify-content: space-between;
+			margin-bottom: var(--sp-lg);
+			flex-wrap: wrap;
+			gap: var(--sp-sm);
+		}
+
+		.wish-filter-tabs {
+			display: flex;
+			gap: 2px;
+			background: var(--bg-secondary);
+			border-radius: var(--radius-lg);
+			padding: 3px;
+		}
+
+		.wish-filter-btn {
+			border: none;
+			background: transparent;
+			color: var(--color-text-light);
+			font-family: inherit;
+			font-size: 0.82rem;
+			padding: 4px 14px;
+			border-radius: 20px;
+			cursor: pointer;
+			transition: all 0.2s var(--ease-out);
+		}
+
+		.wish-filter-btn.active {
+			background: var(--bg-card);
+			color: var(--color-text);
+			box-shadow: 0 1px 4px rgba(93, 78, 55, 0.1);
+		}
+
+		.wish-add-form {
+			background: var(--bg-card);
+			border-radius: var(--radius-md);
+			box-shadow: var(--shadow-card);
+			padding: var(--sp-lg);
+			margin-bottom: var(--sp-lg);
+			border: 1px solid var(--color-border);
+		}
+
+		.wish-form-title {
+			font-size: 0.8rem;
+			font-weight: 600;
+			color: var(--color-text-light);
+			text-transform: uppercase;
+			letter-spacing: 0.05em;
+			margin-bottom: var(--sp-sm);
+		}
+
+		.wish-form-row {
+			display: flex;
+			gap: var(--sp-sm);
+			flex-wrap: wrap;
+		}
+
+		.wish-text-input {
+			flex: 2;
+			min-width: 160px;
+			border: 1.5px solid var(--color-border);
+			border-radius: var(--radius-sm);
+			padding: var(--sp-sm) var(--sp-md);
+			font-family: inherit;
+			font-size: 0.9rem;
+			background: var(--bg-primary);
+			color: var(--color-text);
+			outline: none;
+			transition: border-color 0.2s;
+		}
+
+		.wish-text-input:focus {
+			border-color: var(--color-accent);
+		}
+
+		.wish-text-input::placeholder {
+			color: var(--color-text-light);
+			opacity: 0.6;
+		}
+
+		.wish-assignee-select {
+			flex: 1;
+			min-width: 100px;
+			border: 1.5px solid var(--color-border);
+			border-radius: var(--radius-sm);
+			padding: var(--sp-sm) var(--sp-md);
+			font-family: inherit;
+			font-size: 0.9rem;
+			background: var(--bg-primary);
+			color: var(--color-text);
+			outline: none;
+			cursor: pointer;
+			transition: border-color 0.2s;
+			appearance: none;
+			-webkit-appearance: none;
+			background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' fill='none'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%238B7D6B' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+			background-repeat: no-repeat;
+			background-position: right 10px center;
+			padding-right: 28px;
+		}
+
+		.wish-assignee-select:focus {
+			border-color: var(--color-accent);
+		}
+
+		.wish-submit-btn {
+			border: none;
+			background: var(--color-accent);
+			color: #fff;
+			font-family: inherit;
+			font-size: 0.85rem;
+			padding: var(--sp-sm) var(--sp-lg);
+			border-radius: var(--radius-sm);
+			cursor: pointer;
+			white-space: nowrap;
+			transition: background 0.2s;
+			flex-shrink: 0;
+		}
+
+		.wish-submit-btn:hover {
+			background: var(--color-accent-hover);
+		}
+
+		.wish-list {
+			display: flex;
+			flex-direction: column;
+			gap: var(--sp-md);
+		}
+
+		.wish-card {
+			background: var(--bg-card);
+			border-radius: var(--radius-md);
+			box-shadow: var(--shadow-card);
+			padding: var(--sp-md) var(--sp-lg);
+			border: 1px solid transparent;
+			transition: all 0.25s var(--ease-out);
+			display: flex;
+			align-items: flex-start;
+			gap: var(--sp-md);
+		}
+
+		.wish-card:hover {
+			box-shadow: var(--shadow-hover);
+			border-color: var(--color-border);
+		}
+
+		.wish-card.fulfilled {
+			opacity: 0.6;
+			background: var(--bg-secondary);
+		}
+
+		.wish-card.fulfilled .wish-text {
+			text-decoration: line-through;
+			color: var(--color-text-light);
+		}
+
+		.wish-check {
+			width: 22px;
+			height: 22px;
+			border-radius: 50%;
+			border: 2px solid var(--color-border);
+			background: transparent;
+			cursor: pointer;
+			flex-shrink: 0;
+			margin-top: 2px;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			font-size: 0.75rem;
+			transition: all 0.2s var(--ease-out);
+			color: transparent;
+		}
+
+		.wish-check:hover {
+			border-color: var(--color-mint);
+			background: rgba(181, 234, 215, 0.2);
+			color: #4caf7d;
+		}
+
+		.wish-card.fulfilled .wish-check {
+			border-color: #4caf7d;
+			background: rgba(181, 234, 215, 0.4);
+			color: #4caf7d;
+		}
+
+		.wish-body {
+			flex: 1;
+			min-width: 0;
+		}
+
+		.wish-text {
+			font-size: 0.95rem;
+			line-height: 1.6;
+			color: var(--color-text);
+			word-break: break-word;
+		}
+
+		.wish-meta {
+			display: flex;
+			align-items: center;
+			gap: var(--sp-sm);
+			margin-top: 4px;
+			flex-wrap: wrap;
+		}
+
+		.wish-creator {
+			font-size: 0.72rem;
+			color: var(--color-text-light);
+		}
+
+		.wish-assignee-tag {
+			font-size: 0.72rem;
+			background: var(--color-lavender);
+			color: var(--color-text);
+			padding: 1px 8px;
+			border-radius: 10px;
+			font-weight: 500;
+		}
+
+		.wish-date {
+			font-size: 0.7rem;
+			color: var(--color-text-light);
+		}
+
+		.wish-fulfilled-badge {
+			font-size: 0.68rem;
+			background: rgba(181, 234, 215, 0.5);
+			color: #3a9962;
+			padding: 1px 7px;
+			border-radius: 10px;
+			font-weight: 600;
+		}
+
+		.wish-actions {
+			display: flex;
+			gap: 2px;
+			flex-shrink: 0;
+		}
+
+		.wish-del-btn {
+			border: none;
+			background: transparent;
+			color: var(--color-text-light);
+			cursor: pointer;
+			font-size: 0.85rem;
+			padding: 3px 5px;
+			border-radius: 4px;
+			transition: all 0.2s;
+		}
+
+		.wish-del-btn:hover {
+			color: #e74c3c;
+			background: rgba(231, 76, 60, 0.1);
+		}
+
+		.wish-pool-empty {
+			text-align: center;
+			padding: var(--sp-2xl) var(--sp-lg);
+			color: var(--color-text-light);
+		}
+
+		.wish-pool-empty .empty-icon {
+			font-size: 3rem;
+			margin-bottom: var(--sp-md);
+		}
+
+		.wish-pool-empty p {
+			font-size: 0.95rem;
+			line-height: 1.8;
+		}
+
+		/* ── Scrollbar ── */
+		::-webkit-scrollbar {
+			width: 6px;
+		}
+
+		::-webkit-scrollbar-track {
+			background: transparent;
+		}
+
+		::-webkit-scrollbar-thumb {
+			background: var(--color-border);
+			border-radius: 3px;
+		}
+
+		/* ── View mode toggle (我的 / 所有) ── */
+		.view-mode-toggle {
+			display: flex;
+			gap: 2px;
+			background: var(--bg-secondary);
+			border-radius: var(--radius-lg);
+			padding: 3px;
+		}
+
+		.view-mode-btn {
+			border: none;
+			background: transparent;
+			color: var(--color-text-light);
+			font-family: inherit;
+			font-size: 0.82rem;
+			padding: 4px 12px;
+			border-radius: 20px;
+			cursor: pointer;
+			transition: all 0.2s var(--ease-out);
+		}
+
+		.view-mode-btn.active {
+			background: var(--bg-card);
+			color: var(--color-text);
+			box-shadow: 0 1px 4px rgba(93, 78, 55, 0.1);
+		}
+
+		/* ── User badge ── */
+		.user-badge {
+			width: 32px;
+			height: 32px;
+			border-radius: 50%;
+			background: var(--color-lavender);
+			border: none;
+			font-family: inherit;
+			font-weight: 700;
+			font-size: 0.85rem;
+			color: var(--color-text);
+			cursor: pointer;
+			transition: all 0.2s;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			flex-shrink: 0;
+		}
+
+		.user-badge:hover {
+			background: var(--color-peach);
+			transform: scale(1.05);
+		}
+
+		/* ── Sync status ── */
+		.sync-status {
+			font-size: 0.85rem;
+			width: 20px;
+			text-align: center;
+		}
+
+		.sync-status.syncing {
+			color: var(--color-text-light);
+			display: inline-block;
+			animation: spin 1.2s linear infinite;
+		}
+
+		.sync-status.synced {
+			color: #67b07c;
+		}
+
+		.sync-status.error {
+			color: #e07070;
+		}
+
+		@keyframes spin {
+			to {
+				transform: rotate(360deg);
+			}
+		}
+
+		.sync-btn {
+			font-size: 0.8rem;
+			padding: 4px 10px;
+		}
+
+		.sync-btn:disabled {
+			opacity: 0.5;
+			cursor: not-allowed;
+		}
+
+		.builtin-hint {
+			background: var(--color-sky);
+			border-left: 3px solid #7ab8e8;
+		}
+
+		/* ── All-mode user entries ── */
+		.user-entry {
+			padding: var(--sp-sm) 0;
+			border-top: 1px solid var(--color-border);
+		}
+
+		.user-entry:first-child {
+			border-top: none;
+		}
+
+		.user-entry-header {
+			display: flex;
+			align-items: center;
+			gap: var(--sp-xs);
+			flex-wrap: wrap;
+			margin-bottom: 4px;
+		}
+
+		.user-tag {
+			background: var(--color-lavender);
+			color: var(--color-text);
+			font-size: 0.7rem;
+			padding: 2px 8px;
+			border-radius: 10px;
+			font-weight: 600;
+		}
+
+		.card-feeling-sm {
+			font-size: 1.2rem;
+			line-height: 1;
+		}
+
+		/* ── User select overlay ── */
+		.user-select-overlay {
+			position: fixed;
+			inset: 0;
+			background: rgba(255, 248, 240, 0.96);
+			backdrop-filter: blur(8px);
+			-webkit-backdrop-filter: blur(8px);
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			z-index: 300;
+			opacity: 0;
+			pointer-events: none;
+			transition: opacity 0.3s var(--ease-out);
+		}
+
+		.user-select-overlay.open {
+			opacity: 1;
+			pointer-events: all;
+		}
+
+		.user-select-card {
+			background: var(--bg-card);
+			border-radius: var(--radius-lg);
+			padding: var(--sp-xl) var(--sp-xl) var(--sp-lg);
+			box-shadow: var(--shadow-hover);
+			width: min(360px, 90vw);
+			text-align: center;
+		}
+
+		.user-select-title {
+			font-size: 1.5rem;
+			font-weight: 700;
+			color: var(--color-text);
+			margin-bottom: 4px;
+		}
+
+		.user-select-subtitle {
+			font-size: 0.85rem;
+			color: var(--color-text-light);
+			margin-bottom: var(--sp-lg);
+		}
+
+		.user-select-list {
+			display: flex;
+			flex-wrap: wrap;
+			gap: var(--sp-sm);
+			justify-content: center;
+			margin-bottom: var(--sp-lg);
+			min-height: 36px;
+		}
+
+		.user-select-btn {
+			background: var(--bg-secondary);
+			border: 2px solid transparent;
+			border-radius: var(--radius-md);
+			padding: var(--sp-sm) var(--sp-lg);
+			font-family: inherit;
+			font-size: 1rem;
+			color: var(--color-text);
+			cursor: pointer;
+			transition: all 0.2s var(--ease-out);
+		}
+
+		.user-select-btn:hover {
+			border-color: var(--color-accent);
+			background: var(--color-peach);
+		}
+
+		.user-select-divider {
+			font-size: 0.75rem;
+			color: var(--color-text-light);
+			margin-bottom: var(--sp-sm);
+		}
+
+		.user-select-add-row {
+			display: flex;
+			gap: var(--sp-sm);
+		}
+
+		.user-select-input {
+			flex: 1;
+			border: 1.5px solid var(--color-border);
+			border-radius: var(--radius-sm);
+			padding: 8px 12px;
+			font-family: inherit;
+			font-size: 0.9rem;
+			background: var(--bg-secondary);
+			color: var(--color-text);
+			outline: none;
+			transition: border-color 0.2s;
+		}
+
+		.user-select-input:focus {
+			border-color: var(--color-accent);
+		}
+
+		.user-select-add-btn {
+			background: var(--color-accent);
+			color: #fff;
+			border: none;
+			border-radius: var(--radius-sm);
+			padding: 8px 16px;
+			font-family: inherit;
+			font-size: 0.9rem;
+			cursor: pointer;
+			white-space: nowrap;
+			transition: background 0.2s;
+		}
+
+		.user-select-add-btn:hover {
+			background: var(--color-accent-hover);
+		}
+
+		/* ── Settings modal ── */
+		.settings-card {
+			max-width: 420px;
+		}
+
+		.settings-tabs {
+			display: flex;
+			border-bottom: 1px solid var(--color-border);
+			margin: 0 calc(-1 * var(--sp-xl)) var(--sp-md);
+			padding: 0 var(--sp-xl);
+		}
+
+		.settings-tab {
+			border: none;
+			background: transparent;
+			font-family: inherit;
+			font-size: 0.9rem;
+			padding: var(--sp-sm) var(--sp-md);
+			color: var(--color-text-light);
+			cursor: pointer;
+			border-bottom: 2px solid transparent;
+			margin-bottom: -1px;
+			transition: all 0.2s;
+		}
+
+		.settings-tab.active {
+			color: var(--color-accent);
+			border-bottom-color: var(--color-accent);
+		}
+
+		.settings-panel {
+			padding-top: var(--sp-sm);
+		}
+
+		.settings-panel.hidden {
+			display: none;
+		}
+
+		.settings-section-label {
+			font-size: 0.75rem;
+			font-weight: 600;
+			color: var(--color-text-light);
+			text-transform: uppercase;
+			letter-spacing: 0.06em;
+			margin-bottom: var(--sp-sm);
+		}
+
+		.settings-user-row {
+			display: flex;
+			align-items: center;
+			gap: var(--sp-sm);
+			padding: 6px 0;
+			border-bottom: 1px solid var(--color-border);
+		}
+
+		.settings-user-name {
+			flex: 1;
+			font-size: 0.95rem;
+		}
+
+		.settings-user-name.current {
+			font-weight: 700;
+			color: var(--color-accent);
+		}
+
+		.settings-add-row {
+			display: flex;
+			gap: var(--sp-sm);
+			margin-top: var(--sp-md);
+		}
+
+		.settings-field {
+			margin-bottom: var(--sp-md);
+		}
+
+		.settings-field label {
+			display: block;
+			font-size: 0.78rem;
+			font-weight: 600;
+			color: var(--color-text-light);
+			margin-bottom: 4px;
+			text-transform: uppercase;
+			letter-spacing: 0.04em;
+		}
+
+		.settings-input {
+			width: 100%;
+			border: 1.5px solid var(--color-border);
+			border-radius: var(--radius-sm);
+			padding: 8px 12px;
+			font-family: inherit;
+			font-size: 0.9rem;
+			background: var(--bg-secondary);
+			color: var(--color-text);
+			outline: none;
+			transition: border-color 0.2s;
+		}
+
+		.settings-input:focus {
+			border-color: var(--color-accent);
+		}
+
+		.settings-input[readonly] {
+			background: var(--color-border);
+			color: var(--color-text-light);
+			cursor: default;
+			border-style: dashed;
+		}
+
+		.settings-input[readonly]:focus {
+			border-color: var(--color-border);
+		}
+
+		.settings-builtin-badge {
+			display: inline-flex;
+			align-items: center;
+			gap: 6px;
+			font-size: 0.78rem;
+			color: #67b07c;
+			background: #e8f7ed;
+			border: 1px solid #b5e2c4;
+			border-radius: 20px;
+			padding: 3px 10px;
+			margin-bottom: var(--sp-md);
+		}
+
+		.settings-actions {
+			display: flex;
+			gap: var(--sp-sm);
+			flex-wrap: wrap;
+			margin-top: var(--sp-md);
+		}
+
+		.settings-btn-sm {
+			border: 1.5px solid var(--color-border);
+			background: var(--bg-secondary);
+			color: var(--color-text-light);
+			border-radius: var(--radius-sm);
+			padding: 6px 12px;
+			font-family: inherit;
+			font-size: 0.8rem;
+			cursor: pointer;
+			transition: all 0.2s;
+			white-space: nowrap;
+		}
+
+		.settings-btn-sm:hover {
+			border-color: var(--color-accent);
+			color: var(--color-text);
+		}
+
+		.settings-text-link {
+			background: none;
+			border: none;
+			color: var(--color-text-light);
+			font-family: inherit;
+			font-size: 0.8rem;
+			cursor: pointer;
+			text-decoration: underline;
+			padding: 0;
+		}
+
+		.settings-text-link:hover {
+			color: var(--color-text);
+		}
+
+		.settings-btn-primary {
+			background: var(--color-accent);
+			color: #fff;
+			border: none;
+			border-radius: var(--radius-sm);
+			padding: 6px 18px;
+			font-family: inherit;
+			font-size: 0.85rem;
+			cursor: pointer;
+			transition: background 0.2s;
+			white-space: nowrap;
+		}
+
+		.settings-btn-primary:hover {
+			background: var(--color-accent-hover);
+		}
+
+		.settings-user-switch,
+		.settings-user-remove {
+			border: 1px solid var(--color-border);
+			background: transparent;
+			border-radius: var(--radius-sm);
+			padding: 3px 8px;
+			font-size: 0.75rem;
+			font-family: inherit;
+			cursor: pointer;
+			color: var(--color-text-light);
+			transition: all 0.15s;
+		}
+
+		.settings-user-switch:hover {
+			color: var(--color-accent);
+			border-color: var(--color-accent);
+		}
+
+		.settings-user-remove:hover {
+			color: #e07070;
+			border-color: #e07070;
+		}
+
+		.settings-status {
+			font-size: 0.82rem;
+			color: var(--color-text-light);
+			min-height: 22px;
+			margin-top: var(--sp-sm);
+		}
+
+		.settings-hint {
+			font-size: 0.78rem;
+			color: var(--color-text-light);
+			line-height: 1.6;
+			margin-bottom: var(--sp-md);
+			padding: var(--sp-sm) var(--sp-md);
+			background: var(--bg-secondary);
+			border-radius: var(--radius-sm);
+		}
+
+		.settings-divider {
+			border: none;
+			border-top: 1px solid var(--color-border);
+			margin: var(--sp-lg) 0 var(--sp-md);
+		}
+
+		.settings-textarea {
+			width: 100%;
+			border: 1.5px solid var(--color-border);
+			border-radius: var(--radius-sm);
+			padding: 8px 12px;
+			font-family: var(--font-stack);
+			font-size: 0.75rem;
+			background: var(--bg-secondary);
+			color: var(--color-text);
+			resize: vertical;
+			outline: none;
+		}
+
+		.settings-textarea:focus {
+			border-color: var(--color-accent);
+		}
+
+		/* ── Unlock overlay ── */
+		.unlock-overlay {
+			position: fixed;
+			inset: 0;
+			background: rgba(255, 248, 240, 0.97);
+			backdrop-filter: blur(12px);
+			-webkit-backdrop-filter: blur(12px);
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			z-index: 400;
+			opacity: 0;
+			pointer-events: none;
+			transition: opacity 0.3s var(--ease-out);
+		}
+
+		.unlock-overlay.open {
+			opacity: 1;
+			pointer-events: all;
+		}
+
+		.unlock-card {
+			background: var(--bg-card);
+			border-radius: var(--radius-lg);
+			padding: var(--sp-xl);
+			box-shadow: var(--shadow-hover);
+			width: min(320px, 90vw);
+			text-align: center;
+		}
+
+		.unlock-icon {
+			font-size: 2.4rem;
+			margin-bottom: var(--sp-sm);
+		}
+
+		.unlock-title {
+			font-size: 1.3rem;
+			font-weight: 700;
+			margin-bottom: 4px;
+		}
+
+		.unlock-subtitle {
+			font-size: 0.82rem;
+			color: var(--color-text-light);
+			margin-bottom: var(--sp-lg);
+		}
+
+		.unlock-input {
+			width: 100%;
+			border: 1.5px solid var(--color-border);
+			border-radius: var(--radius-sm);
+			padding: 10px 14px;
+			font-family: inherit;
+			font-size: 1rem;
+			background: var(--bg-secondary);
+			color: var(--color-text);
+			outline: none;
+			text-align: center;
+			letter-spacing: 0.1em;
+			transition: border-color 0.2s;
+			margin-bottom: var(--sp-sm);
+		}
+
+		.unlock-input:focus {
+			border-color: var(--color-accent);
+		}
+
+		.unlock-btn {
+			width: 100%;
+			background: var(--color-accent);
+			color: #fff;
+			border: none;
+			border-radius: var(--radius-sm);
+			padding: 10px;
+			font-family: inherit;
+			font-size: 0.95rem;
+			font-weight: 600;
+			cursor: pointer;
+			transition: background 0.2s;
+			margin-bottom: var(--sp-sm);
+		}
+
+		.unlock-btn:hover {
+			background: var(--color-accent-hover);
+		}
+
+		.unlock-error {
+			font-size: 0.8rem;
+			color: #e07070;
+			min-height: 18px;
+			margin-bottom: var(--sp-xs);
+		}
+
+		.unlock-skip {
+			border: none;
+			background: transparent;
+			color: var(--color-text-light);
+			font-family: inherit;
+			font-size: 0.8rem;
+			cursor: pointer;
+			text-decoration: underline;
+			padding: 0;
+		}
+
+		.unlock-skip:hover {
+			color: var(--color-text);
+		}
+	</style>
 </head>
+
 <body>
 
-<header class="app-header">
-  <div class="header-inner">
-    <h1 class="app-title">Happy Every Day</h1>
-    <nav class="header-nav">
-      <button class="nav-btn active" data-view="waterfall">瀑布流</button>
-      <button class="nav-btn" data-view="calendar">日历</button>
-      <button class="nav-btn" data-view="wishes">许愿池</button>
-    </nav>
-    <div class="header-actions">
-      <div class="view-mode-toggle" id="view-mode-toggle">
-        <button class="view-mode-btn active" data-mode="mine">我的</button>
-        <button class="view-mode-btn" data-mode="all">所有</button>
-      </div>
-      <span class="sync-status" id="sync-status"></span>
-      <button class="action-btn sync-btn" id="btn-sync" title="同步到 GitHub">⇅ 同步</button>
-      <button class="user-badge" id="user-badge" title="切换用户">?</button>
-      <button class="action-btn" id="btn-export">导出</button>
-      <button class="action-btn" id="btn-import">导入</button>
-      <button class="action-btn" id="btn-settings">⚙</button>
-      <input type="file" id="import-file" accept=".json">
-    </div>
-  </div>
-</header>
+	<header class="app-header">
+		<div class="header-inner">
+			<h1 class="app-title">Happy Every Day</h1>
+			<nav class="header-nav">
+				<button class="nav-btn active" data-view="waterfall">瀑布流</button>
+				<button class="nav-btn" data-view="calendar">日历</button>
+				<button class="nav-btn" data-view="wishes">许愿池</button>
+			</nav>
+			<div class="header-actions">
+				<div class="view-mode-toggle" id="view-mode-toggle">
+					<button class="view-mode-btn active" data-mode="mine">我的</button>
+					<button class="view-mode-btn" data-mode="all">所有</button>
+				</div>
+				<span class="sync-status" id="sync-status"></span>
+				<button class="action-btn sync-btn" id="btn-sync" title="同步到 GitHub">⇅ 同步</button>
+				<button class="user-badge" id="user-badge" title="切换用户">?</button>
+				<button class="action-btn" id="btn-export">导出</button>
+				<button class="action-btn" id="btn-import">导入</button>
+				<button class="action-btn" id="btn-settings">⚙</button>
+				<input type="file" id="import-file" accept=".json">
+			</div>
+		</div>
+	</header>
 
-<main class="app-main">
-  <section id="waterfall-view" class="view-section active">
-    <div class="waterfall-container" id="waterfall"></div>
-  </section>
-  <section id="calendar-view" class="view-section">
-    <div class="calendar-nav">
-      <button class="cal-arrow" id="cal-prev">&#8249;</button>
-      <span class="cal-title" id="cal-title"></span>
-      <button class="cal-arrow" id="cal-next">&#8250;</button>
-    </div>
-    <div class="calendar-grid" id="calendar-grid"></div>
-  </section>
+	<main class="app-main">
+		<section id="waterfall-view" class="view-section active">
+			<div class="waterfall-container" id="waterfall"></div>
+		</section>
+		<section id="calendar-view" class="view-section">
+			<div class="calendar-nav">
+				<button class="cal-arrow" id="cal-prev">&#8249;</button>
+				<span class="cal-title" id="cal-title"></span>
+				<button class="cal-arrow" id="cal-next">&#8250;</button>
+			</div>
+			<div class="calendar-grid" id="calendar-grid"></div>
+		</section>
 
-  <section id="wishes-view" class="view-section">
-    <div class="wish-add-form">
-      <div class="wish-form-title">许个愿望 🌟</div>
-      <div class="wish-form-row">
-        <input class="wish-text-input" id="wish-input" placeholder="写下你的愿望..." maxlength="200">
-        <select class="wish-assignee-select" id="wish-assignee">
-          <option value="">期待谁来实现？</option>
-        </select>
-        <button class="wish-submit-btn" id="wish-submit">许愿</button>
-      </div>
-    </div>
-    <div class="wish-toolbar">
-      <div class="wish-filter-tabs">
-        <button class="wish-filter-btn active" data-filter="all">全部</button>
-        <button class="wish-filter-btn" data-filter="pending">未实现</button>
-        <button class="wish-filter-btn" data-filter="fulfilled">已实现</button>
-      </div>
-    </div>
-    <div class="wish-list" id="wish-list"></div>
-  </section>
-</main>
+		<section id="wishes-view" class="view-section">
+			<div class="wish-add-form">
+				<div class="wish-form-title">许个愿望 🌟</div>
+				<div class="wish-form-row">
+					<input class="wish-text-input" id="wish-input" placeholder="写下你的愿望..." maxlength="200">
+					<select class="wish-assignee-select" id="wish-assignee">
+						<option value="">期待谁来实现？</option>
+					</select>
+					<button class="wish-submit-btn" id="wish-submit">许愿</button>
+				</div>
+			</div>
+			<div class="wish-toolbar">
+				<div class="wish-filter-tabs">
+					<button class="wish-filter-btn active" data-filter="all">全部</button>
+					<button class="wish-filter-btn" data-filter="pending">未实现</button>
+					<button class="wish-filter-btn" data-filter="fulfilled">已实现</button>
+				</div>
+			</div>
+			<div class="wish-list" id="wish-list"></div>
+		</section>
+	</main>
 
-<button class="fab" id="fab-today" title="记录今天">+</button>
+	<button class="fab" id="fab-today" title="记录今天">+</button>
 
-<!-- Edit Modal -->
-<div class="modal-overlay" id="modal">
-  <div class="modal-card">
-    <div class="modal-header">
-      <span class="modal-title" id="modal-title"></span>
-      <button class="modal-close" id="modal-close">&times;</button>
-    </div>
-    <div class="modal-section">
-      <div class="picker-row">
-        <div class="picker-col" id="feeling-col">
-          <button class="wheel-trigger" id="feeling-trigger">
-            <span class="wheel-trigger__emoji" id="feeling-emoji">😊</span>
-            <span>体感</span>
-          </button>
-        </div>
-        <div class="picker-col" id="weather-col">
-          <button class="wheel-trigger" id="weather-trigger">
-            <span class="wheel-trigger__emoji" id="weather-emoji">☁️</span>
-            <span>天气</span>
-          </button>
-        </div>
-        <div class="picker-col" id="diet-col">
-          <button class="wheel-trigger" id="diet-trigger">
-            <span class="wheel-trigger__emoji" id="diet-emoji">🍽️</span>
-            <span>吃的</span>
-          </button>
-        </div>
-      </div>
-      <div class="diet-panel" id="diet-panel">
-        <div class="diet-bar" id="diet-bar"></div>
-      </div>
-    </div>
-    <div class="modal-section">
-      <div class="modal-label">碎碎念</div>
-      <div class="note-input-row">
-        <input class="note-input" id="note-input" placeholder="写点什么..." maxlength="500">
-        <button class="note-add-btn" id="note-add">添加</button>
-      </div>
-      <ul class="modal-notes-list" id="modal-notes"></ul>
-    </div>
-    <div class="delete-day-section" id="delete-day-section">
-      <button class="delete-day-btn" id="delete-day-btn">删除此天记录</button>
-    </div>
-  </div>
-</div>
+	<!-- Edit Modal -->
+	<div class="modal-overlay" id="modal">
+		<div class="modal-card">
+			<div class="modal-header">
+				<span class="modal-title" id="modal-title"></span>
+				<button class="modal-close" id="modal-close">&times;</button>
+			</div>
+			<div class="modal-section">
+				<div class="picker-row">
+					<div class="picker-col" id="feeling-col">
+						<button class="wheel-trigger" id="feeling-trigger">
+							<span class="wheel-trigger__emoji" id="feeling-emoji">😊</span>
+							<span>体感</span>
+						</button>
+					</div>
+					<div class="picker-col" id="weather-col">
+						<button class="wheel-trigger" id="weather-trigger">
+							<span class="wheel-trigger__emoji" id="weather-emoji">☁️</span>
+							<span>天气</span>
+						</button>
+					</div>
+					<div class="picker-col" id="diet-col">
+						<button class="wheel-trigger" id="diet-trigger">
+							<span class="wheel-trigger__emoji" id="diet-emoji">🍽️</span>
+							<span>吃的</span>
+						</button>
+					</div>
+				</div>
+				<div class="diet-panel" id="diet-panel">
+					<div class="diet-bar" id="diet-bar"></div>
+				</div>
+			</div>
+			<div class="modal-section">
+				<div class="modal-label">碎碎念</div>
+				<div class="note-input-row">
+					<input class="note-input" id="note-input" placeholder="写点什么..." maxlength="500">
+					<button class="note-add-btn" id="note-add">添加</button>
+				</div>
+				<ul class="modal-notes-list" id="modal-notes"></ul>
+			</div>
+			<div class="delete-day-section" id="delete-day-section">
+				<button class="delete-day-btn" id="delete-day-btn">删除此天记录</button>
+			</div>
+		</div>
+	</div>
 
-<!-- User Select Overlay -->
-<div class="user-select-overlay" id="user-select-overlay">
-  <div class="user-select-card">
-    <div class="user-select-title">你是谁？</div>
-    <div class="user-select-subtitle">选择你的名字</div>
-    <div class="user-select-list" id="user-select-list"></div>
-    <div class="user-select-divider" id="user-select-divider" style="display:none;"></div>
-    <div class="user-select-add-row" style="display:none;">
-      <input class="user-select-input" id="user-select-input" placeholder="添加新成员..." maxlength="20">
-      <button class="user-select-add-btn" id="user-select-add-btn">加入</button>
-    </div>
-  </div>
-</div>
+	<!-- User Select Overlay -->
+	<div class="user-select-overlay" id="user-select-overlay">
+		<div class="user-select-card">
+			<div class="user-select-title">你是谁？</div>
+			<div class="user-select-subtitle">选择你的名字</div>
+			<div class="user-select-list" id="user-select-list"></div>
+			<div class="user-select-divider" id="user-select-divider" style="display:none;"></div>
+			<div class="user-select-add-row" style="display:none;">
+				<input class="user-select-input" id="user-select-input" placeholder="添加新成员..." maxlength="20">
+				<button class="user-select-add-btn" id="user-select-add-btn">加入</button>
+			</div>
+		</div>
+	</div>
 
-<!-- Settings Modal -->
-<div class="modal-overlay" id="settings-modal">
-  <div class="modal-card settings-card">
-    <div class="modal-header">
-      <span class="modal-title">设置</span>
-      <button class="modal-close" id="settings-close">&times;</button>
-    </div>
-    <div class="settings-tabs">
-      <button class="settings-tab active" data-tab="users">用户管理</button>
-      <button class="settings-tab" data-tab="github">GitHub 同步</button>
-    </div>
-    <div class="settings-panel" id="settings-users-panel">
-      <div class="settings-section-label">当前成员</div>
-      <div id="settings-user-list"></div>
-      <div class="settings-add-row">
-        <input class="settings-input" id="settings-new-user" placeholder="添加新成员..." maxlength="20">
-        <button class="settings-btn-primary" id="settings-add-user-btn">添加</button>
-      </div>
-    </div>
-    <div class="settings-panel hidden" id="settings-github-panel">
-      <div id="settings-github-builtin" style="display:none;">
-        <div class="settings-hint builtin-hint">
-          🔒 此文件内置了加密的同步配置。输入 Token 密码即可直接使用，无需手动填写。
-        </div>
-        <div class="settings-field">
-          <label>Token 密码</label>
-          <input class="settings-input" id="gh-builtin-password" type="password" placeholder="输入 GitHub Token...">
-        </div>
-        <div class="settings-actions">
-          <button class="settings-btn-primary" id="gh-builtin-unlock">使用内置配置</button>
-        </div>
-        <div class="settings-status" id="gh-builtin-status"></div>
-        <div style="margin-top:var(--sp-md);text-align:center;">
-          <button class="settings-btn-sm" id="gh-use-custom" style="background:none;color:var(--color-text-light);border:none;cursor:pointer;font-size:0.8rem;text-decoration:underline;">使用自定义配置</button>
-        </div>
-      </div>
-      <div id="settings-github-custom">
-        <div id="gh-builtin-badge" style="display:none;flex-direction:column;gap:6px;margin-bottom:var(--sp-md);">
-          <span class="settings-builtin-badge">🔒 使用内置加密配置</span>
-          <button class="settings-text-link" id="gh-switch-custom">更换为自定义 Token</button>
-        </div>
-        <div id="gh-custom-hint" class="settings-hint" style="display:none;">
-          在 GitHub 创建一个私有仓库，生成 Fine-grained Token（仅需该 repo 的 Contents 读写权限），填入下方即可多设备同步。
-        </div>
-        <div class="settings-field">
-          <label>GitHub 用户名 / Org</label>
-          <input class="settings-input" id="gh-owner" placeholder="例如：zhangfeng5">
-        </div>
-        <div class="settings-field">
-          <label>仓库名</label>
-          <input class="settings-input" id="gh-repo" placeholder="例如：family-journal">
-        </div>
-        <div class="settings-field">
-          <label>Personal Access Token</label>
-          <input class="settings-input" id="gh-token" type="password" placeholder="github_pat_...">
-        </div>
-        <div class="settings-field">
-          <label>数据目录</label>
-          <input class="settings-input" id="gh-datadir" placeholder="_data">
-        </div>
-        <div class="settings-actions">
-          <button class="settings-btn-sm" id="gh-test">测试连接</button>
-          <button class="settings-btn-sm" id="gh-pull">立即拉取</button>
-          <button class="settings-btn-primary" id="gh-save">保存配置</button>
-        </div>
-        <div class="settings-status" id="gh-status"></div>
-        <div id="gh-back-to-builtin" style="display:none;margin-top:var(--sp-md);">
-          <button class="settings-text-link" id="gh-revert-builtin">切换回内置加密配置</button>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
+	<!-- Settings Modal -->
+	<div class="modal-overlay" id="settings-modal">
+		<div class="modal-card settings-card">
+			<div class="modal-header">
+				<span class="modal-title">设置</span>
+				<button class="modal-close" id="settings-close">&times;</button>
+			</div>
+			<div class="settings-tabs">
+				<button class="settings-tab active" data-tab="users">用户管理</button>
+				<button class="settings-tab" data-tab="github">GitHub 同步</button>
+			</div>
+			<div class="settings-panel" id="settings-users-panel">
+				<div class="settings-section-label">当前成员</div>
+				<div id="settings-user-list"></div>
+				<div class="settings-add-row">
+					<input class="settings-input" id="settings-new-user" placeholder="添加新成员..." maxlength="20">
+					<button class="settings-btn-primary" id="settings-add-user-btn">添加</button>
+				</div>
+			</div>
+			<div class="settings-panel hidden" id="settings-github-panel">
+				<div id="settings-github-builtin" style="display:none;">
+					<div class="settings-hint builtin-hint">
+						🔒 此文件内置了加密的同步配置。输入 Token 密码即可直接使用，无需手动填写。
+					</div>
+					<div class="settings-field">
+						<label>Token 密码</label>
+						<input class="settings-input" id="gh-builtin-password" type="password"
+							placeholder="输入 GitHub Token...">
+					</div>
+					<div class="settings-actions">
+						<button class="settings-btn-primary" id="gh-builtin-unlock">使用内置配置</button>
+					</div>
+					<div class="settings-status" id="gh-builtin-status"></div>
+					<div style="margin-top:var(--sp-md);text-align:center;">
+						<button class="settings-btn-sm" id="gh-use-custom"
+							style="background:none;color:var(--color-text-light);border:none;cursor:pointer;font-size:0.8rem;text-decoration:underline;">使用自定义配置</button>
+					</div>
+				</div>
+				<div id="settings-github-custom">
+					<div id="gh-builtin-badge"
+						style="display:none;flex-direction:column;gap:6px;margin-bottom:var(--sp-md);">
+						<span class="settings-builtin-badge">🔒 使用内置加密配置</span>
+						<button class="settings-text-link" id="gh-switch-custom">更换为自定义 Token</button>
+					</div>
+					<div id="gh-custom-hint" class="settings-hint" style="display:none;">
+						在 GitHub 创建一个私有仓库，生成 Fine-grained Token（仅需该 repo 的 Contents 读写权限），填入下方即可多设备同步。
+					</div>
+					<div class="settings-field">
+						<label>GitHub 用户名 / Org</label>
+						<input class="settings-input" id="gh-owner" placeholder="例如：zhangfeng5">
+					</div>
+					<div class="settings-field">
+						<label>仓库名</label>
+						<input class="settings-input" id="gh-repo" placeholder="例如：family-journal">
+					</div>
+					<div class="settings-field">
+						<label>Personal Access Token</label>
+						<input class="settings-input" id="gh-token" type="password" placeholder="github_pat_...">
+					</div>
+					<div class="settings-field">
+						<label>数据目录</label>
+						<input class="settings-input" id="gh-datadir" placeholder="_data">
+					</div>
+					<div class="settings-actions">
+						<button class="settings-btn-sm" id="gh-test">测试连接</button>
+						<button class="settings-btn-sm" id="gh-pull">立即拉取</button>
+						<button class="settings-btn-primary" id="gh-save">保存配置</button>
+					</div>
+					<div class="settings-status" id="gh-status"></div>
+					<div id="gh-back-to-builtin" style="display:none;margin-top:var(--sp-md);">
+						<button class="settings-text-link" id="gh-revert-builtin">切换回内置加密配置</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
 
-<!-- Unlock Overlay -->
-<div class="unlock-overlay" id="unlock-overlay">
-  <div class="unlock-card">
-    <div class="unlock-icon">🔐</div>
-    <div class="unlock-title">输入密码</div>
-    <div class="unlock-subtitle">输入 GitHub Token 以解锁同步配置</div>
-    <input class="unlock-input" id="unlock-input" type="password" placeholder="GitHub Token...">
-    <div class="unlock-error" id="unlock-error"></div>
-    <button class="unlock-btn" id="unlock-btn">解锁同步</button>
-    <button class="unlock-skip" id="unlock-skip">跳过（仅本地使用）</button>
-  </div>
-</div>
+	<!-- Unlock Overlay -->
+	<div class="unlock-overlay" id="unlock-overlay">
+		<div class="unlock-card">
+			<div class="unlock-icon">🔐</div>
+			<div class="unlock-title">输入密码</div>
+			<div class="unlock-subtitle">输入 GitHub Token 以解锁同步配置</div>
+			<input class="unlock-input" id="unlock-input" type="password" placeholder="GitHub Token...">
+			<div class="unlock-error" id="unlock-error"></div>
+			<button class="unlock-btn" id="unlock-btn">解锁同步</button>
+			<button class="unlock-skip" id="unlock-skip">跳过（仅本地使用）</button>
+		</div>
+	</div>
 
-<script>
-/* ── Constants ── */
-const USER_KEY  = 'hed-current-user';
-const VIEW_KEY  = 'hed-view-mode';
-const GH_KEY    = 'hed-github-config';
-const USERS_KEY = 'hed-known-users';
+	<script>
+		/* ── Constants ── */
+		const USER_KEY = 'hed-current-user';
+		const VIEW_KEY = 'hed-view-mode';
+		const GH_KEY = 'hed-github-config';
+		const USERS_KEY = 'hed-known-users';
 
-// Built-in encrypted config (password = the token itself)
-const ENCRYPTED_CONFIG = 'iQkB5fWt1DzP4VBzNZxJNjDlcbYZWHZ4fQaV/XVTNwPc+jwuc21UYgXPTaufCq6dPDvhahnThA2FH6HVSvKqiRsqTtxfwG15R1EN+YnPvazOMYTva3v0UeZjRUiuspv0+Rfqb6eL4pjSgUADMwXm82ml64hz4e6gTKlMFj74eYJ/MYPPVSc6xEI8FYR311geDB+H7GWWXg3azXlfZN8RvI0sSiuEsaS120nvMmY7iG/jx07nGYJxSrAl5mO+Sjyjzl6m7MXKcVc2aXCL1IbOkzBV';
+		// Built-in encrypted config (password = the token itself)
+		const ENCRYPTED_CONFIG = 'iQkB5fWt1DzP4VBzNZxJNjDlcbYZWHZ4fQaV/XVTNwPc+jwuc21UYgXPTaufCq6dPDvhahnThA2FH6HVSvKqiRsqTtxfwG15R1EN+YnPvazOMYTva3v0UeZjRUiuspv0+Rfqb6eL4pjSgUADMwXm82ml64hz4e6gTKlMFj74eYJ/MYPPVSc6xEI8FYR311geDB+H7GWWXg3azXlfZN8RvI0sSiuEsaS120nvMmY7iG/jx07nGYJxSrAl5mO+Sjyjzl6m7MXKcVc2aXCL1IbOkzBV';
 
-const FEELING_TYPES = [
-  { key: 'freezing', emoji: '🥶', label: '很冷' },
-  { key: 'chilly',   emoji: '🧣', label: '略冷' },
-  { key: 'cool',     emoji: '🍃', label: '凉爽' },
-  { key: 'comfy',    emoji: '😊', label: '舒适' },
-  { key: 'warm',     emoji: '🌤️', label: '温暖' },
-  { key: 'humid',    emoji: '💧', label: '湿热' },
-  { key: 'hot',      emoji: '🔥', label: '炎热' }
-];
-const WEATHER_TYPES = [
-  { key: 'sunny',         emoji: '☀️',  label: '晴' },
-  { key: 'partly-cloudy', emoji: '⛅',  label: '少云' },
-  { key: 'cloudy',        emoji: '☁️',  label: '多云' },
-  { key: 'overcast',      emoji: '🌫️', label: '阴' },
-  { key: 'light-rain',    emoji: '🌦️', label: '小雨' },
-  { key: 'heavy-rain',    emoji: '🌊',  label: '大雨' },
-  { key: 'thunder',       emoji: '⛈️', label: '雷雨' },
-  { key: 'snow',          emoji: '🌨️', label: '雪' },
-  { key: 'sleet',         emoji: '🧊',  label: '雨夹雪' },
-  { key: 'wind',          emoji: '🌬️', label: '大风' },
-  { key: 'fog',           emoji: '🌁',  label: '雾' },
-  { key: 'hail',          emoji: '🫧',  label: '冰雹' }
-];
-const DIET_TYPES = [
-  { key: 'great',   emoji: '🥗',   label: '自律',   desc: '今天的脂肪无处遁形 ✨' },
-  { key: 'ok',      emoji: '😌',   label: '一般',   desc: '勉强及格，下次收着点' },
-  { key: 'indulge', emoji: '😵‍💫', label: '放纵',   desc: '脂肪已在赶来的路上' },
-  { key: 'doomed',  emoji: '💀',   label: '没救了', desc: '完蛋了。没救了。活该。' }
-];
+		const FEELING_TYPES = [
+			{ key: 'freezing', emoji: '🥶', label: '很冷' },
+			{ key: 'chilly', emoji: '🧣', label: '略冷' },
+			{ key: 'cool', emoji: '🍃', label: '凉爽' },
+			{ key: 'comfy', emoji: '😊', label: '舒适' },
+			{ key: 'warm', emoji: '🌤️', label: '温暖' },
+			{ key: 'humid', emoji: '💧', label: '湿热' },
+			{ key: 'hot', emoji: '🔥', label: '炎热' }
+		];
+		const WEATHER_TYPES = [
+			{ key: 'sunny', emoji: '☀️', label: '晴' },
+			{ key: 'partly-cloudy', emoji: '⛅', label: '少云' },
+			{ key: 'cloudy', emoji: '☁️', label: '多云' },
+			{ key: 'overcast', emoji: '🌫️', label: '阴' },
+			{ key: 'light-rain', emoji: '🌦️', label: '小雨' },
+			{ key: 'heavy-rain', emoji: '🌊', label: '大雨' },
+			{ key: 'thunder', emoji: '⛈️', label: '雷雨' },
+			{ key: 'snow', emoji: '🌨️', label: '雪' },
+			{ key: 'sleet', emoji: '🧊', label: '雨夹雪' },
+			{ key: 'wind', emoji: '🌬️', label: '大风' },
+			{ key: 'fog', emoji: '🌁', label: '雾' },
+			{ key: 'hail', emoji: '🫧', label: '冰雹' }
+		];
+		const DIET_TYPES = [
+			{ key: 'great', emoji: '🥗', label: '自律', desc: '今天的脂肪无处遁形 ✨' },
+			{ key: 'ok', emoji: '😌', label: '一般', desc: '勉强及格，下次收着点' },
+			{ key: 'indulge', emoji: '😵‍💫', label: '放纵', desc: '脂肪已在赶来的路上' },
+			{ key: 'doomed', emoji: '💀', label: '没救了', desc: '完蛋了。没救了。活该。' }
+		];
 
-/* ── App State ── */
-let myData      = null;   // current user's own data: { version:3, days:{}, wishes:[] }
-let othersData  = {};     // { username: {version,days,wishes} }
-let knownUsers  = [];
-let ghShaMap    = {};     // { username: sha }
-let currentUser = localStorage.getItem(USER_KEY) || null;
-let viewMode    = localStorage.getItem(VIEW_KEY) || 'mine';
-let syncTimer   = null;
+		/* ── App State ── */
+		let myData = null;   // current user's own data: { version:3, days:{}, wishes:[] }
+		let othersData = {};     // { username: {version,days,wishes} }
+		let knownUsers = [];
+		let ghShaMap = {};     // { username: sha }
+		let currentUser = localStorage.getItem(USER_KEY) || null;
+		let viewMode = localStorage.getItem(VIEW_KEY) || 'mine';
+		let syncTimer = null;
 
-function getGhConfig() {
-  try {
-    const cached = localStorage.getItem('hed-decrypted-config');
-    if (cached) return JSON.parse(cached);
-  } catch (_) {}
-  try { return JSON.parse(localStorage.getItem(GH_KEY)) || null; } catch (_) { return null; }
-}
+		function getGhConfig() {
+			try {
+				const cached = localStorage.getItem('hed-decrypted-config');
+				if (cached) return JSON.parse(cached);
+			} catch (_) { }
+			try { return JSON.parse(localStorage.getItem(GH_KEY)) || null; } catch (_) { return null; }
+		}
 
-/* ── Crypto (AES-GCM + PBKDF2) ── */
-async function _deriveKey(password, salt) {
-  const raw = await crypto.subtle.importKey('raw', new TextEncoder().encode(password), 'PBKDF2', false, ['deriveKey']);
-  return crypto.subtle.deriveKey(
-    { name: 'PBKDF2', salt, iterations: 150000, hash: 'SHA-256' },
-    raw, { name: 'AES-GCM', length: 256 }, false, ['encrypt', 'decrypt']
-  );
-}
+		/* ── Crypto (AES-GCM + PBKDF2) ── */
+		async function _deriveKey(password, salt) {
+			const raw = await crypto.subtle.importKey('raw', new TextEncoder().encode(password), 'PBKDF2', false, ['deriveKey']);
+			return crypto.subtle.deriveKey(
+				{ name: 'PBKDF2', salt, iterations: 150000, hash: 'SHA-256' },
+				raw, { name: 'AES-GCM', length: 256 }, false, ['encrypt', 'decrypt']
+			);
+		}
 
-async function encryptConfig(cfg, password) {
-  const salt = crypto.getRandomValues(new Uint8Array(16));
-  const iv   = crypto.getRandomValues(new Uint8Array(12));
-  const key  = await _deriveKey(password, salt);
-  const ct   = await crypto.subtle.encrypt({ name: 'AES-GCM', iv }, key, new TextEncoder().encode(JSON.stringify(cfg)));
-  const buf  = new Uint8Array(16 + 12 + ct.byteLength);
-  buf.set(salt, 0); buf.set(iv, 16); buf.set(new Uint8Array(ct), 28);
-  return btoa(String.fromCharCode(...buf));
-}
+		async function encryptConfig(cfg, password) {
+			const salt = crypto.getRandomValues(new Uint8Array(16));
+			const iv = crypto.getRandomValues(new Uint8Array(12));
+			const key = await _deriveKey(password, salt);
+			const ct = await crypto.subtle.encrypt({ name: 'AES-GCM', iv }, key, new TextEncoder().encode(JSON.stringify(cfg)));
+			const buf = new Uint8Array(16 + 12 + ct.byteLength);
+			buf.set(salt, 0); buf.set(iv, 16); buf.set(new Uint8Array(ct), 28);
+			return btoa(String.fromCharCode(...buf));
+		}
 
-async function decryptConfig(encoded, password) {
-  const buf  = Uint8Array.from(atob(encoded), c => c.charCodeAt(0));
-  const key  = await _deriveKey(password, buf.slice(0, 16));
-  const pt   = await crypto.subtle.decrypt({ name: 'AES-GCM', iv: buf.slice(16, 28) }, key, buf.slice(28));
-  return JSON.parse(new TextDecoder().decode(pt));
-}
+		async function decryptConfig(encoded, password) {
+			const buf = Uint8Array.from(atob(encoded), c => c.charCodeAt(0));
+			const key = await _deriveKey(password, buf.slice(0, 16));
+			const pt = await crypto.subtle.decrypt({ name: 'AES-GCM', iv: buf.slice(16, 28) }, key, buf.slice(28));
+			return JSON.parse(new TextDecoder().decode(pt));
+		}
 
-/* ── Data Layer ── */
-function loadMyData() {
-  if (myData) return myData;
-  if (!currentUser) return (myData = { version: 3, days: {}, wishes: [] });
-  try {
-    const raw = localStorage.getItem(`hed-mydata-${currentUser}`);
-    if (raw) { const p = JSON.parse(raw); if (p?.days) { myData = p; return myData; } }
-  } catch (_) {}
-  myData = { version: 3, days: {}, wishes: [] };
-  return myData;
-}
+		/* ── Data Layer ── */
+		function loadMyData() {
+			if (myData) return myData;
+			if (!currentUser) return (myData = { version: 3, days: {}, wishes: [] });
+			try {
+				const raw = localStorage.getItem(`hed-mydata-${currentUser}`);
+				if (raw) { const p = JSON.parse(raw); if (p?.days) { myData = p; return myData; } }
+			} catch (_) { }
+			myData = { version: 3, days: {}, wishes: [] };
+			return myData;
+		}
 
-function persistMyData() {
-  if (!currentUser) return;
-  localStorage.setItem(`hed-mydata-${currentUser}`, JSON.stringify(myData));
-  scheduleGhSync();
-}
+		function persistMyData() {
+			if (!currentUser) return;
+			localStorage.setItem(`hed-mydata-${currentUser}`, JSON.stringify(myData));
+			scheduleGhSync();
+		}
 
-function loadOthers() {
-  othersData = {};
-  knownUsers.filter(u => u !== currentUser).forEach(u => {
-    try {
-      const raw = localStorage.getItem(`hed-others-${u}`);
-      if (raw) { const p = JSON.parse(raw); if (p?.days) othersData[u] = p; }
-    } catch (_) {}
-  });
-  return othersData;
-}
+		function loadOthers() {
+			othersData = {};
+			knownUsers.filter(u => u !== currentUser).forEach(u => {
+				try {
+					const raw = localStorage.getItem(`hed-others-${u}`);
+					if (raw) { const p = JSON.parse(raw); if (p?.days) othersData[u] = p; }
+				} catch (_) { }
+			});
+			return othersData;
+		}
 
-function loadKnownUsers() {
-  try {
-    const raw = localStorage.getItem(USERS_KEY);
-    knownUsers = raw ? JSON.parse(raw) : [];
-  } catch (_) { knownUsers = []; }
-  if (currentUser && !knownUsers.includes(currentUser)) {
-    knownUsers = [...knownUsers, currentUser];
-    saveKnownUsers();
-  }
-  return knownUsers;
-}
+		function loadKnownUsers() {
+			try {
+				const raw = localStorage.getItem(USERS_KEY);
+				knownUsers = raw ? JSON.parse(raw) : [];
+			} catch (_) { knownUsers = []; }
+			if (currentUser && !knownUsers.includes(currentUser)) {
+				knownUsers = [...knownUsers, currentUser];
+				saveKnownUsers();
+			}
+			return knownUsers;
+		}
 
-function saveKnownUsers() {
-  localStorage.setItem(USERS_KEY, JSON.stringify(knownUsers));
-}
+		function saveKnownUsers() {
+			localStorage.setItem(USERS_KEY, JSON.stringify(knownUsers));
+		}
 
-function getAllDaysData() {
-  const result = {};
-  const m = loadMyData();
-  if (currentUser) {
-    Object.entries(m.days || {}).forEach(([d, day]) => {
-      if (!result[d]) result[d] = {};
-      result[d][currentUser] = day;
-    });
-  }
-  Object.entries(othersData).forEach(([user, uData]) => {
-    Object.entries(uData.days || {}).forEach(([d, day]) => {
-      if (!result[d]) result[d] = {};
-      result[d][user] = day;
-    });
-  });
-  return result;
-}
+		function getAllDaysData() {
+			const result = {};
+			const m = loadMyData();
+			if (currentUser) {
+				Object.entries(m.days || {}).forEach(([d, day]) => {
+					if (!result[d]) result[d] = {};
+					result[d][currentUser] = day;
+				});
+			}
+			Object.entries(othersData).forEach(([user, uData]) => {
+				Object.entries(uData.days || {}).forEach(([d, day]) => {
+					if (!result[d]) result[d] = {};
+					result[d][user] = day;
+				});
+			});
+			return result;
+		}
 
-function ensureDay(dateStr) {
-  const m = loadMyData();
-  if (!m.days[dateStr]) m.days[dateStr] = { feeling: null, weather: null, diet: null, notes: [] };
-}
+		function ensureDay(dateStr) {
+			const m = loadMyData();
+			if (!m.days[dateStr]) m.days[dateStr] = { feeling: null, weather: null, diet: null, notes: [] };
+		}
 
-function cleanupDay(dateStr) {
-  const d = myData?.days[dateStr];
-  if (d && !d.feeling && !d.weather && !d.diet && d.notes.length === 0) delete myData.days[dateStr];
-}
+		function cleanupDay(dateStr) {
+			const d = myData?.days[dateStr];
+			if (d && !d.feeling && !d.weather && !d.diet && d.notes.length === 0) delete myData.days[dateStr];
+		}
 
-function getUserDayData(dateStr, user) {
-  if (user === currentUser) return loadMyData().days[dateStr] || null;
-  return othersData[user]?.days[dateStr] || null;
-}
+		function getUserDayData(dateStr, user) {
+			if (user === currentUser) return loadMyData().days[dateStr] || null;
+			return othersData[user]?.days[dateStr] || null;
+		}
 
-function setFeeling(dateStr, key) {
-  ensureDay(dateStr);
-  myData.days[dateStr] = { ...myData.days[dateStr], feeling: key };
-  cleanupDay(dateStr);
-  persistMyData();
-}
+		function setFeeling(dateStr, key) {
+			ensureDay(dateStr);
+			myData.days[dateStr] = { ...myData.days[dateStr], feeling: key };
+			cleanupDay(dateStr);
+			persistMyData();
+		}
 
-function setWeather(dateStr, key) {
-  ensureDay(dateStr);
-  myData.days[dateStr] = { ...myData.days[dateStr], weather: key };
-  cleanupDay(dateStr);
-  persistMyData();
-}
+		function setWeather(dateStr, key) {
+			ensureDay(dateStr);
+			myData.days[dateStr] = { ...myData.days[dateStr], weather: key };
+			cleanupDay(dateStr);
+			persistMyData();
+		}
 
-function setDiet(dateStr, key) {
-  ensureDay(dateStr);
-  myData.days[dateStr] = { ...myData.days[dateStr], diet: key };
-  cleanupDay(dateStr);
-  persistMyData();
-}
+		function setDiet(dateStr, key) {
+			ensureDay(dateStr);
+			myData.days[dateStr] = { ...myData.days[dateStr], diet: key };
+			cleanupDay(dateStr);
+			persistMyData();
+		}
 
-function addNote(dateStr, text) {
-  ensureDay(dateStr);
-  const d = myData.days[dateStr];
-  myData.days[dateStr] = {
-    ...d,
-    notes: [...d.notes, {
-      id: 'n_' + Date.now() + '_' + Math.random().toString(36).slice(2, 6),
-      text,
-      createdAt: new Date().toISOString()
-    }]
-  };
-  persistMyData();
-}
+		function addNote(dateStr, text) {
+			ensureDay(dateStr);
+			const d = myData.days[dateStr];
+			myData.days[dateStr] = {
+				...d,
+				notes: [...d.notes, {
+					id: 'n_' + Date.now() + '_' + Math.random().toString(36).slice(2, 6),
+					text,
+					createdAt: new Date().toISOString()
+				}]
+			};
+			persistMyData();
+		}
 
-function deleteNote(dateStr, noteId) {
-  const d = myData?.days[dateStr];
-  if (!d) return;
-  myData.days[dateStr] = { ...d, notes: d.notes.filter(n => n.id !== noteId) };
-  cleanupDay(dateStr);
-  persistMyData();
-}
+		function deleteNote(dateStr, noteId) {
+			const d = myData?.days[dateStr];
+			if (!d) return;
+			myData.days[dateStr] = { ...d, notes: d.notes.filter(n => n.id !== noteId) };
+			cleanupDay(dateStr);
+			persistMyData();
+		}
 
-function editNote(dateStr, noteId, newText) {
-  const d = myData?.days[dateStr];
-  if (!d) return;
-  myData.days[dateStr] = { ...d, notes: d.notes.map(n => n.id === noteId ? { ...n, text: newText } : n) };
-  persistMyData();
-}
+		function editNote(dateStr, noteId, newText) {
+			const d = myData?.days[dateStr];
+			if (!d) return;
+			myData.days[dateStr] = { ...d, notes: d.notes.map(n => n.id === noteId ? { ...n, text: newText } : n) };
+			persistMyData();
+		}
 
-function deleteDay(dateStr) {
-  if (!myData?.days[dateStr]) return;
-  delete myData.days[dateStr];
-  persistMyData();
-}
+		function deleteDay(dateStr) {
+			if (!myData?.days[dateStr]) return;
+			delete myData.days[dateStr];
+			persistMyData();
+		}
 
-/* ── User Management ── */
-function addUser(name) {
-  const trimmed = name.trim();
-  if (!trimmed || knownUsers.includes(trimmed)) return false;
-  knownUsers = [...knownUsers, trimmed];
-  saveKnownUsers();
-  return true;
-}
+		/* ── User Management ── */
+		function addUser(name) {
+			const trimmed = name.trim();
+			if (!trimmed || knownUsers.includes(trimmed)) return false;
+			knownUsers = [...knownUsers, trimmed];
+			saveKnownUsers();
+			return true;
+		}
 
-function removeUser(name) {
-  localStorage.removeItem(`hed-mydata-${name}`);
-  localStorage.removeItem(`hed-others-${name}`);
-  knownUsers = knownUsers.filter(u => u !== name);
-  saveKnownUsers();
-  if (currentUser === name) {
-    currentUser = knownUsers[0] || null;
-    localStorage.setItem(USER_KEY, currentUser || '');
-    myData = null;
-    updateUserBadge();
-  }
-}
+		function removeUser(name) {
+			localStorage.removeItem(`hed-mydata-${name}`);
+			localStorage.removeItem(`hed-others-${name}`);
+			knownUsers = knownUsers.filter(u => u !== name);
+			saveKnownUsers();
+			if (currentUser === name) {
+				currentUser = knownUsers[0] || null;
+				localStorage.setItem(USER_KEY, currentUser || '');
+				myData = null;
+				updateUserBadge();
+			}
+		}
 
-function selectUser(name) {
-  currentUser = name;
-  localStorage.setItem(USER_KEY, name);
-  myData = null;
-  loadMyData();
-  updateUserBadge();
-}
+		function selectUser(name) {
+			currentUser = name;
+			localStorage.setItem(USER_KEY, name);
+			myData = null;
+			loadMyData();
+			updateUserBadge();
+		}
 
-/* ── Wish Data Layer ── */
-function loadWishes() {
-  return loadMyData().wishes || [];
-}
+		/* ── Wish Data Layer ── */
+		function loadWishes() {
+			return loadMyData().wishes || [];
+		}
 
-function addWish(text, assignee) {
-  const m = loadMyData();
-  if (!m.wishes) m.wishes = [];
-  const wish = {
-    id: 'w_' + Date.now() + '_' + Math.random().toString(36).slice(2, 6),
-    text,
-    assignee: assignee || null,
-    createdBy: currentUser,
-    createdAt: new Date().toISOString(),
-    fulfilled: false,
-    fulfilledAt: null
-  };
-  m.wishes = [...m.wishes, wish];
-  persistMyData();
-  return wish;
-}
+		function addWish(text, assignee) {
+			const m = loadMyData();
+			if (!m.wishes) m.wishes = [];
+			const wish = {
+				id: 'w_' + Date.now() + '_' + Math.random().toString(36).slice(2, 6),
+				text,
+				assignee: assignee || null,
+				createdBy: currentUser,
+				createdAt: new Date().toISOString(),
+				fulfilled: false,
+				fulfilledAt: null
+			};
+			m.wishes = [...m.wishes, wish];
+			persistMyData();
+			return wish;
+		}
 
-function toggleWishFulfilled(wishId) {
-  const m = loadMyData();
-  if (!m.wishes) return;
-  m.wishes = m.wishes.map(w => {
-    if (w.id !== wishId) return w;
-    const nowFulfilled = !w.fulfilled;
-    return { ...w, fulfilled: nowFulfilled, fulfilledAt: nowFulfilled ? new Date().toISOString() : null };
-  });
-  persistMyData();
-}
+		function toggleWishFulfilled(wishId) {
+			const m = loadMyData();
+			if (!m.wishes) return;
+			m.wishes = m.wishes.map(w => {
+				if (w.id !== wishId) return w;
+				const nowFulfilled = !w.fulfilled;
+				return { ...w, fulfilled: nowFulfilled, fulfilledAt: nowFulfilled ? new Date().toISOString() : null };
+			});
+			persistMyData();
+		}
 
-function deleteWish(wishId) {
-  const m = loadMyData();
-  if (!m.wishes) return;
-  m.wishes = m.wishes.filter(w => w.id !== wishId);
-  persistMyData();
-}
+		function deleteWish(wishId) {
+			const m = loadMyData();
+			if (!m.wishes) return;
+			m.wishes = m.wishes.filter(w => w.id !== wishId);
+			persistMyData();
+		}
 
-/* ── Data Merge (own data, multi-device sync) ── */
-function mergeMyData(local, remote) {
-  const merged = { version: 3, days: {}, wishes: [] };
-  const allDates = new Set([...Object.keys(local.days || {}), ...Object.keys(remote.days || {})]);
-  allDates.forEach(d => {
-    const l = local.days[d], r = remote.days[d];
-    if (!l) { merged.days[d] = r; return; }
-    if (!r) { merged.days[d] = l; return; }
-    const seenIds = new Set((l.notes || []).map(n => n.id));
-    merged.days[d] = {
-      feeling: r.feeling ?? l.feeling,
-      weather: r.weather ?? l.weather,
-      diet:    r.diet    ?? l.diet,
-      notes: [...(l.notes || []), ...(r.notes || []).filter(n => !seenIds.has(n.id))]
-    };
-  });
-  const wishMap = new Map();
-  [...(local.wishes || []), ...(remote.wishes || [])].forEach(w => {
-    const ex = wishMap.get(w.id);
-    if (!ex || (w.fulfilledAt && (!ex.fulfilledAt || w.fulfilledAt > ex.fulfilledAt))) wishMap.set(w.id, w);
-    else if (!wishMap.has(w.id)) wishMap.set(w.id, w);
-  });
-  merged.wishes = [...wishMap.values()];
-  return merged;
-}
+		/* ── Data Merge (own data, multi-device sync) ── */
+		function mergeMyData(local, remote) {
+			const merged = { version: 3, days: {}, wishes: [] };
+			const allDates = new Set([...Object.keys(local.days || {}), ...Object.keys(remote.days || {})]);
+			allDates.forEach(d => {
+				const l = local.days[d], r = remote.days[d];
+				if (!l) { merged.days[d] = r; return; }
+				if (!r) { merged.days[d] = l; return; }
+				const seenIds = new Set((l.notes || []).map(n => n.id));
+				merged.days[d] = {
+					feeling: r.feeling ?? l.feeling,
+					weather: r.weather ?? l.weather,
+					diet: r.diet ?? l.diet,
+					notes: [...(l.notes || []), ...(r.notes || []).filter(n => !seenIds.has(n.id))]
+				};
+			});
+			const wishMap = new Map();
+			[...(local.wishes || []), ...(remote.wishes || [])].forEach(w => {
+				const ex = wishMap.get(w.id);
+				if (!ex || (w.fulfilledAt && (!ex.fulfilledAt || w.fulfilledAt > ex.fulfilledAt))) wishMap.set(w.id, w);
+				else if (!wishMap.has(w.id)) wishMap.set(w.id, w);
+			});
+			merged.wishes = [...wishMap.values()];
+			return merged;
+		}
 
-/* ── GitHub Sync ── */
-function ghDataDir(cfg) { return (cfg.dataDir || '_data').replace(/\/+$/, ''); }
-function ghFileUrl(cfg, username) {
-  return `https://api.github.com/repos/${cfg.owner}/${cfg.repo}/contents/${ghDataDir(cfg)}/${encodeURIComponent(username)}.json`;
-}
-function ghDirUrl(cfg) {
-  return `https://api.github.com/repos/${cfg.owner}/${cfg.repo}/contents/${ghDataDir(cfg)}`;
-}
-function ghHeaders(cfg) {
-  return { 'Authorization': `token ${cfg.token}`, 'Content-Type': 'application/json', 'Accept': 'application/vnd.github.v3+json' };
-}
-function toBase64(str) { return btoa(unescape(encodeURIComponent(str))); }
-function fromBase64(str) { return decodeURIComponent(escape(atob(str.replace(/\n/g, '')))); }
+		/* ── GitHub Sync ── */
+		function ghDataDir(cfg) { return (cfg.dataDir || '_data').replace(/\/+$/, ''); }
+		function ghFileUrl(cfg, username) {
+			return `https://api.github.com/repos/${cfg.owner}/${cfg.repo}/contents/${ghDataDir(cfg)}/${encodeURIComponent(username)}.json`;
+		}
+		function ghDirUrl(cfg) {
+			return `https://api.github.com/repos/${cfg.owner}/${cfg.repo}/contents/${ghDataDir(cfg)}`;
+		}
+		function ghHeaders(cfg) {
+			return { 'Authorization': `token ${cfg.token}`, 'Content-Type': 'application/json', 'Accept': 'application/vnd.github.v3+json' };
+		}
+		function toBase64(str) { return btoa(unescape(encodeURIComponent(str))); }
+		function fromBase64(str) { return decodeURIComponent(escape(atob(str.replace(/\n/g, '')))); }
 
-function scheduleGhSync() {
-  const cfg = getGhConfig();
-  if (!cfg?.owner || !cfg?.repo || !cfg?.token) return;
-  clearTimeout(syncTimer);
-  syncTimer = setTimeout(pushMyData, 1500);
-}
+		function scheduleGhSync() {
+			const cfg = getGhConfig();
+			if (!cfg?.owner || !cfg?.repo || !cfg?.token) return;
+			clearTimeout(syncTimer);
+			syncTimer = setTimeout(pushMyData, 1500);
+		}
 
-async function pushMyData() {
-  const cfg = getGhConfig();
-  if (!cfg?.owner || !cfg?.repo || !cfg?.token || !currentUser) return;
-  setSyncStatus('syncing');
-  try {
-    const content = toBase64(JSON.stringify(loadMyData(), null, 2));
-    const sha = ghShaMap[currentUser];
-    const body = JSON.stringify({ message: `sync ${currentUser} ${new Date().toISOString()}`, content, ...(sha ? { sha } : {}) });
-    const res = await fetch(ghFileUrl(cfg, currentUser), { method: 'PUT', headers: ghHeaders(cfg), body });
-    if (res.ok) {
-      ghShaMap[currentUser] = (await res.json()).content.sha;
-      setSyncStatus('synced');
-    } else if (res.status === 409) {
-      await pullMyData();
-      await pushMyData();
-    } else {
-      setSyncStatus('error');
-    }
-  } catch (_) { setSyncStatus('error'); }
-}
+		async function pushMyData() {
+			const cfg = getGhConfig();
+			if (!cfg?.owner || !cfg?.repo || !cfg?.token || !currentUser) return;
+			setSyncStatus('syncing');
+			try {
+				const content = toBase64(JSON.stringify(loadMyData(), null, 2));
+				const sha = ghShaMap[currentUser];
+				const body = JSON.stringify({ message: `sync ${currentUser} ${new Date().toISOString()}`, content, ...(sha ? { sha } : {}) });
+				const res = await fetch(ghFileUrl(cfg, currentUser), { method: 'PUT', headers: ghHeaders(cfg), body });
+				if (res.ok) {
+					ghShaMap[currentUser] = (await res.json()).content.sha;
+					setSyncStatus('synced');
+				} else if (res.status === 409) {
+					await pullMyData();
+					await pushMyData();
+				} else {
+					setSyncStatus('error');
+				}
+			} catch (_) { setSyncStatus('error'); }
+		}
 
-async function pullMyData() {
-  const cfg = getGhConfig();
-  if (!cfg?.owner || !cfg?.repo || !cfg?.token || !currentUser) return;
-  setSyncStatus('syncing');
-  try {
-    const res = await fetch(ghFileUrl(cfg, currentUser), { headers: ghHeaders(cfg) });
-    if (res.status === 404) { setSyncStatus(''); return; }
-    if (!res.ok) { setSyncStatus('error'); return; }
-    const json = await res.json();
-    ghShaMap[currentUser] = json.sha;
-    const remote = JSON.parse(fromBase64(json.content));
-    if (!remote?.days) return;
-    const merged = mergeMyData(loadMyData(), remote);
-    myData = merged;
-    localStorage.setItem(`hed-mydata-${currentUser}`, JSON.stringify(merged));
-    setSyncStatus('synced');
-  } catch (_) { setSyncStatus('error'); }
-}
+		async function pullMyData() {
+			const cfg = getGhConfig();
+			if (!cfg?.owner || !cfg?.repo || !cfg?.token || !currentUser) return;
+			setSyncStatus('syncing');
+			try {
+				const res = await fetch(ghFileUrl(cfg, currentUser), { headers: ghHeaders(cfg) });
+				if (res.status === 404) { setSyncStatus(''); return; }
+				if (!res.ok) { setSyncStatus('error'); return; }
+				const json = await res.json();
+				ghShaMap[currentUser] = json.sha;
+				const remote = JSON.parse(fromBase64(json.content));
+				if (!remote?.days) return;
+				const merged = mergeMyData(loadMyData(), remote);
+				myData = merged;
+				localStorage.setItem(`hed-mydata-${currentUser}`, JSON.stringify(merged));
+				setSyncStatus('synced');
+			} catch (_) { setSyncStatus('error'); }
+		}
 
-async function pullAllOthers() {
-  const cfg = getGhConfig();
-  if (!cfg?.owner || !cfg?.repo || !cfg?.token) return;
-  try {
-    const res = await fetch(ghDirUrl(cfg), { headers: ghHeaders(cfg) });
-    if (!res.ok) return;
-    const files = await res.json();
-    if (!Array.isArray(files)) return;
-    const remoteUsers = files
-      .filter(f => f.type === 'file' && f.name.endsWith('.json'))
-      .map(f => decodeURIComponent(f.name.replace(/\.json$/, '')));
-    knownUsers = [...new Set([...knownUsers, ...remoteUsers])];
-    saveKnownUsers();
-    await Promise.all(
-      remoteUsers.filter(u => u !== currentUser).map(async u => {
-        try {
-          const r = await fetch(ghFileUrl(cfg, u), { headers: ghHeaders(cfg) });
-          if (!r.ok) return;
-          const j = await r.json();
-          ghShaMap[u] = j.sha;
-          const data = JSON.parse(fromBase64(j.content));
-          if (data?.days) {
-            localStorage.setItem(`hed-others-${u}`, JSON.stringify(data));
-            othersData[u] = data;
-          }
-        } catch (_) {}
-      })
-    );
-  } catch (_) {}
-}
+		async function pullAllOthers() {
+			const cfg = getGhConfig();
+			if (!cfg?.owner || !cfg?.repo || !cfg?.token) return;
+			try {
+				const res = await fetch(ghDirUrl(cfg), { headers: ghHeaders(cfg) });
+				if (!res.ok) return;
+				const files = await res.json();
+				if (!Array.isArray(files)) return;
+				const remoteUsers = files
+					.filter(f => f.type === 'file' && f.name.endsWith('.json'))
+					.map(f => decodeURIComponent(f.name.replace(/\.json$/, '')));
+				knownUsers = [...new Set([...knownUsers, ...remoteUsers])];
+				saveKnownUsers();
+				await Promise.all(
+					remoteUsers.filter(u => u !== currentUser).map(async u => {
+						try {
+							const r = await fetch(ghFileUrl(cfg, u), { headers: ghHeaders(cfg) });
+							if (!r.ok) return;
+							const j = await r.json();
+							ghShaMap[u] = j.sha;
+							const data = JSON.parse(fromBase64(j.content));
+							if (data?.days) {
+								localStorage.setItem(`hed-others-${u}`, JSON.stringify(data));
+								othersData[u] = data;
+							}
+						} catch (_) { }
+					})
+				);
+			} catch (_) { }
+		}
 
-function setSyncStatus(state) {
-  const el = document.getElementById('sync-status');
-  if (!el) return;
-  const icons = { syncing: '↻', synced: '✓', error: '⚠' };
-  el.textContent = icons[state] || '';
-  el.className = 'sync-status' + (state ? ' ' + state : '');
-  if (state === 'synced') setTimeout(() => { if (el.classList.contains('synced')) { el.textContent = ''; el.className = 'sync-status'; } }, 3000);
-}
+		function setSyncStatus(state) {
+			const el = document.getElementById('sync-status');
+			if (!el) return;
+			const icons = { syncing: '↻', synced: '✓', error: '⚠' };
+			el.textContent = icons[state] || '';
+			el.className = 'sync-status' + (state ? ' ' + state : '');
+			if (state === 'synced') setTimeout(() => { if (el.classList.contains('synced')) { el.textContent = ''; el.className = 'sync-status'; } }, 3000);
+		}
 
-/* ── Export / Import ── */
-function exportData() {
-  const json = JSON.stringify(loadMyData(), null, 2);
-  const a = Object.assign(document.createElement('a'), {
-    href: URL.createObjectURL(new Blob([json], { type: 'application/json' })),
-    download: `happy-every-day-${currentUser || 'backup'}-${todayStr()}.json`
-  });
-  document.body.appendChild(a); a.click(); document.body.removeChild(a);
-}
+		/* ── Export / Import ── */
+		function exportData() {
+			const json = JSON.stringify(loadMyData(), null, 2);
+			const a = Object.assign(document.createElement('a'), {
+				href: URL.createObjectURL(new Blob([json], { type: 'application/json' })),
+				download: `happy-every-day-${currentUser || 'backup'}-${todayStr()}.json`
+			});
+			document.body.appendChild(a); a.click(); document.body.removeChild(a);
+		}
 
-function importData(file) {
-  const reader = new FileReader();
-  reader.onload = (e) => {
-    try {
-      const imported = JSON.parse(e.target.result);
-      if (!imported?.days) { alert('文件格式不正确'); return; }
-      showImportConfirm(imported);
-    } catch (_) { alert('文件解析失败'); }
-  };
-  reader.readAsText(file);
-}
+		function importData(file) {
+			const reader = new FileReader();
+			reader.onload = (e) => {
+				try {
+					const imported = JSON.parse(e.target.result);
+					if (!imported?.days) { alert('文件格式不正确'); return; }
+					showImportConfirm(imported);
+				} catch (_) { alert('文件解析失败'); }
+			};
+			reader.readAsText(file);
+		}
 
-/* ── Helpers ── */
-function todayStr() {
-  const d = new Date();
-  return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
-}
+		/* ── Helpers ── */
+		function todayStr() {
+			const d = new Date();
+			return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+		}
 
-function formatDate(dateStr) {
-  const [y, m, d] = dateStr.split('-').map(Number);
-  return `${y}年${m}月${d}日`;
-}
+		function formatDate(dateStr) {
+			const [y, m, d] = dateStr.split('-').map(Number);
+			return `${y}年${m}月${d}日`;
+		}
 
-function relativeDate(dateStr) {
-  const diff = Math.round((new Date().setHours(0,0,0,0) - new Date(dateStr + 'T00:00:00')) / 86400000);
-  if (diff === 0) return '今天';
-  if (diff === 1) return '昨天';
-  if (diff === 2) return '前天';
-  if (diff > 0 && diff <= 30) return `${diff}天前`;
-  if (diff === -1) return '明天';
-  return '';
-}
+		function relativeDate(dateStr) {
+			const diff = Math.round((new Date().setHours(0, 0, 0, 0) - new Date(dateStr + 'T00:00:00')) / 86400000);
+			if (diff === 0) return '今天';
+			if (diff === 1) return '昨天';
+			if (diff === 2) return '前天';
+			if (diff > 0 && diff <= 30) return `${diff}天前`;
+			if (diff === -1) return '明天';
+			return '';
+		}
 
-function formatTime(isoStr) {
-  const d = new Date(isoStr);
-  return `${String(d.getHours()).padStart(2,'0')}:${String(d.getMinutes()).padStart(2,'0')}`;
-}
+		function formatTime(isoStr) {
+			const d = new Date(isoStr);
+			return `${String(d.getHours()).padStart(2, '0')}:${String(d.getMinutes()).padStart(2, '0')}`;
+		}
 
-function feelingEmoji(key) { return FEELING_TYPES.find(t => t.key === key)?.emoji || ''; }
-function weatherLabel(key) { const w = WEATHER_TYPES.find(t => t.key === key); return w ? `${w.emoji} ${w.label}` : ''; }
-function escapeHtml(str) { const d = document.createElement('div'); d.textContent = str; return d.innerHTML; }
-function hasContent(ud) { return ud && (ud.feeling || ud.weather || (ud.notes?.length > 0)); }
+		function feelingEmoji(key) { return FEELING_TYPES.find(t => t.key === key)?.emoji || ''; }
+		function weatherLabel(key) { const w = WEATHER_TYPES.find(t => t.key === key); return w ? `${w.emoji} ${w.label}` : ''; }
+		function escapeHtml(str) { const d = document.createElement('div'); d.textContent = str; return d.innerHTML; }
+		function hasContent(ud) { return ud && (ud.feeling || ud.weather || (ud.notes?.length > 0)); }
 
-/* ── Waterfall View ── */
-function renderWaterfall() {
-  const container = document.getElementById('waterfall');
+		/* ── Waterfall View ── */
+		function renderWaterfall() {
+			const container = document.getElementById('waterfall');
 
-  if (viewMode === 'mine') {
-    if (!currentUser) {
-      container.innerHTML = `<div class="empty-state"><div class="empty-icon">🌱</div><p>还没有任何记录<br>点击右下角开始记录今天吧~</p></div>`;
-      return;
-    }
-    const m = loadMyData();
-    const dates = Object.keys(m.days).sort((a, b) => b.localeCompare(a));
-    if (dates.length === 0) {
-      container.innerHTML = `<div class="empty-state"><div class="empty-icon">🌱</div><p>还没有任何记录<br>点击右下角开始记录今天吧~</p></div>`;
-      return;
-    }
-    container.innerHTML = dates.map(d => buildDayCard(d, { [currentUser]: m.days[d] })).join('');
-    return;
-  }
+			if (viewMode === 'mine') {
+				if (!currentUser) {
+					container.innerHTML = `<div class="empty-state"><div class="empty-icon">🌱</div><p>还没有任何记录<br>点击右下角开始记录今天吧~</p></div>`;
+					return;
+				}
+				const m = loadMyData();
+				const dates = Object.keys(m.days).sort((a, b) => b.localeCompare(a));
+				if (dates.length === 0) {
+					container.innerHTML = `<div class="empty-state"><div class="empty-icon">🌱</div><p>还没有任何记录<br>点击右下角开始记录今天吧~</p></div>`;
+					return;
+				}
+				container.innerHTML = dates.map(d => buildDayCard(d, { [currentUser]: m.days[d] })).join('');
+				return;
+			}
 
-  const allDays = getAllDaysData();
-  const dates = Object.keys(allDays).sort((a, b) => b.localeCompare(a));
-  if (dates.length === 0) {
-    container.innerHTML = `<div class="empty-state"><div class="empty-icon">🌱</div><p>还没有任何记录</p></div>`;
-    return;
-  }
-  container.innerHTML = dates.map(d => buildDayCard(d, allDays[d])).join('');
-}
+			const allDays = getAllDaysData();
+			const dates = Object.keys(allDays).sort((a, b) => b.localeCompare(a));
+			if (dates.length === 0) {
+				container.innerHTML = `<div class="empty-state"><div class="empty-icon">🌱</div><p>还没有任何记录</p></div>`;
+				return;
+			}
+			container.innerHTML = dates.map(d => buildDayCard(d, allDays[d])).join('');
+		}
 
-function buildDayCard(dateStr, dayObj) {
-  const rel = relativeDate(dateStr);
-  const relHtml = rel ? `<div class="card-relative">${rel}</div>` : '';
+		function buildDayCard(dateStr, dayObj) {
+			const rel = relativeDate(dateStr);
+			const relHtml = rel ? `<div class="card-relative">${rel}</div>` : '';
 
-  if (viewMode === 'mine' && currentUser) {
-    const ud = dayObj[currentUser] || {};
-    const fEmoji = feelingEmoji(ud.feeling);
-    const wTag = ud.weather ? `<span class="card-weather-tag">${weatherLabel(ud.weather)}</span>` : '';
-    const notesHtml = (ud.notes || [])
-      .map(n => `<li class="note-bubble">${escapeHtml(n.text)}<div class="note-time">${formatTime(n.createdAt)}</div></li>`)
-      .join('');
-    return `<article class="day-card" data-date="${dateStr}">
+			if (viewMode === 'mine' && currentUser) {
+				const ud = dayObj[currentUser] || {};
+				const fEmoji = feelingEmoji(ud.feeling);
+				const wTag = ud.weather ? `<span class="card-weather-tag">${weatherLabel(ud.weather)}</span>` : '';
+				const notesHtml = (ud.notes || [])
+					.map(n => `<li class="note-bubble">${escapeHtml(n.text)}<div class="note-time">${formatTime(n.createdAt)}</div></li>`)
+					.join('');
+				return `<article class="day-card" data-date="${dateStr}">
       <div class="card-header">
         <span class="card-feeling">${fEmoji || '📝'}</span>
         <div class="card-date-group">
@@ -1994,15 +2536,15 @@ function buildDayCard(dateStr, dayObj) {
       </div>
       ${notesHtml ? `<ul class="card-notes">${notesHtml}</ul>` : ''}
     </article>`;
-  }
+			}
 
-  const entriesHtml = Object.entries(dayObj).map(([user, ud]) => {
-    const fEmoji = feelingEmoji(ud.feeling);
-    const wTag = ud.weather ? `<span class="card-weather-tag">${weatherLabel(ud.weather)}</span>` : '';
-    const notesHtml = (ud.notes || [])
-      .map(n => `<li class="note-bubble">${escapeHtml(n.text)}<div class="note-time">${formatTime(n.createdAt)}</div></li>`)
-      .join('');
-    return `<div class="user-entry">
+			const entriesHtml = Object.entries(dayObj).map(([user, ud]) => {
+				const fEmoji = feelingEmoji(ud.feeling);
+				const wTag = ud.weather ? `<span class="card-weather-tag">${weatherLabel(ud.weather)}</span>` : '';
+				const notesHtml = (ud.notes || [])
+					.map(n => `<li class="note-bubble">${escapeHtml(n.text)}<div class="note-time">${formatTime(n.createdAt)}</div></li>`)
+					.join('');
+				return `<div class="user-entry">
       <div class="user-entry-header">
         <span class="user-tag">${escapeHtml(user)}</span>
         ${fEmoji ? `<span class="card-feeling-sm">${fEmoji}</span>` : ''}
@@ -2010,9 +2552,9 @@ function buildDayCard(dateStr, dayObj) {
       </div>
       ${notesHtml ? `<ul class="card-notes">${notesHtml}</ul>` : ''}
     </div>`;
-  }).join('');
+			}).join('');
 
-  return `<article class="day-card" data-date="${dateStr}">
+			return `<article class="day-card" data-date="${dateStr}">
     <div class="card-header">
       <div class="card-date-group">
         <div class="card-date">${formatDate(dateStr)}</div>
@@ -2021,170 +2563,170 @@ function buildDayCard(dateStr, dayObj) {
     </div>
     ${entriesHtml}
   </article>`;
-}
+		}
 
-/* ── Calendar View ── */
-let calYear, calMonth;
+		/* ── Calendar View ── */
+		let calYear, calMonth;
 
-function initCalendar() {
-  const now = new Date();
-  calYear = now.getFullYear();
-  calMonth = now.getMonth();
-  renderCalendar();
-}
+		function initCalendar() {
+			const now = new Date();
+			calYear = now.getFullYear();
+			calMonth = now.getMonth();
+			renderCalendar();
+		}
 
-function renderCalendar() {
-  document.getElementById('cal-title').textContent = `${calYear}年${calMonth + 1}月`;
-  const grid = document.getElementById('calendar-grid');
-  const weekdays = ['日', '一', '二', '三', '四', '五', '六'];
-  const firstDay = new Date(calYear, calMonth, 1).getDay();
-  const daysInMonth = new Date(calYear, calMonth + 1, 0).getDate();
-  const todayD = todayStr();
-  const allDays = viewMode === 'mine' && currentUser
-    ? (() => { const r = {}; const m = loadMyData(); Object.entries(m.days).forEach(([d, day]) => { r[d] = { [currentUser]: day }; }); return r; })()
-    : getAllDaysData();
+		function renderCalendar() {
+			document.getElementById('cal-title').textContent = `${calYear}年${calMonth + 1}月`;
+			const grid = document.getElementById('calendar-grid');
+			const weekdays = ['日', '一', '二', '三', '四', '五', '六'];
+			const firstDay = new Date(calYear, calMonth, 1).getDay();
+			const daysInMonth = new Date(calYear, calMonth + 1, 0).getDate();
+			const todayD = todayStr();
+			const allDays = viewMode === 'mine' && currentUser
+				? (() => { const r = {}; const m = loadMyData(); Object.entries(m.days).forEach(([d, day]) => { r[d] = { [currentUser]: day }; }); return r; })()
+				: getAllDaysData();
 
-  let html = weekdays.map(w => `<div class="cal-weekday">${w}</div>`).join('');
-  for (let i = 0; i < firstDay; i++) html += '<div class="cal-day empty"></div>';
+			let html = weekdays.map(w => `<div class="cal-weekday">${w}</div>`).join('');
+			for (let i = 0; i < firstDay; i++) html += '<div class="cal-day empty"></div>';
 
-  for (let d = 1; d <= daysInMonth; d++) {
-    const dateStr = `${calYear}-${String(calMonth+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
-    const dayObj = allDays[dateStr];
-    const isToday = dateStr === todayD;
-    let emoji = '', hasNotes = false;
+			for (let d = 1; d <= daysInMonth; d++) {
+				const dateStr = `${calYear}-${String(calMonth + 1).padStart(2, '0')}-${String(d).padStart(2, '0')}`;
+				const dayObj = allDays[dateStr];
+				const isToday = dateStr === todayD;
+				let emoji = '', hasNotes = false;
 
-    if (dayObj) {
-      if (viewMode === 'mine' && currentUser && dayObj[currentUser]) {
-        emoji = feelingEmoji(dayObj[currentUser].feeling);
-        hasNotes = (dayObj[currentUser].notes?.length > 0);
-      } else if (viewMode === 'all') {
-        const firstUser = Object.values(dayObj)[0];
-        if (firstUser) { emoji = feelingEmoji(firstUser.feeling); hasNotes = Object.values(dayObj).some(u => u.notes?.length > 0); }
-      }
-    }
+				if (dayObj) {
+					if (viewMode === 'mine' && currentUser && dayObj[currentUser]) {
+						emoji = feelingEmoji(dayObj[currentUser].feeling);
+						hasNotes = (dayObj[currentUser].notes?.length > 0);
+					} else if (viewMode === 'all') {
+						const firstUser = Object.values(dayObj)[0];
+						if (firstUser) { emoji = feelingEmoji(firstUser.feeling); hasNotes = Object.values(dayObj).some(u => u.notes?.length > 0); }
+					}
+				}
 
-    const cls = ['cal-day', isToday && 'today', dayObj && 'has-record'].filter(Boolean).join(' ');
-    html += `<div class="${cls}" data-date="${dateStr}">
+				const cls = ['cal-day', isToday && 'today', dayObj && 'has-record'].filter(Boolean).join(' ');
+				html += `<div class="${cls}" data-date="${dateStr}">
       ${emoji ? `<span class="cal-emoji">${emoji}</span>` : ''}
       <span class="cal-num">${d}</span>
       ${hasNotes ? '<span class="cal-dot"></span>' : ''}
     </div>`;
-  }
-  grid.innerHTML = html;
-}
+			}
+			grid.innerHTML = html;
+		}
 
-/* ── Modal (Editor) ── */
-let currentEditDate = null;
+		/* ── Modal (Editor) ── */
+		let currentEditDate = null;
 
-function openEditor(dateStr) {
-  if (!currentUser) { showUserSelectOverlay(); return; }
-  currentEditDate = dateStr;
-  document.getElementById('modal-title').textContent = formatDate(dateStr);
-  const ud = getUserDayData(dateStr, currentUser);
-  renderFeelingGrid(ud?.feeling || null);
-  renderWeatherGrid(ud?.weather || null);
-  renderDietGrid(ud?.diet || null);
-  renderModalNotes(dateStr);
-  const input = document.getElementById('note-input');
-  const addBtn = document.getElementById('note-add');
-  input.value = '';
-  delete addBtn.dataset.editingId;
-  addBtn.textContent = '添加';
-  resetDeleteSection();
-  document.getElementById('modal').classList.add('open');
-  setTimeout(() => input.focus(), 350);
-}
+		function openEditor(dateStr) {
+			if (!currentUser) { showUserSelectOverlay(); return; }
+			currentEditDate = dateStr;
+			document.getElementById('modal-title').textContent = formatDate(dateStr);
+			const ud = getUserDayData(dateStr, currentUser);
+			renderFeelingGrid(ud?.feeling || null);
+			renderWeatherGrid(ud?.weather || null);
+			renderDietGrid(ud?.diet || null);
+			renderModalNotes(dateStr);
+			const input = document.getElementById('note-input');
+			const addBtn = document.getElementById('note-add');
+			input.value = '';
+			delete addBtn.dataset.editingId;
+			addBtn.textContent = '添加';
+			resetDeleteSection();
+			document.getElementById('modal').classList.add('open');
+			setTimeout(() => input.focus(), 350);
+		}
 
-function closeEditor() {
-  document.getElementById('modal').classList.remove('open');
-  closeDietDropdown();
-  currentEditDate = null;
-  renderWaterfall();
-  renderCalendar();
-}
+		function closeEditor() {
+			document.getElementById('modal').classList.remove('open');
+			closeDietDropdown();
+			currentEditDate = null;
+			renderWaterfall();
+			renderCalendar();
+		}
 
-/* ── Wheel Picker ── */
-function closeDietDropdown() {
-  document.getElementById('diet-panel')?.classList.remove('open');
-  document.getElementById('diet-col')?.classList.remove('active');
-  document.removeEventListener('click', dietOutsideHandler);
-}
-function dietOutsideHandler(e) {
-  if (!e.target.closest('#diet-col') && !e.target.closest('#diet-panel')) closeDietDropdown();
-}
-function closeAllWheels() {
-  document.getElementById('feeling-col').classList.remove('open');
-  document.getElementById('weather-col').classList.remove('open');
-  removeWheelBackdrop();
-}
-function addWheelBackdrop() {
-  removeWheelBackdrop();
-  const bd = document.createElement('div');
-  bd.className = 'wheel-backdrop'; bd.id = 'wheel-backdrop';
-  bd.addEventListener('click', closeAllWheels);
-  document.body.appendChild(bd);
-}
-function removeWheelBackdrop() { document.getElementById('wheel-backdrop')?.remove(); }
+		/* ── Wheel Picker ── */
+		function closeDietDropdown() {
+			document.getElementById('diet-panel')?.classList.remove('open');
+			document.getElementById('diet-col')?.classList.remove('active');
+			document.removeEventListener('click', dietOutsideHandler);
+		}
+		function dietOutsideHandler(e) {
+			if (!e.target.closest('#diet-col') && !e.target.closest('#diet-panel')) closeDietDropdown();
+		}
+		function closeAllWheels() {
+			document.getElementById('feeling-col').classList.remove('open');
+			document.getElementById('weather-col').classList.remove('open');
+			removeWheelBackdrop();
+		}
+		function addWheelBackdrop() {
+			removeWheelBackdrop();
+			const bd = document.createElement('div');
+			bd.className = 'wheel-backdrop'; bd.id = 'wheel-backdrop';
+			bd.addEventListener('click', closeAllWheels);
+			document.body.appendChild(bd);
+		}
+		function removeWheelBackdrop() { document.getElementById('wheel-backdrop')?.remove(); }
 
-function renderFeelingGrid(selectedKey) {
-  const col = document.getElementById('feeling-col');
-  const sel = FEELING_TYPES.find(f => f.key === selectedKey);
-  document.getElementById('feeling-emoji').textContent = sel ? sel.emoji : '😊';
-  col.querySelectorAll('.wheel-item').forEach(el => el.remove());
-  const radius = 78, step = 360 / FEELING_TYPES.length;
-  FEELING_TYPES.forEach((f, i) => {
-    const angle = (-90 + step * i) * Math.PI / 180;
-    const div = document.createElement('div');
-    div.className = 'wheel-item' + (f.key === selectedKey ? ' selected' : '');
-    div.dataset.feeling = f.key;
-    div.style.setProperty('--tx', Math.cos(angle) * radius + 'px');
-    div.style.setProperty('--ty', Math.sin(angle) * radius + 'px');
-    div.style.setProperty('--d', (i * 25) + 'ms');
-    div.innerHTML = `<span class="wheel-item__emoji">${f.emoji}</span><span class="wheel-item__label">${f.label}</span>`;
-    col.appendChild(div);
-  });
-}
+		function renderFeelingGrid(selectedKey) {
+			const col = document.getElementById('feeling-col');
+			const sel = FEELING_TYPES.find(f => f.key === selectedKey);
+			document.getElementById('feeling-emoji').textContent = sel ? sel.emoji : '😊';
+			col.querySelectorAll('.wheel-item').forEach(el => el.remove());
+			const radius = 78, step = 360 / FEELING_TYPES.length;
+			FEELING_TYPES.forEach((f, i) => {
+				const angle = (-90 + step * i) * Math.PI / 180;
+				const div = document.createElement('div');
+				div.className = 'wheel-item' + (f.key === selectedKey ? ' selected' : '');
+				div.dataset.feeling = f.key;
+				div.style.setProperty('--tx', Math.cos(angle) * radius + 'px');
+				div.style.setProperty('--ty', Math.sin(angle) * radius + 'px');
+				div.style.setProperty('--d', (i * 25) + 'ms');
+				div.innerHTML = `<span class="wheel-item__emoji">${f.emoji}</span><span class="wheel-item__label">${f.label}</span>`;
+				col.appendChild(div);
+			});
+		}
 
-function renderWeatherGrid(selectedKey) {
-  const col = document.getElementById('weather-col');
-  const sel = WEATHER_TYPES.find(w => w.key === selectedKey);
-  document.getElementById('weather-emoji').textContent = sel ? sel.emoji : '☁️';
-  col.querySelectorAll('.wheel-item').forEach(el => el.remove());
-  const radius = 82, step = 360 / WEATHER_TYPES.length;
-  WEATHER_TYPES.forEach((w, i) => {
-    const angle = (-90 + step * i) * Math.PI / 180;
-    const div = document.createElement('div');
-    div.className = 'wheel-item' + (w.key === selectedKey ? ' selected' : '');
-    div.dataset.weather = w.key;
-    div.style.setProperty('--tx', Math.cos(angle) * radius + 'px');
-    div.style.setProperty('--ty', Math.sin(angle) * radius + 'px');
-    div.style.setProperty('--d', (i * 20) + 'ms');
-    div.innerHTML = `<span class="wheel-item__emoji">${w.emoji}</span><span class="wheel-item__label">${w.label}</span>`;
-    col.appendChild(div);
-  });
-}
+		function renderWeatherGrid(selectedKey) {
+			const col = document.getElementById('weather-col');
+			const sel = WEATHER_TYPES.find(w => w.key === selectedKey);
+			document.getElementById('weather-emoji').textContent = sel ? sel.emoji : '☁️';
+			col.querySelectorAll('.wheel-item').forEach(el => el.remove());
+			const radius = 82, step = 360 / WEATHER_TYPES.length;
+			WEATHER_TYPES.forEach((w, i) => {
+				const angle = (-90 + step * i) * Math.PI / 180;
+				const div = document.createElement('div');
+				div.className = 'wheel-item' + (w.key === selectedKey ? ' selected' : '');
+				div.dataset.weather = w.key;
+				div.style.setProperty('--tx', Math.cos(angle) * radius + 'px');
+				div.style.setProperty('--ty', Math.sin(angle) * radius + 'px');
+				div.style.setProperty('--d', (i * 20) + 'ms');
+				div.innerHTML = `<span class="wheel-item__emoji">${w.emoji}</span><span class="wheel-item__label">${w.label}</span>`;
+				col.appendChild(div);
+			});
+		}
 
-function renderDietGrid(selectedKey) {
-  const sel = DIET_TYPES.find(d => d.key === selectedKey);
-  const emojiEl = document.getElementById('diet-emoji');
-  if (emojiEl) emojiEl.textContent = sel ? sel.emoji : '🍽️';
-  const bar = document.getElementById('diet-bar');
-  if (!bar) return;
-  bar.innerHTML = DIET_TYPES.map(d =>
-    `<button class="diet-option${d.key === selectedKey ? ' selected' : ''}" data-diet="${d.key}">
+		function renderDietGrid(selectedKey) {
+			const sel = DIET_TYPES.find(d => d.key === selectedKey);
+			const emojiEl = document.getElementById('diet-emoji');
+			if (emojiEl) emojiEl.textContent = sel ? sel.emoji : '🍽️';
+			const bar = document.getElementById('diet-bar');
+			if (!bar) return;
+			bar.innerHTML = DIET_TYPES.map(d =>
+				`<button class="diet-option${d.key === selectedKey ? ' selected' : ''}" data-diet="${d.key}">
       <span class="diet-option__emoji">${d.emoji}</span>
       <span class="diet-option__label">${d.label}</span>
     </button>`
-  ).join('');
-}
+			).join('');
+		}
 
-function renderModalNotes(dateStr) {
-  const list = document.getElementById('modal-notes');
-  const ud = getUserDayData(dateStr, currentUser);
-  if (!ud?.notes?.length) { list.innerHTML = ''; return; }
-  list.innerHTML = ud.notes
-    .slice().sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
-    .map(n => `<li class="modal-note-item">
+		function renderModalNotes(dateStr) {
+			const list = document.getElementById('modal-notes');
+			const ud = getUserDayData(dateStr, currentUser);
+			if (!ud?.notes?.length) { list.innerHTML = ''; return; }
+			list.innerHTML = ud.notes
+				.slice().sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
+				.map(n => `<li class="modal-note-item">
       <div>
         <div class="modal-note-text">${escapeHtml(n.text)}</div>
         <div class="modal-note-time">${formatTime(n.createdAt)}</div>
@@ -2192,13 +2734,13 @@ function renderModalNotes(dateStr) {
       <button class="note-edit-btn" data-note-id="${n.id}" data-note-text="${escapeHtml(n.text)}" title="编辑">✎</button>
       <button class="note-delete-btn" data-note-id="${n.id}" title="删除">&times;</button>
     </li>`).join('');
-}
+		}
 
-/* ── Import Confirm ── */
-function showImportConfirm(imported) {
-  const count = Object.keys(imported.days).length;
-  const card = document.querySelector('#modal .modal-card');
-  card.innerHTML = `
+		/* ── Import Confirm ── */
+		function showImportConfirm(imported) {
+			const count = Object.keys(imported.days).length;
+			const card = document.querySelector('#modal .modal-card');
+			card.innerHTML = `
     <div class="modal-header">
       <span class="modal-title">导入数据</span>
       <button class="modal-close" id="modal-close">&times;</button>
@@ -2211,27 +2753,27 @@ function showImportConfirm(imported) {
         <button class="btn-cancel" id="import-cancel">取消</button>
       </div>
     </div>`;
-  document.getElementById('modal').classList.add('open');
-  document.getElementById('import-merge').onclick = () => {
-    const merged = mergeMyData(loadMyData(), imported);
-    myData = merged; persistMyData(); closeImportModal();
-  };
-  document.getElementById('import-overwrite').onclick = () => {
-    myData = { version: 3, days: imported.days || {}, wishes: imported.wishes || [] };
-    persistMyData(); closeImportModal();
-  };
-  document.getElementById('import-cancel').onclick = closeImportModal;
-  document.getElementById('modal-close').onclick = closeImportModal;
-}
+			document.getElementById('modal').classList.add('open');
+			document.getElementById('import-merge').onclick = () => {
+				const merged = mergeMyData(loadMyData(), imported);
+				myData = merged; persistMyData(); closeImportModal();
+			};
+			document.getElementById('import-overwrite').onclick = () => {
+				myData = { version: 3, days: imported.days || {}, wishes: imported.wishes || [] };
+				persistMyData(); closeImportModal();
+			};
+			document.getElementById('import-cancel').onclick = closeImportModal;
+			document.getElementById('modal-close').onclick = closeImportModal;
+		}
 
-function closeImportModal() {
-  document.getElementById('modal').classList.remove('open');
-  restoreModalContent();
-  renderWaterfall(); renderCalendar();
-}
+		function closeImportModal() {
+			document.getElementById('modal').classList.remove('open');
+			restoreModalContent();
+			renderWaterfall(); renderCalendar();
+		}
 
-function restoreModalContent() {
-  document.querySelector('#modal .modal-card').innerHTML = `
+		function restoreModalContent() {
+			document.querySelector('#modal .modal-card').innerHTML = `
     <div class="modal-header">
       <span class="modal-title" id="modal-title"></span>
       <button class="modal-close" id="modal-close">&times;</button>
@@ -2272,547 +2814,547 @@ function restoreModalContent() {
     <div class="delete-day-section" id="delete-day-section">
       <button class="delete-day-btn" id="delete-day-btn">删除此天记录</button>
     </div>`;
-  bindModalEvents();
-}
+			bindModalEvents();
+		}
 
-/* ── User Select Overlay ── */
-function showUserSelectOverlay() {
-  renderUserSelectList();
-  document.getElementById('user-select-overlay').classList.add('open');
-}
+		/* ── User Select Overlay ── */
+		function showUserSelectOverlay() {
+			renderUserSelectList();
+			document.getElementById('user-select-overlay').classList.add('open');
+		}
 
-function hideUserSelectOverlay() {
-  document.getElementById('user-select-overlay').classList.remove('open');
-}
+		function hideUserSelectOverlay() {
+			document.getElementById('user-select-overlay').classList.remove('open');
+		}
 
-function renderUserSelectList() {
-  const list = document.getElementById('user-select-list');
-  list.innerHTML = knownUsers.map(u =>
-    `<button class="user-select-btn" data-user="${escapeHtml(u)}">${escapeHtml(u)}</button>`
-  ).join('');
-}
+		function renderUserSelectList() {
+			const list = document.getElementById('user-select-list');
+			list.innerHTML = knownUsers.map(u =>
+				`<button class="user-select-btn" data-user="${escapeHtml(u)}">${escapeHtml(u)}</button>`
+			).join('');
+		}
 
-function updateUserBadge() {
-  const badge = document.getElementById('user-badge');
-  if (!badge) return;
-  badge.textContent = currentUser ? currentUser[0].toUpperCase() : '?';
-  badge.title = currentUser ? `当前：${currentUser}（点击设置）` : '选择用户';
-}
+		function updateUserBadge() {
+			const badge = document.getElementById('user-badge');
+			if (!badge) return;
+			badge.textContent = currentUser ? currentUser[0].toUpperCase() : '?';
+			badge.title = currentUser ? `当前：${currentUser}（点击设置）` : '选择用户';
+		}
 
-/* ── Settings Modal ── */
-function openSettings() {
-  renderSettingsUsers();
-  renderSettingsGithub(!!localStorage.getItem('hed-use-custom'));
-  document.getElementById('settings-modal').classList.add('open');
-}
+		/* ── Settings Modal ── */
+		function openSettings() {
+			renderSettingsUsers();
+			renderSettingsGithub(!!localStorage.getItem('hed-use-custom'));
+			document.getElementById('settings-modal').classList.add('open');
+		}
 
-function closeSettings() {
-  document.getElementById('settings-modal').classList.remove('open');
-}
+		function closeSettings() {
+			document.getElementById('settings-modal').classList.remove('open');
+		}
 
-function renderSettingsUsers() {
-  document.getElementById('settings-user-list').innerHTML = knownUsers.length > 0
-    ? knownUsers.map(u => `
+		function renderSettingsUsers() {
+			document.getElementById('settings-user-list').innerHTML = knownUsers.length > 0
+				? knownUsers.map(u => `
       <div class="settings-user-row">
         <span class="settings-user-name${u === currentUser ? ' current' : ''}">${escapeHtml(u)}${u === currentUser ? ' ✓' : ''}</span>
         <button class="settings-user-switch" data-user="${escapeHtml(u)}">切换</button>
         <button class="settings-user-remove" data-user="${escapeHtml(u)}">删除</button>
       </div>`).join('')
-    : '<p style="color:var(--color-text-light);font-size:0.85rem;padding:var(--sp-sm) 0;">还没有成员</p>';
-}
+				: '<p style="color:var(--color-text-light);font-size:0.85rem;padding:var(--sp-sm) 0;">还没有成员</p>';
+		}
 
-function renderSettingsGithub(customMode = false) {
-  const cfg = getGhConfig() || {};
-  const builtinSection = document.getElementById('settings-github-builtin');
-  const customSection  = document.getElementById('settings-github-custom');
-  const usingBuiltin   = ENCRYPTED_CONFIG && localStorage.getItem('hed-decrypted-config');
+		function renderSettingsGithub(customMode = false) {
+			const cfg = getGhConfig() || {};
+			const builtinSection = document.getElementById('settings-github-builtin');
+			const customSection = document.getElementById('settings-github-custom');
+			const usingBuiltin = ENCRYPTED_CONFIG && localStorage.getItem('hed-decrypted-config');
 
-  if (ENCRYPTED_CONFIG && !localStorage.getItem('hed-decrypted-config')) {
-    builtinSection.style.display = 'block';
-    customSection.style.display  = 'none';
-    return;
-  }
+			if (ENCRYPTED_CONFIG && !localStorage.getItem('hed-decrypted-config')) {
+				builtinSection.style.display = 'block';
+				customSection.style.display = 'none';
+				return;
+			}
 
-  builtinSection.style.display = 'none';
-  customSection.style.display  = 'block';
+			builtinSection.style.display = 'none';
+			customSection.style.display = 'block';
 
-  const isReadonly = usingBuiltin && !customMode;
-  document.getElementById('gh-builtin-badge').style.display    = isReadonly ? 'flex' : 'none';
-  document.getElementById('gh-custom-hint').style.display      = isReadonly ? 'none' : 'block';
-  document.getElementById('gh-back-to-builtin').style.display  = (ENCRYPTED_CONFIG && customMode) ? 'block' : 'none';
+			const isReadonly = usingBuiltin && !customMode;
+			document.getElementById('gh-builtin-badge').style.display = isReadonly ? 'flex' : 'none';
+			document.getElementById('gh-custom-hint').style.display = isReadonly ? 'none' : 'block';
+			document.getElementById('gh-back-to-builtin').style.display = (ENCRYPTED_CONFIG && customMode) ? 'block' : 'none';
 
-  const inputs = ['gh-owner', 'gh-repo', 'gh-token', 'gh-datadir'];
-  inputs.forEach(id => {
-    const el = document.getElementById(id);
-    el.readOnly = isReadonly;
-  });
+			const inputs = ['gh-owner', 'gh-repo', 'gh-token', 'gh-datadir'];
+			inputs.forEach(id => {
+				const el = document.getElementById(id);
+				el.readOnly = isReadonly;
+			});
 
-  document.getElementById('gh-owner').value   = cfg.owner   || '';
-  document.getElementById('gh-repo').value    = cfg.repo    || '';
-  document.getElementById('gh-datadir').value = cfg.dataDir || '_data';
+			document.getElementById('gh-owner').value = cfg.owner || '';
+			document.getElementById('gh-repo').value = cfg.repo || '';
+			document.getElementById('gh-datadir').value = cfg.dataDir || '_data';
 
-  const tokenEl = document.getElementById('gh-token');
-  if (isReadonly) {
-    tokenEl.value = '';
-    tokenEl.placeholder = cfg.token ? `${cfg.token.slice(0, 12)}${'●'.repeat(8)}` : '';
-  } else {
-    tokenEl.value = '';
-    tokenEl.placeholder = cfg.token
-      ? `${cfg.token.slice(0, 12)}${'●'.repeat(8)}（留空保持不变）`
-      : 'github_pat_...';
-  }
+			const tokenEl = document.getElementById('gh-token');
+			if (isReadonly) {
+				tokenEl.value = '';
+				tokenEl.placeholder = cfg.token ? `${cfg.token.slice(0, 12)}${'●'.repeat(8)}` : '';
+			} else {
+				tokenEl.value = '';
+				tokenEl.placeholder = cfg.token
+					? `${cfg.token.slice(0, 12)}${'●'.repeat(8)}（留空保持不变）`
+					: 'github_pat_...';
+			}
 
-  const actionEls = document.querySelectorAll('#gh-test, #gh-pull, #gh-save');
-  actionEls.forEach(el => { el.disabled = isReadonly; });
-}
+			const actionEls = document.querySelectorAll('#gh-test, #gh-pull, #gh-save');
+			actionEls.forEach(el => { el.disabled = isReadonly; });
+		}
 
-/* ── Unlock Overlay ── */
-function showUnlockOverlay() {
-  document.getElementById('unlock-overlay').classList.add('open');
-  setTimeout(() => document.getElementById('unlock-input').focus(), 300);
-}
+		/* ── Unlock Overlay ── */
+		function showUnlockOverlay() {
+			document.getElementById('unlock-overlay').classList.add('open');
+			setTimeout(() => document.getElementById('unlock-input').focus(), 300);
+		}
 
-function hideUnlockOverlay() {
-  document.getElementById('unlock-overlay').classList.remove('open');
-}
+		function hideUnlockOverlay() {
+			document.getElementById('unlock-overlay').classList.remove('open');
+		}
 
-function bindUnlockOverlay() {
-  const doUnlock = async () => {
-    const pw = document.getElementById('unlock-input').value;
-    const errEl = document.getElementById('unlock-error');
-    if (!pw) { errEl.textContent = '请输入密码'; return; }
-    errEl.textContent = '';
-    document.getElementById('unlock-btn').textContent = '解锁中...';
-    try {
-      const cfg = await decryptConfig(ENCRYPTED_CONFIG, pw);
-      localStorage.setItem('hed-decrypted-config', JSON.stringify(cfg));
-      hideUnlockOverlay();
-      await afterUnlock();
-    } catch (_) {
-      errEl.textContent = '密码错误';
-      document.getElementById('unlock-input').value = '';
-      document.getElementById('unlock-input').focus();
-    } finally {
-      document.getElementById('unlock-btn').textContent = '解锁';
-    }
-  };
-  document.getElementById('unlock-btn').addEventListener('click', doUnlock);
-  document.getElementById('unlock-input').addEventListener('keydown', (e) => {
-    if (e.key === 'Enter' && !e.isComposing) doUnlock();
-  });
-  document.getElementById('unlock-skip').addEventListener('click', async () => {
-    hideUnlockOverlay();
-    await afterUnlock();
-  });
-}
+		function bindUnlockOverlay() {
+			const doUnlock = async () => {
+				const pw = document.getElementById('unlock-input').value;
+				const errEl = document.getElementById('unlock-error');
+				if (!pw) { errEl.textContent = '请输入密码'; return; }
+				errEl.textContent = '';
+				document.getElementById('unlock-btn').textContent = '解锁中...';
+				try {
+					const cfg = await decryptConfig(ENCRYPTED_CONFIG, pw);
+					localStorage.setItem('hed-decrypted-config', JSON.stringify(cfg));
+					hideUnlockOverlay();
+					await afterUnlock();
+				} catch (_) {
+					errEl.textContent = '密码错误';
+					document.getElementById('unlock-input').value = '';
+					document.getElementById('unlock-input').focus();
+				} finally {
+					document.getElementById('unlock-btn').textContent = '解锁';
+				}
+			};
+			document.getElementById('unlock-btn').addEventListener('click', doUnlock);
+			document.getElementById('unlock-input').addEventListener('keydown', (e) => {
+				if (e.key === 'Enter' && !e.isComposing) doUnlock();
+			});
+			document.getElementById('unlock-skip').addEventListener('click', async () => {
+				hideUnlockOverlay();
+				await afterUnlock();
+			});
+		}
 
-async function afterUnlock() {
-  loadKnownUsers();
-  loadOthers();
-  if (!currentUser || !knownUsers.includes(currentUser)) {
-    currentUser = null;
-    showUserSelectOverlay();
-  }
-  const cfg = getGhConfig();
-  if (cfg?.owner && cfg?.repo && cfg?.token) {
-    await pullMyData();
-    await pullAllOthers();
-    loadOthers();
-    renderWaterfall();
-    renderCalendar();
-    renderWishAssigneeOptions();
-    renderWishes();
-  }
-}
+		async function afterUnlock() {
+			loadKnownUsers();
+			loadOthers();
+			if (!currentUser || !knownUsers.includes(currentUser)) {
+				currentUser = null;
+				showUserSelectOverlay();
+			}
+			const cfg = getGhConfig();
+			if (cfg?.owner && cfg?.repo && cfg?.token) {
+				await pullMyData();
+				await pullAllOthers();
+				loadOthers();
+				renderWaterfall();
+				renderCalendar();
+				renderWishAssigneeOptions();
+				renderWishes();
+			}
+		}
 
-/* ── Delete helpers ── */
-function resetDeleteSection() {
-  document.getElementById('delete-day-section').innerHTML =
-    '<button class="delete-day-btn" id="delete-day-btn">删除此天记录</button>';
-}
+		/* ── Delete helpers ── */
+		function resetDeleteSection() {
+			document.getElementById('delete-day-section').innerHTML =
+				'<button class="delete-day-btn" id="delete-day-btn">删除此天记录</button>';
+		}
 
-function showDeleteConfirm() {
-  document.getElementById('delete-day-section').innerHTML = `
+		function showDeleteConfirm() {
+			document.getElementById('delete-day-section').innerHTML = `
     <span style="font-size:0.8rem;color:var(--color-text-light);">确定删除此天所有记录？</span>
     <div class="delete-confirm-row">
       <button class="btn-confirm-delete" id="confirm-delete-day">确定删除</button>
       <button class="btn-cancel-delete" id="cancel-delete-day">取消</button>
     </div>`;
-}
+		}
 
-/* ── Event Binding ── */
-function bindViewSwitch() {
-  document.querySelectorAll('.nav-btn').forEach(btn => {
-    btn.addEventListener('click', () => {
-      document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
-      const view = btn.dataset.view;
-      document.querySelectorAll('.view-section').forEach(s => s.classList.remove('active'));
-      document.getElementById(`${view}-view`).classList.add('active');
-    });
-  });
-}
+		/* ── Event Binding ── */
+		function bindViewSwitch() {
+			document.querySelectorAll('.nav-btn').forEach(btn => {
+				btn.addEventListener('click', () => {
+					document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+					btn.classList.add('active');
+					const view = btn.dataset.view;
+					document.querySelectorAll('.view-section').forEach(s => s.classList.remove('active'));
+					document.getElementById(`${view}-view`).classList.add('active');
+				});
+			});
+		}
 
-function bindViewModeToggle() {
-  document.getElementById('view-mode-toggle').addEventListener('click', (e) => {
-    const btn = e.target.closest('.view-mode-btn');
-    if (!btn) return;
-    viewMode = btn.dataset.mode;
-    localStorage.setItem(VIEW_KEY, viewMode);
-    document.querySelectorAll('.view-mode-btn').forEach(b => b.classList.toggle('active', b.dataset.mode === viewMode));
-    renderWaterfall();
-    renderCalendar();
-  });
-}
+		function bindViewModeToggle() {
+			document.getElementById('view-mode-toggle').addEventListener('click', (e) => {
+				const btn = e.target.closest('.view-mode-btn');
+				if (!btn) return;
+				viewMode = btn.dataset.mode;
+				localStorage.setItem(VIEW_KEY, viewMode);
+				document.querySelectorAll('.view-mode-btn').forEach(b => b.classList.toggle('active', b.dataset.mode === viewMode));
+				renderWaterfall();
+				renderCalendar();
+			});
+		}
 
-function bindWaterfallClicks() {
-  document.getElementById('waterfall').addEventListener('click', (e) => {
-    const card = e.target.closest('.day-card');
-    if (card) openEditor(card.dataset.date);
-  });
-}
+		function bindWaterfallClicks() {
+			document.getElementById('waterfall').addEventListener('click', (e) => {
+				const card = e.target.closest('.day-card');
+				if (card) openEditor(card.dataset.date);
+			});
+		}
 
-function bindCalendarClicks() {
-  document.getElementById('calendar-grid').addEventListener('click', (e) => {
-    const day = e.target.closest('.cal-day:not(.empty)');
-    if (day) openEditor(day.dataset.date);
-  });
-  document.getElementById('cal-prev').addEventListener('click', () => {
-    if (--calMonth < 0) { calMonth = 11; calYear--; } renderCalendar();
-  });
-  document.getElementById('cal-next').addEventListener('click', () => {
-    if (++calMonth > 11) { calMonth = 0; calYear++; } renderCalendar();
-  });
-}
+		function bindCalendarClicks() {
+			document.getElementById('calendar-grid').addEventListener('click', (e) => {
+				const day = e.target.closest('.cal-day:not(.empty)');
+				if (day) openEditor(day.dataset.date);
+			});
+			document.getElementById('cal-prev').addEventListener('click', () => {
+				if (--calMonth < 0) { calMonth = 11; calYear--; } renderCalendar();
+			});
+			document.getElementById('cal-next').addEventListener('click', () => {
+				if (++calMonth > 11) { calMonth = 0; calYear++; } renderCalendar();
+			});
+		}
 
-function bindModalEvents() {
-  document.getElementById('modal-close').addEventListener('click', closeEditor);
+		function bindModalEvents() {
+			document.getElementById('modal-close').addEventListener('click', closeEditor);
 
-  document.getElementById('feeling-trigger').addEventListener('click', () => {
-    const col = document.getElementById('feeling-col');
-    const other = document.getElementById('weather-col');
-    const opening = !col.classList.contains('open');
-    col.classList.toggle('open'); other.classList.remove('open');
-    closeDietDropdown();
-    opening ? addWheelBackdrop() : removeWheelBackdrop();
-  });
-  document.getElementById('feeling-col').addEventListener('click', (e) => {
-    const item = e.target.closest('.wheel-item');
-    if (item && currentEditDate) {
-      const key = item.dataset.feeling;
-      const cur = getUserDayData(currentEditDate, currentUser)?.feeling;
-      setFeeling(currentEditDate, cur === key ? null : key);
-      renderFeelingGrid(cur === key ? null : key);
-      closeAllWheels();
-    }
-  });
-  document.getElementById('weather-trigger').addEventListener('click', () => {
-    const col = document.getElementById('weather-col');
-    const other = document.getElementById('feeling-col');
-    const opening = !col.classList.contains('open');
-    col.classList.toggle('open'); other.classList.remove('open');
-    closeDietDropdown();
-    opening ? addWheelBackdrop() : removeWheelBackdrop();
-  });
-  document.getElementById('weather-col').addEventListener('click', (e) => {
-    const item = e.target.closest('.wheel-item');
-    if (item && currentEditDate) {
-      const key = item.dataset.weather;
-      const cur = getUserDayData(currentEditDate, currentUser)?.weather;
-      setWeather(currentEditDate, cur === key ? null : key);
-      renderWeatherGrid(cur === key ? null : key);
-      closeAllWheels();
-    }
-  });
+			document.getElementById('feeling-trigger').addEventListener('click', () => {
+				const col = document.getElementById('feeling-col');
+				const other = document.getElementById('weather-col');
+				const opening = !col.classList.contains('open');
+				col.classList.toggle('open'); other.classList.remove('open');
+				closeDietDropdown();
+				opening ? addWheelBackdrop() : removeWheelBackdrop();
+			});
+			document.getElementById('feeling-col').addEventListener('click', (e) => {
+				const item = e.target.closest('.wheel-item');
+				if (item && currentEditDate) {
+					const key = item.dataset.feeling;
+					const cur = getUserDayData(currentEditDate, currentUser)?.feeling;
+					setFeeling(currentEditDate, cur === key ? null : key);
+					renderFeelingGrid(cur === key ? null : key);
+					closeAllWheels();
+				}
+			});
+			document.getElementById('weather-trigger').addEventListener('click', () => {
+				const col = document.getElementById('weather-col');
+				const other = document.getElementById('feeling-col');
+				const opening = !col.classList.contains('open');
+				col.classList.toggle('open'); other.classList.remove('open');
+				closeDietDropdown();
+				opening ? addWheelBackdrop() : removeWheelBackdrop();
+			});
+			document.getElementById('weather-col').addEventListener('click', (e) => {
+				const item = e.target.closest('.wheel-item');
+				if (item && currentEditDate) {
+					const key = item.dataset.weather;
+					const cur = getUserDayData(currentEditDate, currentUser)?.weather;
+					setWeather(currentEditDate, cur === key ? null : key);
+					renderWeatherGrid(cur === key ? null : key);
+					closeAllWheels();
+				}
+			});
 
-  document.getElementById('diet-trigger').addEventListener('click', () => {
-    const panel = document.getElementById('diet-panel');
-    const isOpen = panel.classList.contains('open');
-    closeDietDropdown();
-    closeAllWheels();
-    if (!isOpen) {
-      renderDietGrid(getUserDayData(currentEditDate, currentUser)?.diet || null);
-      panel.classList.add('open');
-      document.getElementById('diet-col').classList.add('active');
-      setTimeout(() => document.addEventListener('click', dietOutsideHandler), 0);
-    }
-  });
+			document.getElementById('diet-trigger').addEventListener('click', () => {
+				const panel = document.getElementById('diet-panel');
+				const isOpen = panel.classList.contains('open');
+				closeDietDropdown();
+				closeAllWheels();
+				if (!isOpen) {
+					renderDietGrid(getUserDayData(currentEditDate, currentUser)?.diet || null);
+					panel.classList.add('open');
+					document.getElementById('diet-col').classList.add('active');
+					setTimeout(() => document.addEventListener('click', dietOutsideHandler), 0);
+				}
+			});
 
-  document.getElementById('diet-bar').addEventListener('click', (e) => {
-    const opt = e.target.closest('.diet-option');
-    if (opt && currentEditDate) {
-      const key = opt.dataset.diet;
-      const cur = getUserDayData(currentEditDate, currentUser)?.diet;
-      setDiet(currentEditDate, cur === key ? null : key);
-      renderDietGrid(cur === key ? null : key);
-      if (cur === key) closeDietDropdown();
-    }
-  });
+			document.getElementById('diet-bar').addEventListener('click', (e) => {
+				const opt = e.target.closest('.diet-option');
+				if (opt && currentEditDate) {
+					const key = opt.dataset.diet;
+					const cur = getUserDayData(currentEditDate, currentUser)?.diet;
+					setDiet(currentEditDate, cur === key ? null : key);
+					renderDietGrid(cur === key ? null : key);
+					if (cur === key) closeDietDropdown();
+				}
+			});
 
-  document.getElementById('note-add').addEventListener('click', () => {
-    const input = document.getElementById('note-input');
-    const addBtn = document.getElementById('note-add');
-    const text = input.value.trim();
-    if (!text || !currentEditDate) return;
-    if (addBtn.dataset.editingId) {
-      editNote(currentEditDate, addBtn.dataset.editingId, text);
-      delete addBtn.dataset.editingId;
-      addBtn.textContent = '添加';
-    } else {
-      addNote(currentEditDate, text);
-    }
-    input.value = '';
-    renderModalNotes(currentEditDate);
-    input.focus();
-  });
-  document.getElementById('note-input').addEventListener('keydown', (e) => {
-    if (e.key === 'Enter' && !e.isComposing) { e.preventDefault(); document.getElementById('note-add').click(); }
-  });
-  document.getElementById('modal-notes').addEventListener('click', (e) => {
-    const del = e.target.closest('.note-delete-btn');
-    if (del && currentEditDate) { deleteNote(currentEditDate, del.dataset.noteId); renderModalNotes(currentEditDate); return; }
-    const edit = e.target.closest('.note-edit-btn');
-    if (edit && currentEditDate) {
-      const input = document.getElementById('note-input');
-      const addBtn = document.getElementById('note-add');
-      input.value = edit.dataset.noteText;
-      input.focus();
-      addBtn.textContent = '保存';
-      addBtn.dataset.editingId = edit.dataset.noteId;
-    }
-  });
-  document.getElementById('delete-day-section').addEventListener('click', (e) => {
-    if (e.target.closest('#delete-day-btn')) { showDeleteConfirm(); return; }
-    if (e.target.closest('#confirm-delete-day')) { if (currentEditDate) { deleteDay(currentEditDate); closeEditor(); } return; }
-    if (e.target.closest('#cancel-delete-day')) resetDeleteSection();
-  });
-}
+			document.getElementById('note-add').addEventListener('click', () => {
+				const input = document.getElementById('note-input');
+				const addBtn = document.getElementById('note-add');
+				const text = input.value.trim();
+				if (!text || !currentEditDate) return;
+				if (addBtn.dataset.editingId) {
+					editNote(currentEditDate, addBtn.dataset.editingId, text);
+					delete addBtn.dataset.editingId;
+					addBtn.textContent = '添加';
+				} else {
+					addNote(currentEditDate, text);
+				}
+				input.value = '';
+				renderModalNotes(currentEditDate);
+				input.focus();
+			});
+			document.getElementById('note-input').addEventListener('keydown', (e) => {
+				if (e.key === 'Enter' && !e.isComposing) { e.preventDefault(); document.getElementById('note-add').click(); }
+			});
+			document.getElementById('modal-notes').addEventListener('click', (e) => {
+				const del = e.target.closest('.note-delete-btn');
+				if (del && currentEditDate) { deleteNote(currentEditDate, del.dataset.noteId); renderModalNotes(currentEditDate); return; }
+				const edit = e.target.closest('.note-edit-btn');
+				if (edit && currentEditDate) {
+					const input = document.getElementById('note-input');
+					const addBtn = document.getElementById('note-add');
+					input.value = edit.dataset.noteText;
+					input.focus();
+					addBtn.textContent = '保存';
+					addBtn.dataset.editingId = edit.dataset.noteId;
+				}
+			});
+			document.getElementById('delete-day-section').addEventListener('click', (e) => {
+				if (e.target.closest('#delete-day-btn')) { showDeleteConfirm(); return; }
+				if (e.target.closest('#confirm-delete-day')) { if (currentEditDate) { deleteDay(currentEditDate); closeEditor(); } return; }
+				if (e.target.closest('#cancel-delete-day')) resetDeleteSection();
+			});
+		}
 
-function bindModalOverlay() {
-  document.getElementById('modal').addEventListener('click', (e) => {
-    if (e.target === e.currentTarget) currentEditDate ? closeEditor() : closeImportModal();
-  });
-}
+		function bindModalOverlay() {
+			document.getElementById('modal').addEventListener('click', (e) => {
+				if (e.target === e.currentTarget) currentEditDate ? closeEditor() : closeImportModal();
+			});
+		}
 
-function bindFab() {
-  document.getElementById('fab-today').addEventListener('click', () => openEditor(todayStr()));
-}
+		function bindFab() {
+			document.getElementById('fab-today').addEventListener('click', () => openEditor(todayStr()));
+		}
 
-function bindExportImport() {
-  document.getElementById('btn-export').addEventListener('click', exportData);
-  document.getElementById('btn-import').addEventListener('click', () => document.getElementById('import-file').click());
-  document.getElementById('import-file').addEventListener('change', (e) => {
-    const file = e.target.files[0];
-    if (file) { importData(file); e.target.value = ''; }
-  });
-}
+		function bindExportImport() {
+			document.getElementById('btn-export').addEventListener('click', exportData);
+			document.getElementById('btn-import').addEventListener('click', () => document.getElementById('import-file').click());
+			document.getElementById('import-file').addEventListener('change', (e) => {
+				const file = e.target.files[0];
+				if (file) { importData(file); e.target.value = ''; }
+			});
+		}
 
-function bindUserBadge() {
-  document.getElementById('user-badge').addEventListener('click', openSettings);
-}
+		function bindUserBadge() {
+			document.getElementById('user-badge').addEventListener('click', openSettings);
+		}
 
-function bindUserSelectOverlay() {
-  document.getElementById('user-select-list').addEventListener('click', (e) => {
-    const btn = e.target.closest('.user-select-btn');
-    if (!btn) return;
-    selectUser(btn.dataset.user);
-    hideUserSelectOverlay();
-    renderWaterfall(); renderCalendar(); renderWishAssigneeOptions();
-  });
+		function bindUserSelectOverlay() {
+			document.getElementById('user-select-list').addEventListener('click', (e) => {
+				const btn = e.target.closest('.user-select-btn');
+				if (!btn) return;
+				selectUser(btn.dataset.user);
+				hideUserSelectOverlay();
+				renderWaterfall(); renderCalendar(); renderWishAssigneeOptions();
+			});
 
-  const doAddUser = () => {
-    const input = document.getElementById('user-select-input');
-    const name = input.value.trim();
-    if (!name) return;
-    if (addUser(name)) {
-      input.value = '';
-      selectUser(name);
-      hideUserSelectOverlay();
-      renderWaterfall(); renderCalendar(); renderWishAssigneeOptions();
-    } else {
-      input.select();
-    }
-  };
-  document.getElementById('user-select-add-btn').addEventListener('click', doAddUser);
-  document.getElementById('user-select-input').addEventListener('keydown', (e) => {
-    if (e.key === 'Enter' && !e.isComposing) doAddUser();
-  });
-}
+			const doAddUser = () => {
+				const input = document.getElementById('user-select-input');
+				const name = input.value.trim();
+				if (!name) return;
+				if (addUser(name)) {
+					input.value = '';
+					selectUser(name);
+					hideUserSelectOverlay();
+					renderWaterfall(); renderCalendar(); renderWishAssigneeOptions();
+				} else {
+					input.select();
+				}
+			};
+			document.getElementById('user-select-add-btn').addEventListener('click', doAddUser);
+			document.getElementById('user-select-input').addEventListener('keydown', (e) => {
+				if (e.key === 'Enter' && !e.isComposing) doAddUser();
+			});
+		}
 
-function bindSettings() {
-  document.getElementById('btn-settings').addEventListener('click', openSettings);
-  document.getElementById('settings-close').addEventListener('click', closeSettings);
-  document.getElementById('settings-modal').addEventListener('click', (e) => {
-    if (e.target === e.currentTarget) closeSettings();
-  });
+		function bindSettings() {
+			document.getElementById('btn-settings').addEventListener('click', openSettings);
+			document.getElementById('settings-close').addEventListener('click', closeSettings);
+			document.getElementById('settings-modal').addEventListener('click', (e) => {
+				if (e.target === e.currentTarget) closeSettings();
+			});
 
-  document.querySelectorAll('.settings-tab').forEach(tab => {
-    tab.addEventListener('click', () => {
-      const which = tab.dataset.tab;
-      document.querySelectorAll('.settings-tab').forEach(t => t.classList.toggle('active', t.dataset.tab === which));
-      document.getElementById('settings-users-panel').classList.toggle('hidden', which !== 'users');
-      document.getElementById('settings-github-panel').classList.toggle('hidden', which !== 'github');
-    });
-  });
+			document.querySelectorAll('.settings-tab').forEach(tab => {
+				tab.addEventListener('click', () => {
+					const which = tab.dataset.tab;
+					document.querySelectorAll('.settings-tab').forEach(t => t.classList.toggle('active', t.dataset.tab === which));
+					document.getElementById('settings-users-panel').classList.toggle('hidden', which !== 'users');
+					document.getElementById('settings-github-panel').classList.toggle('hidden', which !== 'github');
+				});
+			});
 
-  document.getElementById('settings-user-list').addEventListener('click', (e) => {
-    const sw = e.target.closest('.settings-user-switch');
-    if (sw) {
-      selectUser(sw.dataset.user);
-      loadOthers();
-      renderSettingsUsers(); renderWaterfall(); renderCalendar(); renderWishAssigneeOptions();
-      return;
-    }
-    const rm = e.target.closest('.settings-user-remove');
-    if (rm) {
-      if (knownUsers.length <= 1) { alert('至少保留一个成员'); return; }
-      if (confirm(`删除成员「${rm.dataset.user}」的账号？`)) {
-        removeUser(rm.dataset.user); renderSettingsUsers();
-      }
-    }
-  });
+			document.getElementById('settings-user-list').addEventListener('click', (e) => {
+				const sw = e.target.closest('.settings-user-switch');
+				if (sw) {
+					selectUser(sw.dataset.user);
+					loadOthers();
+					renderSettingsUsers(); renderWaterfall(); renderCalendar(); renderWishAssigneeOptions();
+					return;
+				}
+				const rm = e.target.closest('.settings-user-remove');
+				if (rm) {
+					if (knownUsers.length <= 1) { alert('至少保留一个成员'); return; }
+					if (confirm(`删除成员「${rm.dataset.user}」的账号？`)) {
+						removeUser(rm.dataset.user); renderSettingsUsers();
+					}
+				}
+			});
 
-  const doAddSettingsUser = () => {
-    const input = document.getElementById('settings-new-user');
-    const name = input.value.trim();
-    if (!name) return;
-    if (addUser(name)) { input.value = ''; renderSettingsUsers(); renderWishAssigneeOptions(); }
-    else { input.select(); alert('成员名已存在'); }
-  };
-  document.getElementById('settings-add-user-btn').addEventListener('click', doAddSettingsUser);
-  document.getElementById('settings-new-user').addEventListener('keydown', (e) => {
-    if (e.key === 'Enter' && !e.isComposing) doAddSettingsUser();
-  });
+			const doAddSettingsUser = () => {
+				const input = document.getElementById('settings-new-user');
+				const name = input.value.trim();
+				if (!name) return;
+				if (addUser(name)) { input.value = ''; renderSettingsUsers(); renderWishAssigneeOptions(); }
+				else { input.select(); alert('成员名已存在'); }
+			};
+			document.getElementById('settings-add-user-btn').addEventListener('click', doAddSettingsUser);
+			document.getElementById('settings-new-user').addEventListener('keydown', (e) => {
+				if (e.key === 'Enter' && !e.isComposing) doAddSettingsUser();
+			});
 
-  document.getElementById('gh-save').addEventListener('click', () => {
-    const existing = getGhConfig() || {};
-    const newToken = document.getElementById('gh-token').value.trim();
-    const cfg = {
-      owner:   document.getElementById('gh-owner').value.trim(),
-      repo:    document.getElementById('gh-repo').value.trim(),
-      token:   newToken || existing.token || '',
-      dataDir: document.getElementById('gh-datadir').value.trim() || '_data'
-    };
-    localStorage.setItem(GH_KEY, JSON.stringify(cfg));
-    const statusEl = document.getElementById('gh-status');
-    statusEl.textContent = '✓ 已保存';
-    document.getElementById('gh-token').value = '';
-    document.getElementById('gh-token').placeholder = cfg.token
-      ? `${cfg.token.slice(0, 12)}${'●'.repeat(8)}（留空保持不变）`
-      : 'github_pat_...';
-    setTimeout(() => { statusEl.textContent = ''; }, 2000);
-  });
+			document.getElementById('gh-save').addEventListener('click', () => {
+				const existing = getGhConfig() || {};
+				const newToken = document.getElementById('gh-token').value.trim();
+				const cfg = {
+					owner: document.getElementById('gh-owner').value.trim(),
+					repo: document.getElementById('gh-repo').value.trim(),
+					token: newToken || existing.token || '',
+					dataDir: document.getElementById('gh-datadir').value.trim() || '_data'
+				};
+				localStorage.setItem(GH_KEY, JSON.stringify(cfg));
+				const statusEl = document.getElementById('gh-status');
+				statusEl.textContent = '✓ 已保存';
+				document.getElementById('gh-token').value = '';
+				document.getElementById('gh-token').placeholder = cfg.token
+					? `${cfg.token.slice(0, 12)}${'●'.repeat(8)}（留空保持不变）`
+					: 'github_pat_...';
+				setTimeout(() => { statusEl.textContent = ''; }, 2000);
+			});
 
-  document.getElementById('gh-test').addEventListener('click', async () => {
-    const statusEl = document.getElementById('gh-status');
-    statusEl.textContent = '连接中...';
-    const owner = document.getElementById('gh-owner').value.trim();
-    const repo  = document.getElementById('gh-repo').value.trim();
-    const token = document.getElementById('gh-token').value.trim();
-    if (!owner || !repo || !token) { statusEl.textContent = '请先填写完整配置'; return; }
-    try {
-      const res = await fetch(`https://api.github.com/repos/${owner}/${repo}`, {
-        headers: { 'Authorization': `token ${token}`, 'Accept': 'application/vnd.github.v3+json' }
-      });
-      statusEl.textContent = res.ok ? '✓ 连接成功' : `✗ 失败 (${res.status})`;
-    } catch (_) { statusEl.textContent = '✗ 网络错误'; }
-  });
+			document.getElementById('gh-test').addEventListener('click', async () => {
+				const statusEl = document.getElementById('gh-status');
+				statusEl.textContent = '连接中...';
+				const owner = document.getElementById('gh-owner').value.trim();
+				const repo = document.getElementById('gh-repo').value.trim();
+				const token = document.getElementById('gh-token').value.trim();
+				if (!owner || !repo || !token) { statusEl.textContent = '请先填写完整配置'; return; }
+				try {
+					const res = await fetch(`https://api.github.com/repos/${owner}/${repo}`, {
+						headers: { 'Authorization': `token ${token}`, 'Accept': 'application/vnd.github.v3+json' }
+					});
+					statusEl.textContent = res.ok ? '✓ 连接成功' : `✗ 失败 (${res.status})`;
+				} catch (_) { statusEl.textContent = '✗ 网络错误'; }
+			});
 
-  document.getElementById('gh-pull').addEventListener('click', async () => {
-    const statusEl = document.getElementById('gh-status');
-    statusEl.textContent = '拉取中...';
-    await pullMyData();
-    await pullAllOthers();
-    loadOthers();
-    statusEl.textContent = '✓ 完成';
-    renderWaterfall(); renderCalendar(); renderWishes();
-    setTimeout(() => { statusEl.textContent = ''; }, 2000);
-  });
+			document.getElementById('gh-pull').addEventListener('click', async () => {
+				const statusEl = document.getElementById('gh-status');
+				statusEl.textContent = '拉取中...';
+				await pullMyData();
+				await pullAllOthers();
+				loadOthers();
+				statusEl.textContent = '✓ 完成';
+				renderWaterfall(); renderCalendar(); renderWishes();
+				setTimeout(() => { statusEl.textContent = ''; }, 2000);
+			});
 
-  document.getElementById('gh-builtin-unlock').addEventListener('click', async () => {
-    const pw = document.getElementById('gh-builtin-password').value;
-    const statusEl = document.getElementById('gh-builtin-status');
-    if (!pw) { statusEl.textContent = '请输入 Token 密码'; return; }
-    statusEl.textContent = '解锁中...';
-    try {
-      const cfg = await decryptConfig(ENCRYPTED_CONFIG, pw);
-      localStorage.setItem('hed-decrypted-config', JSON.stringify(cfg));
-      localStorage.removeItem('hed-use-custom');
-      statusEl.textContent = '✓ 已解锁，正在同步...';
-      renderSettingsGithub(false);
-      await pullMyData();
-      await pullAllOthers();
-      loadOthers();
-      renderWaterfall(); renderCalendar(); renderWishes();
-      statusEl.textContent = '✓ 同步完成';
-      setTimeout(() => { statusEl.textContent = ''; }, 2000);
-    } catch (_) {
-      statusEl.textContent = '✗ 密码错误';
-      document.getElementById('gh-builtin-password').value = '';
-      document.getElementById('gh-builtin-password').focus();
-    }
-  });
+			document.getElementById('gh-builtin-unlock').addEventListener('click', async () => {
+				const pw = document.getElementById('gh-builtin-password').value;
+				const statusEl = document.getElementById('gh-builtin-status');
+				if (!pw) { statusEl.textContent = '请输入 Token 密码'; return; }
+				statusEl.textContent = '解锁中...';
+				try {
+					const cfg = await decryptConfig(ENCRYPTED_CONFIG, pw);
+					localStorage.setItem('hed-decrypted-config', JSON.stringify(cfg));
+					localStorage.removeItem('hed-use-custom');
+					statusEl.textContent = '✓ 已解锁，正在同步...';
+					renderSettingsGithub(false);
+					await pullMyData();
+					await pullAllOthers();
+					loadOthers();
+					renderWaterfall(); renderCalendar(); renderWishes();
+					statusEl.textContent = '✓ 同步完成';
+					setTimeout(() => { statusEl.textContent = ''; }, 2000);
+				} catch (_) {
+					statusEl.textContent = '✗ 密码错误';
+					document.getElementById('gh-builtin-password').value = '';
+					document.getElementById('gh-builtin-password').focus();
+				}
+			});
 
-  document.getElementById('gh-builtin-password').addEventListener('keydown', (e) => {
-    if (e.key === 'Enter' && !e.isComposing) document.getElementById('gh-builtin-unlock').click();
-  });
+			document.getElementById('gh-builtin-password').addEventListener('keydown', (e) => {
+				if (e.key === 'Enter' && !e.isComposing) document.getElementById('gh-builtin-unlock').click();
+			});
 
-  // "使用自定义配置" in the unlock panel (builtin not yet unlocked)
-  document.getElementById('gh-use-custom').addEventListener('click', () => {
-    localStorage.setItem('hed-use-custom', '1');
-    renderSettingsGithub(true);
-  });
+			// "使用自定义配置" in the unlock panel (builtin not yet unlocked)
+			document.getElementById('gh-use-custom').addEventListener('click', () => {
+				localStorage.setItem('hed-use-custom', '1');
+				renderSettingsGithub(true);
+			});
 
-  // "更换为自定义 Token" shown after builtin is unlocked
-  document.getElementById('gh-switch-custom').addEventListener('click', () => {
-    localStorage.setItem('hed-use-custom', '1');
-    renderSettingsGithub(true);
-  });
+			// "更换为自定义 Token" shown after builtin is unlocked
+			document.getElementById('gh-switch-custom').addEventListener('click', () => {
+				localStorage.setItem('hed-use-custom', '1');
+				renderSettingsGithub(true);
+			});
 
-  // "切换回内置加密配置" — clear decrypted cache so password is required again
-  document.getElementById('gh-revert-builtin').addEventListener('click', () => {
-    localStorage.removeItem('hed-decrypted-config');
-    localStorage.removeItem('hed-use-custom');
-    renderSettingsGithub(false);
-  });
-}
+			// "切换回内置加密配置" — clear decrypted cache so password is required again
+			document.getElementById('gh-revert-builtin').addEventListener('click', () => {
+				localStorage.removeItem('hed-decrypted-config');
+				localStorage.removeItem('hed-use-custom');
+				renderSettingsGithub(false);
+			});
+		}
 
-/* ── Wish Pool ── */
-let wishFilter = 'all';
+		/* ── Wish Pool ── */
+		let wishFilter = 'all';
 
-function renderWishAssigneeOptions() {
-  const select = document.getElementById('wish-assignee');
-  if (!select) return;
-  select.innerHTML = `<option value="">期待谁来实现？</option>` +
-    knownUsers.map(u => `<option value="${escapeHtml(u)}">${escapeHtml(u)}</option>`).join('');
-}
+		function renderWishAssigneeOptions() {
+			const select = document.getElementById('wish-assignee');
+			if (!select) return;
+			select.innerHTML = `<option value="">期待谁来实现？</option>` +
+				knownUsers.map(u => `<option value="${escapeHtml(u)}">${escapeHtml(u)}</option>`).join('');
+		}
 
-function renderWishes() {
-  const list = document.getElementById('wish-list');
-  if (!list) return;
-  let wishes = loadWishes().slice().sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+		function renderWishes() {
+			const list = document.getElementById('wish-list');
+			if (!list) return;
+			let wishes = loadWishes().slice().sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
 
-  if (wishFilter === 'pending') wishes = wishes.filter(w => !w.fulfilled);
-  else if (wishFilter === 'fulfilled') wishes = wishes.filter(w => w.fulfilled);
+			if (wishFilter === 'pending') wishes = wishes.filter(w => !w.fulfilled);
+			else if (wishFilter === 'fulfilled') wishes = wishes.filter(w => w.fulfilled);
 
-  if (wishes.length === 0) {
-    const msgs = {
-      all: '还没有任何愿望<br>写下第一个愿望吧 ✨',
-      pending: '没有未实现的愿望<br>所有愿望都已成真 🌟',
-      fulfilled: '还没有实现的愿望<br>努力让愿望成真吧 💪'
-    };
-    list.innerHTML = `<div class="wish-pool-empty"><div class="empty-icon">🌊</div><p>${msgs[wishFilter]}</p></div>`;
-    return;
-  }
+			if (wishes.length === 0) {
+				const msgs = {
+					all: '还没有任何愿望<br>写下第一个愿望吧 ✨',
+					pending: '没有未实现的愿望<br>所有愿望都已成真 🌟',
+					fulfilled: '还没有实现的愿望<br>努力让愿望成真吧 💪'
+				};
+				list.innerHTML = `<div class="wish-pool-empty"><div class="empty-icon">🌊</div><p>${msgs[wishFilter]}</p></div>`;
+				return;
+			}
 
-  list.innerHTML = wishes.map(w => {
-    const assigneeTag = w.assignee
-      ? `<span class="wish-assignee-tag">🎯 ${escapeHtml(w.assignee)}</span>`
-      : '';
-    const creatorText = w.createdBy ? `${escapeHtml(w.createdBy)} 许愿` : '匿名许愿';
-    const dateText = formatDate(w.createdAt.slice(0, 10));
-    const fulfilledBadge = w.fulfilled ? `<span class="wish-fulfilled-badge">✓ 已实现</span>` : '';
-    return `<div class="wish-card${w.fulfilled ? ' fulfilled' : ''}" data-wish-id="${w.id}">
+			list.innerHTML = wishes.map(w => {
+				const assigneeTag = w.assignee
+					? `<span class="wish-assignee-tag">🎯 ${escapeHtml(w.assignee)}</span>`
+					: '';
+				const creatorText = w.createdBy ? `${escapeHtml(w.createdBy)} 许愿` : '匿名许愿';
+				const dateText = formatDate(w.createdAt.slice(0, 10));
+				const fulfilledBadge = w.fulfilled ? `<span class="wish-fulfilled-badge">✓ 已实现</span>` : '';
+				return `<div class="wish-card${w.fulfilled ? ' fulfilled' : ''}" data-wish-id="${w.id}">
       <button class="wish-check" data-wish-id="${w.id}" title="${w.fulfilled ? '取消实现' : '标记为已实现'}">${w.fulfilled ? '✓' : ''}</button>
       <div class="wish-body">
         <div class="wish-text">${escapeHtml(w.text)}</div>
@@ -2827,105 +3369,106 @@ function renderWishes() {
         <button class="wish-del-btn" data-wish-id="${w.id}" title="删除">&times;</button>
       </div>
     </div>`;
-  }).join('');
-}
+			}).join('');
+		}
 
-function bindWishes() {
-  document.getElementById('wish-submit').addEventListener('click', () => {
-    const input = document.getElementById('wish-input');
-    const text = input.value.trim();
-    if (!text) return;
-    if (!currentUser) { showUserSelectOverlay(); return; }
-    const assignee = document.getElementById('wish-assignee').value;
-    addWish(text, assignee);
-    input.value = '';
-    renderWishes();
-  });
+		function bindWishes() {
+			document.getElementById('wish-submit').addEventListener('click', () => {
+				const input = document.getElementById('wish-input');
+				const text = input.value.trim();
+				if (!text) return;
+				if (!currentUser) { showUserSelectOverlay(); return; }
+				const assignee = document.getElementById('wish-assignee').value;
+				addWish(text, assignee);
+				input.value = '';
+				renderWishes();
+			});
 
-  document.getElementById('wish-input').addEventListener('keydown', (e) => {
-    if (e.key === 'Enter' && !e.isComposing) {
-      e.preventDefault();
-      document.getElementById('wish-submit').click();
-    }
-  });
+			document.getElementById('wish-input').addEventListener('keydown', (e) => {
+				if (e.key === 'Enter' && !e.isComposing) {
+					e.preventDefault();
+					document.getElementById('wish-submit').click();
+				}
+			});
 
-  document.querySelectorAll('.wish-filter-btn').forEach(btn => {
-    btn.addEventListener('click', () => {
-      wishFilter = btn.dataset.filter;
-      document.querySelectorAll('.wish-filter-btn').forEach(b => b.classList.toggle('active', b.dataset.filter === wishFilter));
-      renderWishes();
-    });
-  });
+			document.querySelectorAll('.wish-filter-btn').forEach(btn => {
+				btn.addEventListener('click', () => {
+					wishFilter = btn.dataset.filter;
+					document.querySelectorAll('.wish-filter-btn').forEach(b => b.classList.toggle('active', b.dataset.filter === wishFilter));
+					renderWishes();
+				});
+			});
 
-  document.getElementById('wish-list').addEventListener('click', (e) => {
-    const checkBtn = e.target.closest('.wish-check');
-    if (checkBtn) {
-      toggleWishFulfilled(checkBtn.dataset.wishId);
-      renderWishes();
-      return;
-    }
-    const delBtn = e.target.closest('.wish-del-btn');
-    if (delBtn) {
-      deleteWish(delBtn.dataset.wishId);
-      renderWishes();
-    }
-  });
-}
+			document.getElementById('wish-list').addEventListener('click', (e) => {
+				const checkBtn = e.target.closest('.wish-check');
+				if (checkBtn) {
+					toggleWishFulfilled(checkBtn.dataset.wishId);
+					renderWishes();
+					return;
+				}
+				const delBtn = e.target.closest('.wish-del-btn');
+				if (delBtn) {
+					deleteWish(delBtn.dataset.wishId);
+					renderWishes();
+				}
+			});
+		}
 
-/* ── Init ── */
-async function init() {
-  bindViewSwitch();
-  bindViewModeToggle();
-  bindWaterfallClicks();
-  bindCalendarClicks();
-  bindModalEvents();
-  bindModalOverlay();
-  bindFab();
-  bindExportImport();
-  bindUserBadge();
-  bindUserSelectOverlay();
-  bindSettings();
-  bindUnlockOverlay();
-  bindWishes();
+		/* ── Init ── */
+		async function init() {
+			bindViewSwitch();
+			bindViewModeToggle();
+			bindWaterfallClicks();
+			bindCalendarClicks();
+			bindModalEvents();
+			bindModalOverlay();
+			bindFab();
+			bindExportImport();
+			bindUserBadge();
+			bindUserSelectOverlay();
+			bindSettings();
+			bindUnlockOverlay();
+			bindWishes();
 
-  document.getElementById('btn-sync').addEventListener('click', async () => {
-    const cfg = getGhConfig();
-    if (!cfg?.owner || !cfg?.repo || !cfg?.token) {
-      openSettings();
-      document.querySelectorAll('.settings-tab').forEach(t => t.classList.toggle('active', t.dataset.tab === 'github'));
-      document.getElementById('settings-users-panel').classList.add('hidden');
-      document.getElementById('settings-github-panel').classList.remove('hidden');
-      return;
-    }
-    await pullMyData();
-    await pullAllOthers();
-    loadOthers();
-    renderWaterfall(); renderCalendar(); renderWishAssigneeOptions(); renderWishes();
-  });
+			document.getElementById('btn-sync').addEventListener('click', async () => {
+				const cfg = getGhConfig();
+				if (!cfg?.owner || !cfg?.repo || !cfg?.token) {
+					openSettings();
+					document.querySelectorAll('.settings-tab').forEach(t => t.classList.toggle('active', t.dataset.tab === 'github'));
+					document.getElementById('settings-users-panel').classList.add('hidden');
+					document.getElementById('settings-github-panel').classList.remove('hidden');
+					return;
+				}
+				await pullMyData();
+				await pullAllOthers();
+				loadOthers();
+				renderWaterfall(); renderCalendar(); renderWishAssigneeOptions(); renderWishes();
+			});
 
-  document.querySelectorAll('.view-mode-btn').forEach(b => b.classList.toggle('active', b.dataset.mode === viewMode));
-  loadKnownUsers();
-  loadOthers();
-  updateUserBadge();
-  renderWaterfall();
-  initCalendar();
-  renderWishAssigneeOptions();
-  renderWishes();
+			document.querySelectorAll('.view-mode-btn').forEach(b => b.classList.toggle('active', b.dataset.mode === viewMode));
+			loadKnownUsers();
+			loadOthers();
+			updateUserBadge();
+			renderWaterfall();
+			initCalendar();
+			renderWishAssigneeOptions();
+			renderWishes();
 
-  if (ENCRYPTED_CONFIG && !localStorage.getItem('hed-decrypted-config')) {
-    showUnlockOverlay();
-  } else {
-    await afterUnlock();
-  }
-}
+			if (ENCRYPTED_CONFIG && !localStorage.getItem('hed-decrypted-config')) {
+				showUnlockOverlay();
+			} else {
+				await afterUnlock();
+			}
+		}
 
-document.addEventListener('DOMContentLoaded', init);
+		document.addEventListener('DOMContentLoaded', init);
 
-if ('serviceWorker' in navigator) {
-  window.addEventListener('load', () => {
-    navigator.serviceWorker.register('./sw.js');
-  });
-}
-</script>
+		if ('serviceWorker' in navigator) {
+			window.addEventListener('load', () => {
+				navigator.serviceWorker.register('./sw.js');
+			});
+		}
+	</script>
 </body>
+
 </html>
