@@ -1639,6 +1639,7 @@
 		const USER_KEY = 'hed-current-user';
 		const VIEW_KEY = 'hed-view-mode';
 		const GH_KEY = 'hed-github-config';
+		const UNLOCK_KEY = 'hed-unlock-password';
 
 		// Built-in encrypted config (password = the token itself)
 		const ENCRYPTED_CONFIG = 'iQkB5fWt1DzP4VBzNZxJNjDlcbYZWHZ4fQaV/XVTNwPc+jwuc21UYgXPTaufCq6dPDvhahnThA2FH6HVSvKqiRsqTtxfwG15R1EN+YnPvazOMYTva3v0UeZjRUiuspv0+Rfqb6eL4pjSgUADMwXm82ml64hz4e6gTKlMFj74eYJ/MYPPVSc6xEI8FYR311geDB+H7GWWXg3azXlfZN8RvI0sSiuEsaS120nvMmY7iG/jx07nGYJxSrAl5mO+Sjyjzl6m7MXKcVc2aXCL1IbOkzBV';
@@ -2391,6 +2392,7 @@
 				try {
 					const cfg = await decryptConfig(ENCRYPTED_CONFIG, pw);
 					sessionStorage.setItem('hed-decrypted-config', JSON.stringify(cfg));
+					localStorage.setItem(UNLOCK_KEY, pw);
 					hideUnlockOverlay();
 					await afterUnlock();
 				} catch (_) {
@@ -2774,7 +2776,19 @@
 			initCalendar();
 
 			if (ENCRYPTED_CONFIG && !sessionStorage.getItem('hed-decrypted-config')) {
-				showUnlockOverlay();
+				const saved = localStorage.getItem(UNLOCK_KEY);
+				if (saved) {
+					try {
+						const cfg = await decryptConfig(ENCRYPTED_CONFIG, saved);
+						sessionStorage.setItem('hed-decrypted-config', JSON.stringify(cfg));
+						await afterUnlock();
+					} catch (_) {
+						localStorage.removeItem(UNLOCK_KEY);
+						showUnlockOverlay();
+					}
+				} else {
+					showUnlockOverlay();
+				}
 			} else {
 				await afterUnlock();
 			}
