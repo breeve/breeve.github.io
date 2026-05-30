@@ -2275,6 +2275,30 @@ function bindUnlockOverlay() {
   });
 }
 
+/* ── Auto Poll ── */
+let pollTimer = null;
+
+function startPoll() {
+  if (pollTimer) return;
+  pollTimer = setInterval(async () => {
+    const cfg = getGhConfig();
+    if (!cfg?.owner || !cfg?.repo || !cfg?.token) return;
+    const prevSnap = JSON.stringify(myData) + JSON.stringify(othersData);
+    await pullMyData();
+    await pullAllOthers();
+    loadOthers();
+    const newSnap = JSON.stringify(myData) + JSON.stringify(othersData);
+    if (newSnap !== prevSnap) {
+      renderUserSelectList();
+      updateUserBadge();
+      renderWaterfall();
+      renderCalendar();
+      renderWishAssigneeOptions();
+      renderWishes();
+    }
+  }, 30000);
+}
+
 async function afterUnlock() {
   loadKnownUsers();
   loadOthers();
@@ -2287,11 +2311,15 @@ async function afterUnlock() {
     await pullMyData();
     await pullAllOthers();
     loadOthers();
+    // Re-render user list in case GitHub returned new members
+    renderUserSelectList();
+    updateUserBadge();
     renderWaterfall();
     renderCalendar();
     renderWishAssigneeOptions();
     renderWishes();
   }
+  startPoll();
 }
 
 /* ── Delete helpers ── */
@@ -2648,10 +2676,7 @@ async function init() {
   document.getElementById('btn-sync').addEventListener('click', async () => {
     const cfg = getGhConfig();
     if (!cfg?.owner || !cfg?.repo || !cfg?.token) {
-      openSettings();
-      document.querySelectorAll('.settings-tab').forEach(t => t.classList.toggle('active', t.dataset.tab === 'github'));
-      document.getElementById('settings-users-panel').classList.add('hidden');
-      document.getElementById('settings-github-panel').classList.remove('hidden');
+      showUnlockOverlay();
       return;
     }
     await pullMyData();
