@@ -1,4 +1,4 @@
-const CACHE = 'happy-every-day-v1';
+const CACHE = 'happy-every-day-v2';
 const ASSETS = [
   './',
   './index.html',
@@ -21,9 +21,16 @@ self.addEventListener('activate', e => {
   );
 });
 
+// Network-first: 优先从网络拉取，成功则更新缓存；离线时降级到缓存
 self.addEventListener('fetch', e => {
   if (e.request.method !== 'GET') return;
   e.respondWith(
-    caches.match(e.request).then(cached => cached || fetch(e.request))
+    fetch(e.request)
+      .then(res => {
+        const clone = res.clone();
+        caches.open(CACHE).then(c => c.put(e.request, clone));
+        return res;
+      })
+      .catch(() => caches.match(e.request))
   );
 });

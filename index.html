@@ -921,7 +921,6 @@ body {
 .sync-btn { font-size: 0.8rem; padding: 4px 10px; }
 .sync-btn:disabled { opacity: 0.5; cursor: not-allowed; }
 
-.builtin-hint { background: var(--color-sky); border-left: 3px solid #7ab8e8; }
 
 /* ── All-mode user entries ── */
 .user-entry {
@@ -1041,27 +1040,7 @@ body {
 .settings-card {
   max-width: 420px;
 }
-.settings-tabs {
-  display: flex;
-  border-bottom: 1px solid var(--color-border);
-  margin: 0 calc(-1 * var(--sp-xl)) var(--sp-md);
-  padding: 0 var(--sp-xl);
-}
-.settings-tab {
-  border: none;
-  background: transparent;
-  font-family: inherit;
-  font-size: 0.9rem;
-  padding: var(--sp-sm) var(--sp-md);
-  color: var(--color-text-light);
-  cursor: pointer;
-  border-bottom: 2px solid transparent;
-  margin-bottom: -1px;
-  transition: all 0.2s;
-}
-.settings-tab.active { color: var(--color-accent); border-bottom-color: var(--color-accent); }
 .settings-panel { padding-top: var(--sp-sm); }
-.settings-panel.hidden { display: none; }
 .settings-section-label {
   font-size: 0.75rem;
   font-weight: 600;
@@ -1079,11 +1058,6 @@ body {
 }
 .settings-user-name { flex: 1; font-size: 0.95rem; }
 .settings-user-name.current { font-weight: 700; color: var(--color-accent); }
-.settings-add-row {
-  display: flex;
-  gap: var(--sp-sm);
-  margin-top: var(--sp-md);
-}
 .settings-field { margin-bottom: var(--sp-md); }
 .settings-field label {
   display: block;
@@ -1109,7 +1083,6 @@ body {
 .settings-input:focus { border-color: var(--color-accent); }
 .settings-input[readonly] { background: var(--color-border); color: var(--color-text-light); cursor: default; border-style: dashed; }
 .settings-input[readonly]:focus { border-color: var(--color-border); }
-.settings-builtin-badge { display:inline-flex;align-items:center;gap:6px;font-size:0.78rem;color:#67b07c;background:#e8f7ed;border:1px solid #b5e2c4;border-radius:20px;padding:3px 10px;margin-bottom:var(--sp-md); }
 .settings-actions {
   display: flex;
   gap: var(--sp-sm);
@@ -1399,69 +1372,9 @@ body {
       <span class="modal-title">设置</span>
       <button class="modal-close" id="settings-close">&times;</button>
     </div>
-    <div class="settings-tabs">
-      <button class="settings-tab active" data-tab="users">用户管理</button>
-      <button class="settings-tab" data-tab="github">GitHub 同步</button>
-    </div>
     <div class="settings-panel" id="settings-users-panel">
       <div class="settings-section-label">当前成员</div>
       <div id="settings-user-list"></div>
-      <div class="settings-add-row">
-        <input class="settings-input" id="settings-new-user" placeholder="添加新成员..." maxlength="20">
-        <button class="settings-btn-primary" id="settings-add-user-btn">添加</button>
-      </div>
-    </div>
-    <div class="settings-panel hidden" id="settings-github-panel">
-      <div id="settings-github-builtin" style="display:none;">
-        <div class="settings-hint builtin-hint">
-          🔒 此文件内置了加密的同步配置。输入 Token 密码即可直接使用，无需手动填写。
-        </div>
-        <div class="settings-field">
-          <label>Token 密码</label>
-          <input class="settings-input" id="gh-builtin-password" type="password" placeholder="输入 GitHub Token...">
-        </div>
-        <div class="settings-actions">
-          <button class="settings-btn-primary" id="gh-builtin-unlock">使用内置配置</button>
-        </div>
-        <div class="settings-status" id="gh-builtin-status"></div>
-        <div style="margin-top:var(--sp-md);text-align:center;">
-          <button class="settings-btn-sm" id="gh-use-custom" style="background:none;color:var(--color-text-light);border:none;cursor:pointer;font-size:0.8rem;text-decoration:underline;">使用自定义配置</button>
-        </div>
-      </div>
-      <div id="settings-github-custom">
-        <div id="gh-builtin-badge" style="display:none;flex-direction:column;gap:6px;margin-bottom:var(--sp-md);">
-          <span class="settings-builtin-badge">🔒 使用内置加密配置</span>
-          <button class="settings-text-link" id="gh-switch-custom">更换为自定义 Token</button>
-        </div>
-        <div id="gh-custom-hint" class="settings-hint" style="display:none;">
-          在 GitHub 创建一个私有仓库，生成 Fine-grained Token（仅需该 repo 的 Contents 读写权限），填入下方即可多设备同步。
-        </div>
-        <div class="settings-field">
-          <label>GitHub 用户名 / Org</label>
-          <input class="settings-input" id="gh-owner" placeholder="例如：zhangfeng5">
-        </div>
-        <div class="settings-field">
-          <label>仓库名</label>
-          <input class="settings-input" id="gh-repo" placeholder="例如：family-journal">
-        </div>
-        <div class="settings-field">
-          <label>Personal Access Token</label>
-          <input class="settings-input" id="gh-token" type="password" placeholder="github_pat_...">
-        </div>
-        <div class="settings-field">
-          <label>数据目录</label>
-          <input class="settings-input" id="gh-datadir" placeholder="_data">
-        </div>
-        <div class="settings-actions">
-          <button class="settings-btn-sm" id="gh-test">测试连接</button>
-          <button class="settings-btn-sm" id="gh-pull">立即拉取</button>
-          <button class="settings-btn-primary" id="gh-save">保存配置</button>
-        </div>
-        <div class="settings-status" id="gh-status"></div>
-        <div id="gh-back-to-builtin" style="display:none;margin-top:var(--sp-md);">
-          <button class="settings-text-link" id="gh-revert-builtin">切换回内置加密配置</button>
-        </div>
-      </div>
     </div>
   </div>
 </div>
@@ -2303,7 +2216,6 @@ function updateUserBadge() {
 /* ── Settings Modal ── */
 function openSettings() {
   renderSettingsUsers();
-  renderSettingsGithub(!!localStorage.getItem('hed-use-custom'));
   document.getElementById('settings-modal').classList.add('open');
 }
 
@@ -2322,50 +2234,6 @@ function renderSettingsUsers() {
     : '<p style="color:var(--color-text-light);font-size:0.85rem;padding:var(--sp-sm) 0;">还没有成员</p>';
 }
 
-function renderSettingsGithub(customMode = false) {
-  const cfg = getGhConfig() || {};
-  const builtinSection = document.getElementById('settings-github-builtin');
-  const customSection  = document.getElementById('settings-github-custom');
-  const usingBuiltin   = ENCRYPTED_CONFIG && localStorage.getItem('hed-decrypted-config');
-
-  if (ENCRYPTED_CONFIG && !localStorage.getItem('hed-decrypted-config')) {
-    builtinSection.style.display = 'block';
-    customSection.style.display  = 'none';
-    return;
-  }
-
-  builtinSection.style.display = 'none';
-  customSection.style.display  = 'block';
-
-  const isReadonly = usingBuiltin && !customMode;
-  document.getElementById('gh-builtin-badge').style.display    = isReadonly ? 'flex' : 'none';
-  document.getElementById('gh-custom-hint').style.display      = isReadonly ? 'none' : 'block';
-  document.getElementById('gh-back-to-builtin').style.display  = (ENCRYPTED_CONFIG && customMode) ? 'block' : 'none';
-
-  const inputs = ['gh-owner', 'gh-repo', 'gh-token', 'gh-datadir'];
-  inputs.forEach(id => {
-    const el = document.getElementById(id);
-    el.readOnly = isReadonly;
-  });
-
-  document.getElementById('gh-owner').value   = cfg.owner   || '';
-  document.getElementById('gh-repo').value    = cfg.repo    || '';
-  document.getElementById('gh-datadir').value = cfg.dataDir || '_data';
-
-  const tokenEl = document.getElementById('gh-token');
-  if (isReadonly) {
-    tokenEl.value = '';
-    tokenEl.placeholder = cfg.token ? `${cfg.token.slice(0, 12)}${'●'.repeat(8)}` : '';
-  } else {
-    tokenEl.value = '';
-    tokenEl.placeholder = cfg.token
-      ? `${cfg.token.slice(0, 12)}${'●'.repeat(8)}（留空保持不变）`
-      : 'github_pat_...';
-  }
-
-  const actionEls = document.querySelectorAll('#gh-test, #gh-pull, #gh-save');
-  actionEls.forEach(el => { el.disabled = isReadonly; });
-}
 
 /* ── Unlock Overlay ── */
 function showUnlockOverlay() {
@@ -2647,15 +2515,6 @@ function bindSettings() {
     if (e.target === e.currentTarget) closeSettings();
   });
 
-  document.querySelectorAll('.settings-tab').forEach(tab => {
-    tab.addEventListener('click', () => {
-      const which = tab.dataset.tab;
-      document.querySelectorAll('.settings-tab').forEach(t => t.classList.toggle('active', t.dataset.tab === which));
-      document.getElementById('settings-users-panel').classList.toggle('hidden', which !== 'users');
-      document.getElementById('settings-github-panel').classList.toggle('hidden', which !== 'github');
-    });
-  });
-
   document.getElementById('settings-user-list').addEventListener('click', (e) => {
     const sw = e.target.closest('.settings-user-switch');
     if (sw) {
@@ -2673,109 +2532,6 @@ function bindSettings() {
     }
   });
 
-  const doAddSettingsUser = () => {
-    const input = document.getElementById('settings-new-user');
-    const name = input.value.trim();
-    if (!name) return;
-    if (addUser(name)) { input.value = ''; renderSettingsUsers(); renderWishAssigneeOptions(); }
-    else { input.select(); alert('成员名已存在'); }
-  };
-  document.getElementById('settings-add-user-btn').addEventListener('click', doAddSettingsUser);
-  document.getElementById('settings-new-user').addEventListener('keydown', (e) => {
-    if (e.key === 'Enter' && !e.isComposing) doAddSettingsUser();
-  });
-
-  document.getElementById('gh-save').addEventListener('click', () => {
-    const existing = getGhConfig() || {};
-    const newToken = document.getElementById('gh-token').value.trim();
-    const cfg = {
-      owner:   document.getElementById('gh-owner').value.trim(),
-      repo:    document.getElementById('gh-repo').value.trim(),
-      token:   newToken || existing.token || '',
-      dataDir: document.getElementById('gh-datadir').value.trim() || '_data'
-    };
-    localStorage.setItem(GH_KEY, JSON.stringify(cfg));
-    const statusEl = document.getElementById('gh-status');
-    statusEl.textContent = '✓ 已保存';
-    document.getElementById('gh-token').value = '';
-    document.getElementById('gh-token').placeholder = cfg.token
-      ? `${cfg.token.slice(0, 12)}${'●'.repeat(8)}（留空保持不变）`
-      : 'github_pat_...';
-    setTimeout(() => { statusEl.textContent = ''; }, 2000);
-  });
-
-  document.getElementById('gh-test').addEventListener('click', async () => {
-    const statusEl = document.getElementById('gh-status');
-    statusEl.textContent = '连接中...';
-    const owner = document.getElementById('gh-owner').value.trim();
-    const repo  = document.getElementById('gh-repo').value.trim();
-    const token = document.getElementById('gh-token').value.trim();
-    if (!owner || !repo || !token) { statusEl.textContent = '请先填写完整配置'; return; }
-    try {
-      const res = await fetch(`https://api.github.com/repos/${owner}/${repo}`, {
-        headers: { 'Authorization': `token ${token}`, 'Accept': 'application/vnd.github.v3+json' }
-      });
-      statusEl.textContent = res.ok ? '✓ 连接成功' : `✗ 失败 (${res.status})`;
-    } catch (_) { statusEl.textContent = '✗ 网络错误'; }
-  });
-
-  document.getElementById('gh-pull').addEventListener('click', async () => {
-    const statusEl = document.getElementById('gh-status');
-    statusEl.textContent = '拉取中...';
-    await pullMyData();
-    await pullAllOthers();
-    loadOthers();
-    statusEl.textContent = '✓ 完成';
-    renderWaterfall(); renderCalendar(); renderWishes();
-    setTimeout(() => { statusEl.textContent = ''; }, 2000);
-  });
-
-  document.getElementById('gh-builtin-unlock').addEventListener('click', async () => {
-    const pw = document.getElementById('gh-builtin-password').value;
-    const statusEl = document.getElementById('gh-builtin-status');
-    if (!pw) { statusEl.textContent = '请输入 Token 密码'; return; }
-    statusEl.textContent = '解锁中...';
-    try {
-      const cfg = await decryptConfig(ENCRYPTED_CONFIG, pw);
-      localStorage.setItem('hed-decrypted-config', JSON.stringify(cfg));
-      localStorage.removeItem('hed-use-custom');
-      statusEl.textContent = '✓ 已解锁，正在同步...';
-      renderSettingsGithub(false);
-      await pullMyData();
-      await pullAllOthers();
-      loadOthers();
-      renderWaterfall(); renderCalendar(); renderWishes();
-      statusEl.textContent = '✓ 同步完成';
-      setTimeout(() => { statusEl.textContent = ''; }, 2000);
-    } catch (_) {
-      statusEl.textContent = '✗ 密码错误';
-      document.getElementById('gh-builtin-password').value = '';
-      document.getElementById('gh-builtin-password').focus();
-    }
-  });
-
-  document.getElementById('gh-builtin-password').addEventListener('keydown', (e) => {
-    if (e.key === 'Enter' && !e.isComposing) document.getElementById('gh-builtin-unlock').click();
-  });
-
-  // "使用自定义配置" in the unlock panel (builtin not yet unlocked)
-  document.getElementById('gh-use-custom').addEventListener('click', () => {
-    localStorage.setItem('hed-use-custom', '1');
-    renderSettingsGithub(true);
-  });
-
-  // "更换为自定义 Token" shown after builtin is unlocked
-  document.getElementById('gh-switch-custom').addEventListener('click', () => {
-    localStorage.setItem('hed-use-custom', '1');
-    renderSettingsGithub(true);
-  });
-
-  // "切换回内置加密配置" — clear decrypted cache so password is required again
-  document.getElementById('gh-revert-builtin').addEventListener('click', () => {
-    localStorage.removeItem('hed-decrypted-config');
-    localStorage.removeItem('hed-use-custom');
-    renderSettingsGithub(false);
-  });
 }
 
 /* ── Wish Pool ── */
