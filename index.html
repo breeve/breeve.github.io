@@ -578,29 +578,6 @@ body {
 .empty-state .empty-icon { font-size: 3rem; margin-bottom: var(--sp-md); }
 .empty-state p { font-size: 0.95rem; line-height: 1.8; }
 
-/* ── Import confirm ── */
-.import-confirm {
-  display: flex;
-  gap: var(--sp-sm);
-  margin-top: var(--sp-md);
-  justify-content: center;
-}
-.import-confirm button {
-  border: none;
-  font-family: inherit;
-  font-size: 0.85rem;
-  padding: 8px 20px;
-  border-radius: var(--radius-sm);
-  cursor: pointer;
-  transition: all 0.2s;
-}
-.btn-merge { background: var(--color-mint); color: var(--color-text); }
-.btn-overwrite { background: var(--color-rose); color: var(--color-text); }
-.btn-cancel { background: var(--bg-secondary); color: var(--color-text-light); }
-
-/* ── Hidden file input ── */
-#import-file { display: none; }
-
 /* ── View toggle ── */
 .view-section { display: none; }
 .view-section.active { display: block; }
@@ -1259,10 +1236,7 @@ body {
       <span class="sync-status" id="sync-status"></span>
       <button class="action-btn sync-btn" id="btn-sync" title="同步到 GitHub">⇅ 同步</button>
       <button class="user-badge" id="user-badge" title="切换用户">?</button>
-      <button class="action-btn" id="btn-export">导出</button>
-      <button class="action-btn" id="btn-import">导入</button>
       <button class="action-btn" id="btn-settings">⚙</button>
-      <input type="file" id="import-file" accept=".json">
     </div>
   </div>
 </header>
@@ -1806,28 +1780,6 @@ function setSyncStatus(state) {
   if (state === 'synced') setTimeout(() => { if (el.classList.contains('synced')) { el.textContent = ''; el.className = 'sync-status'; } }, 3000);
 }
 
-/* ── Export / Import ── */
-function exportData() {
-  const json = JSON.stringify(loadMyData(), null, 2);
-  const a = Object.assign(document.createElement('a'), {
-    href: URL.createObjectURL(new Blob([json], { type: 'application/json' })),
-    download: `happy-every-day-${currentUser || 'backup'}-${todayStr()}.json`
-  });
-  document.body.appendChild(a); a.click(); document.body.removeChild(a);
-}
-
-function importData(file) {
-  const reader = new FileReader();
-  reader.onload = (e) => {
-    try {
-      const imported = JSON.parse(e.target.result);
-      if (!imported?.days) { alert('文件格式不正确'); return; }
-      showImportConfirm(imported);
-    } catch (_) { alert('文件解析失败'); }
-  };
-  reader.readAsText(file);
-}
-
 /* ── Helpers ── */
 function todayStr() {
   const d = new Date();
@@ -2106,87 +2058,6 @@ function renderModalNotes(dateStr) {
       <button class="note-edit-btn" data-note-id="${n.id}" data-note-text="${escapeHtml(n.text)}" title="编辑">✎</button>
       <button class="note-delete-btn" data-note-id="${n.id}" title="删除">&times;</button>
     </li>`).join('');
-}
-
-/* ── Import Confirm ── */
-function showImportConfirm(imported) {
-  const count = Object.keys(imported.days).length;
-  const card = document.querySelector('#modal .modal-card');
-  card.innerHTML = `
-    <div class="modal-header">
-      <span class="modal-title">导入数据</span>
-      <button class="modal-close" id="modal-close">&times;</button>
-    </div>
-    <div class="modal-section" style="text-align:center;">
-      <p>检测到 <strong>${count}</strong> 天的记录</p>
-      <div class="import-confirm">
-        <button class="btn-merge" id="import-merge">合并</button>
-        <button class="btn-overwrite" id="import-overwrite">覆盖</button>
-        <button class="btn-cancel" id="import-cancel">取消</button>
-      </div>
-    </div>`;
-  document.getElementById('modal').classList.add('open');
-  document.getElementById('import-merge').onclick = () => {
-    const merged = mergeMyData(loadMyData(), imported);
-    myData = merged; persistMyData(); closeImportModal();
-  };
-  document.getElementById('import-overwrite').onclick = () => {
-    myData = { version: 3, days: imported.days || {}, wishes: imported.wishes || [] };
-    persistMyData(); closeImportModal();
-  };
-  document.getElementById('import-cancel').onclick = closeImportModal;
-  document.getElementById('modal-close').onclick = closeImportModal;
-}
-
-function closeImportModal() {
-  document.getElementById('modal').classList.remove('open');
-  restoreModalContent();
-  renderWaterfall(); renderCalendar();
-}
-
-function restoreModalContent() {
-  document.querySelector('#modal .modal-card').innerHTML = `
-    <div class="modal-header">
-      <span class="modal-title" id="modal-title"></span>
-      <button class="modal-close" id="modal-close">&times;</button>
-    </div>
-    <div class="modal-section">
-      <div class="picker-row">
-        <div class="picker-col" id="feeling-col">
-          <button class="wheel-trigger" id="feeling-trigger">
-            <span class="wheel-trigger__emoji" id="feeling-emoji">😊</span>
-            <span>体感</span>
-          </button>
-        </div>
-        <div class="picker-col" id="weather-col">
-          <button class="wheel-trigger" id="weather-trigger">
-            <span class="wheel-trigger__emoji" id="weather-emoji">☁️</span>
-            <span>天气</span>
-          </button>
-        </div>
-        <div class="picker-col" id="diet-col">
-          <button class="wheel-trigger" id="diet-trigger">
-            <span class="wheel-trigger__emoji" id="diet-emoji">🍽️</span>
-            <span>吃的</span>
-          </button>
-        </div>
-      </div>
-      <div class="diet-panel" id="diet-panel">
-        <div class="diet-bar" id="diet-bar"></div>
-      </div>
-    </div>
-    <div class="modal-section">
-      <div class="modal-label">碎碎念</div>
-      <div class="note-input-row">
-        <input class="note-input" id="note-input" placeholder="写点什么..." maxlength="500">
-        <button class="note-add-btn" id="note-add">添加</button>
-      </div>
-      <ul class="modal-notes-list" id="modal-notes"></ul>
-    </div>
-    <div class="delete-day-section" id="delete-day-section">
-      <button class="delete-day-btn" id="delete-day-btn">删除此天记录</button>
-    </div>`;
-  bindModalEvents();
 }
 
 /* ── User Select Overlay ── */
@@ -2487,21 +2358,12 @@ function bindModalEvents() {
 
 function bindModalOverlay() {
   document.getElementById('modal').addEventListener('click', (e) => {
-    if (e.target === e.currentTarget) currentEditDate ? closeEditor() : closeImportModal();
+    if (e.target === e.currentTarget) closeEditor();
   });
 }
 
 function bindFab() {
   document.getElementById('fab-today').addEventListener('click', () => openEditor(todayStr()));
-}
-
-function bindExportImport() {
-  document.getElementById('btn-export').addEventListener('click', exportData);
-  document.getElementById('btn-import').addEventListener('click', () => document.getElementById('import-file').click());
-  document.getElementById('import-file').addEventListener('change', (e) => {
-    const file = e.target.files[0];
-    if (file) { importData(file); e.target.value = ''; }
-  });
 }
 
 function bindUserBadge() {
@@ -2665,8 +2527,6 @@ async function init() {
   bindCalendarClicks();
   bindModalEvents();
   bindModalOverlay();
-  bindFab();
-  bindExportImport();
   bindUserBadge();
   bindUserSelectOverlay();
   bindSettings();
