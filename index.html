@@ -2230,6 +2230,7 @@ function bindViewModeToggle() {
     document.querySelectorAll('.view-mode-btn').forEach(b => b.classList.toggle('active', b.dataset.mode === viewMode));
     renderWaterfall();
     renderCalendar();
+    renderWishes();
   });
 }
 
@@ -2437,7 +2438,14 @@ function renderWishAssigneeOptions() {
 function renderWishes() {
   const list = document.getElementById('wish-list');
   if (!list) return;
-  let wishes = loadWishes().slice().sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+  let wishes;
+  if (viewMode === 'all') {
+    const myWishes = loadWishes();
+    const otherWishes = Object.values(othersData).flatMap(d => d.wishes || []);
+    wishes = [...myWishes, ...otherWishes].sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+  } else {
+    wishes = loadWishes().slice().sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+  }
 
   if (wishFilter === 'pending') wishes = wishes.filter(w => !w.fulfilled);
   else if (wishFilter === 'fulfilled') wishes = wishes.filter(w => w.fulfilled);
