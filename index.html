@@ -2217,7 +2217,7 @@ function bindViewSwitch() {
       const view = btn.dataset.view;
       document.querySelectorAll('.view-section').forEach(s => s.classList.remove('active'));
       document.getElementById(`${view}-view`).classList.add('active');
-      document.getElementById('fab-today').style.display = view === 'wishes' ? 'none' : '';
+      document.getElementById('fab-today').style.display = (view === 'wishes' || view === 'calendar') ? 'none' : '';
     });
   });
 }
