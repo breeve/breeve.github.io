@@ -625,6 +625,49 @@ body {
 .diet-option__emoji { font-size: 1.1rem; line-height: 1; }
 .diet-option__label { font-size: 0.62rem; color: var(--color-text); font-weight: 500; }
 
+/* ── Poop Panel ── */
+.poop-panel {
+  overflow: hidden;
+  max-height: 0;
+  transition: max-height 0.3s var(--ease-out), opacity 0.25s var(--ease-out);
+  opacity: 0;
+}
+.poop-panel.open {
+  max-height: 80px;
+  opacity: 1;
+}
+.poop-bar {
+  display: flex;
+  gap: 3px;
+  margin-top: var(--sp-sm);
+  height: 52px;
+  align-items: stretch;
+}
+.poop-option {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+  border: none;
+  cursor: pointer;
+  font-family: inherit;
+  border-radius: 6px;
+  transition: all 0.2s var(--ease-out);
+  position: relative;
+}
+.poop-option:first-child { border-radius: var(--radius-sm) 6px 6px var(--radius-sm); }
+.poop-option:last-child  { border-radius: 6px var(--radius-sm) var(--radius-sm) 6px; }
+.poop-option[data-poop="severe"]      { background: #fdc9a0; }
+.poop-option[data-poop="mild"]        { background: #fde68a; }
+.poop-option[data-poop="smooth"]      { background: #b7ebca; }
+.poop-option[data-poop="constipated"] { background: #e0d0c8; }
+.poop-option:hover { filter: brightness(0.93); transform: translateY(-2px); }
+.poop-option.selected { transform: translateY(-4px); box-shadow: 0 4px 12px rgba(93,78,55,0.18); filter: brightness(0.88); }
+.poop-option__emoji { font-size: 1.1rem; line-height: 1; }
+.poop-option__label { font-size: 0.62rem; color: var(--color-text); font-weight: 500; }
+
 /* ── Wishing Pool ── */
 .wish-toolbar {
   display: flex;
@@ -1306,9 +1349,18 @@ body {
             <span>吃的</span>
           </button>
         </div>
+        <div class="picker-col" id="poop-col">
+          <button class="wheel-trigger" id="poop-trigger">
+            <span class="wheel-trigger__emoji" id="poop-emoji">💩</span>
+            <span>便便</span>
+          </button>
+        </div>
       </div>
       <div class="diet-panel" id="diet-panel">
         <div class="diet-bar" id="diet-bar"></div>
+      </div>
+      <div class="poop-panel" id="poop-panel">
+        <div class="poop-bar" id="poop-bar"></div>
       </div>
     </div>
     <div class="modal-section">
@@ -1404,6 +1456,12 @@ const DIET_TYPES = [
   { key: 'ok',      emoji: '😌',   label: '一般',   desc: '勉强及格，下次收着点' },
   { key: 'indulge', emoji: '😵‍💫', label: '放纵',   desc: '脂肪已在赶来的路上' },
   { key: 'doomed',  emoji: '💀',   label: '没救了', desc: '完蛋了。没救了。活该。' }
+];
+const POOP_TYPES = [
+  { key: 'severe',      emoji: '🌊', label: '拉肚子很凶' },
+  { key: 'mild',        emoji: '💧', label: '拉肚子一点' },
+  { key: 'smooth',      emoji: '✨', label: '拉的很顺畅' },
+  { key: 'constipated', emoji: '🪨', label: '便秘' }
 ];
 
 /* ── App State ── */
@@ -1514,12 +1572,12 @@ function getAllDaysData() {
 
 function ensureDay(dateStr) {
   const m = loadMyData();
-  if (!m.days[dateStr]) m.days[dateStr] = { feeling: null, weather: null, diet: null, notes: [] };
+  if (!m.days[dateStr]) m.days[dateStr] = { feeling: null, weather: null, diet: null, poop: null, notes: [] };
 }
 
 function cleanupDay(dateStr) {
   const d = myData?.days[dateStr];
-  if (d && !d.feeling && !d.weather && !d.diet && d.notes.length === 0) delete myData.days[dateStr];
+  if (d && !d.feeling && !d.weather && !d.diet && !d.poop && d.notes.length === 0) delete myData.days[dateStr];
 }
 
 function getUserDayData(dateStr, user) {
@@ -1544,6 +1602,13 @@ function setWeather(dateStr, key) {
 function setDiet(dateStr, key) {
   ensureDay(dateStr);
   myData.days[dateStr] = { ...myData.days[dateStr], diet: key };
+  cleanupDay(dateStr);
+  persistMyData();
+}
+
+function setPoop(dateStr, key) {
+  ensureDay(dateStr);
+  myData.days[dateStr] = { ...myData.days[dateStr], poop: key };
   cleanupDay(dateStr);
   persistMyData();
 }
@@ -1666,6 +1731,7 @@ function mergeMyData(local, remote) {
       feeling: r.feeling ?? l.feeling,
       weather: r.weather ?? l.weather,
       diet:    r.diet    ?? l.diet,
+      poop:    r.poop    ?? l.poop,
       notes: [...(l.notes || []), ...(r.notes || []).filter(n => !seenIds.has(n.id))]
     };
   });
@@ -1808,6 +1874,8 @@ function formatTime(isoStr) {
 
 function feelingEmoji(key) { return FEELING_TYPES.find(t => t.key === key)?.emoji || ''; }
 function weatherLabel(key) { const w = WEATHER_TYPES.find(t => t.key === key); return w ? `${w.emoji} ${w.label}` : ''; }
+function dietLabel(key)    { const d = DIET_TYPES.find(t => t.key === key);    return d ? `${d.emoji} ${d.label}` : ''; }
+function poopLabel(key)    { const p = POOP_TYPES.find(t => t.key === key);    return p ? `${p.emoji} ${p.label}` : ''; }
 function escapeHtml(str) { const d = document.createElement('div'); d.textContent = str; return d.innerHTML; }
 function hasContent(ud) { return ud && (ud.feeling || ud.weather || (ud.notes?.length > 0)); }
 
@@ -1846,7 +1914,9 @@ function buildDayCard(dateStr, dayObj) {
   if (viewMode === 'mine' && currentUser) {
     const ud = dayObj[currentUser] || {};
     const fEmoji = feelingEmoji(ud.feeling);
-    const wTag = ud.weather ? `<span class="card-weather-tag">${weatherLabel(ud.weather)}</span>` : '';
+    const wTag    = ud.weather ? `<span class="card-weather-tag">${weatherLabel(ud.weather)}</span>` : '';
+    const dTag    = ud.diet    ? `<span class="card-weather-tag">${dietLabel(ud.diet)}</span>`       : '';
+    const pTag    = ud.poop    ? `<span class="card-weather-tag">${poopLabel(ud.poop)}</span>`       : '';
     const notesHtml = (ud.notes || [])
       .map(n => `<li class="note-bubble">${escapeHtml(n.text)}<div class="note-time">${formatTime(n.createdAt)}</div></li>`)
       .join('');
@@ -1854,7 +1924,7 @@ function buildDayCard(dateStr, dayObj) {
       <div class="card-header">
         <span class="card-feeling">${fEmoji || '📝'}</span>
         <div class="card-date-group">
-          <div class="card-date">${formatDate(dateStr)}${wTag}</div>
+          <div class="card-date">${formatDate(dateStr)}${wTag}${dTag}${pTag}</div>
           ${relHtml}
         </div>
       </div>
@@ -1864,7 +1934,9 @@ function buildDayCard(dateStr, dayObj) {
 
   const entriesHtml = Object.entries(dayObj).map(([user, ud]) => {
     const fEmoji = feelingEmoji(ud.feeling);
-    const wTag = ud.weather ? `<span class="card-weather-tag">${weatherLabel(ud.weather)}</span>` : '';
+    const wTag    = ud.weather ? `<span class="card-weather-tag">${weatherLabel(ud.weather)}</span>` : '';
+    const dTag    = ud.diet    ? `<span class="card-weather-tag">${dietLabel(ud.diet)}</span>`       : '';
+    const pTag    = ud.poop    ? `<span class="card-weather-tag">${poopLabel(ud.poop)}</span>`       : '';
     const notesHtml = (ud.notes || [])
       .map(n => `<li class="note-bubble">${escapeHtml(n.text)}<div class="note-time">${formatTime(n.createdAt)}</div></li>`)
       .join('');
@@ -1872,7 +1944,7 @@ function buildDayCard(dateStr, dayObj) {
       <div class="user-entry-header">
         <span class="user-tag">${escapeHtml(user)}</span>
         ${fEmoji ? `<span class="card-feeling-sm">${fEmoji}</span>` : ''}
-        ${wTag}
+        ${wTag}${dTag}${pTag}
       </div>
       ${notesHtml ? `<ul class="card-notes">${notesHtml}</ul>` : ''}
     </div>`;
@@ -1950,6 +2022,7 @@ function openEditor(dateStr) {
   renderFeelingGrid(ud?.feeling || null);
   renderWeatherGrid(ud?.weather || null);
   renderDietGrid(ud?.diet || null);
+  renderPoopGrid(ud?.poop || null);
   renderModalNotes(dateStr);
   const input = document.getElementById('note-input');
   const addBtn = document.getElementById('note-add');
@@ -1964,6 +2037,7 @@ function openEditor(dateStr) {
 function closeEditor() {
   document.getElementById('modal').classList.remove('open');
   closeDietDropdown();
+  closePoopDropdown();
   currentEditDate = null;
   renderWaterfall();
   renderCalendar();
@@ -1977,6 +2051,15 @@ function closeDietDropdown() {
 }
 function dietOutsideHandler(e) {
   if (!e.target.closest('#diet-col') && !e.target.closest('#diet-panel')) closeDietDropdown();
+}
+
+function closePoopDropdown() {
+  document.getElementById('poop-panel')?.classList.remove('open');
+  document.getElementById('poop-col')?.classList.remove('active');
+  document.removeEventListener('click', poopOutsideHandler);
+}
+function poopOutsideHandler(e) {
+  if (!e.target.closest('#poop-col') && !e.target.closest('#poop-panel')) closePoopDropdown();
 }
 function closeAllWheels() {
   document.getElementById('feeling-col').classList.remove('open');
@@ -2040,6 +2123,20 @@ function renderDietGrid(selectedKey) {
     `<button class="diet-option${d.key === selectedKey ? ' selected' : ''}" data-diet="${d.key}">
       <span class="diet-option__emoji">${d.emoji}</span>
       <span class="diet-option__label">${d.label}</span>
+    </button>`
+  ).join('');
+}
+
+function renderPoopGrid(selectedKey) {
+  const sel = POOP_TYPES.find(p => p.key === selectedKey);
+  const emojiEl = document.getElementById('poop-emoji');
+  if (emojiEl) emojiEl.textContent = sel ? sel.emoji : '💩';
+  const bar = document.getElementById('poop-bar');
+  if (!bar) return;
+  bar.innerHTML = POOP_TYPES.map(p =>
+    `<button class="poop-option${p.key === selectedKey ? ' selected' : ''}" data-poop="${p.key}">
+      <span class="poop-option__emoji">${p.emoji}</span>
+      <span class="poop-option__label">${p.label}</span>
     </button>`
   ).join('');
 }
@@ -2299,6 +2396,7 @@ function bindModalEvents() {
     const panel = document.getElementById('diet-panel');
     const isOpen = panel.classList.contains('open');
     closeDietDropdown();
+    closePoopDropdown();
     closeAllWheels();
     if (!isOpen) {
       renderDietGrid(getUserDayData(currentEditDate, currentUser)?.diet || null);
@@ -2316,6 +2414,31 @@ function bindModalEvents() {
       setDiet(currentEditDate, cur === key ? null : key);
       renderDietGrid(cur === key ? null : key);
       if (cur === key) closeDietDropdown();
+    }
+  });
+
+  document.getElementById('poop-trigger').addEventListener('click', () => {
+    const panel = document.getElementById('poop-panel');
+    const isOpen = panel.classList.contains('open');
+    closePoopDropdown();
+    closeDietDropdown();
+    closeAllWheels();
+    if (!isOpen) {
+      renderPoopGrid(getUserDayData(currentEditDate, currentUser)?.poop || null);
+      panel.classList.add('open');
+      document.getElementById('poop-col').classList.add('active');
+      setTimeout(() => document.addEventListener('click', poopOutsideHandler), 0);
+    }
+  });
+
+  document.getElementById('poop-bar').addEventListener('click', (e) => {
+    const opt = e.target.closest('.poop-option');
+    if (opt && currentEditDate) {
+      const key = opt.dataset.poop;
+      const cur = getUserDayData(currentEditDate, currentUser)?.poop;
+      setPoop(currentEditDate, cur === key ? null : key);
+      renderPoopGrid(cur === key ? null : key);
+      if (cur === key) closePoopDropdown();
     }
   });
 
