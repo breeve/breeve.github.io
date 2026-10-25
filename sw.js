@@ -24,6 +24,8 @@ self.addEventListener('activate', e => {
 // Network-first: 优先从网络拉取，成功则更新缓存；离线时降级到缓存
 self.addEventListener('fetch', e => {
   if (e.request.method !== 'GET') return;
+  // 笔记应用（/notes/）独立更新，不交给首页 Service Worker 接管
+  if (new URL(e.request.url).pathname.startsWith('/notes/')) return;
   e.respondWith(
     fetch(e.request)
       .then(res => {
