@@ -1,0 +1,193 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="robots" content="noindex, nofollow" />
+<title>0001 building effective agents</title>
+<meta property="og:title" content="0001 building effective agents" />
+<meta property="og:type" content="article" />
+
+
+<style>
+
+:root {
+  color-scheme: light dark;
+  --paper: #faf8f3;
+  --surface: #ffffff;
+  --ink: #231f19;
+  --muted: #57524a;
+  --faint: #98927f;
+  --line: #e3ddcf;
+  --accent: #b3543a;
+  --accent-strong: #8f3f28;
+  --accent-soft: #f3e0d6;
+  --radius: 10px;
+  --serif: Georgia, 'Songti SC', 'Noto Serif SC', 'PingFang SC', serif;
+  --sans: -apple-system, BlinkMacSystemFont, 'PingFang SC', 'Noto Sans SC', sans-serif;
+  --mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --paper: #191613;
+    --surface: #201c17;
+    --ink: #ece6d9;
+    --muted: #b3aa9a;
+    --faint: #7d7565;
+    --line: #38312a;
+    --accent: #d9795d;
+    --accent-strong: #e89a7f;
+    --accent-soft: #4a2f24;
+  }
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; }
+body {
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--serif);
+  line-height: 1.75;
+  font-size: 17px;
+  -webkit-font-smoothing: antialiased;
+}
+.share-page {
+  max-width: 46rem;
+  margin: 0 auto;
+  padding: 2.5rem 1.25rem 4rem;
+}
+.share-header {
+  padding-bottom: 1.5rem;
+  margin-bottom: 2rem;
+  border-bottom: 1px solid var(--line);
+}
+.share-title {
+  margin: 0;
+  font-size: 1.9rem;
+  line-height: 1.3;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+.share-body > :first-child { margin-top: 0; }
+.share-body p { margin: 0 0 1.1em; }
+.share-body h1, .share-body h2, .share-body h3,
+.share-body h4, .share-body h5, .share-body h6 {
+  font-family: var(--sans);
+  line-height: 1.3;
+  margin: 1.6em 0 0.6em;
+  letter-spacing: -0.01em;
+}
+.share-body h1 { font-size: 1.6rem; }
+.share-body h2 { font-size: 1.4rem; }
+.share-body h3 { font-size: 1.2rem; }
+.share-body ul, .share-body ol { padding-left: 1.4em; margin: 0 0 1.1em; }
+.share-body li { margin: 0.25em 0; }
+.share-body a { color: var(--accent-strong); text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 3px; }
+.share-body blockquote {
+  margin: 1.2em 0;
+  padding: 0.4em 1.1em;
+  border-left: 3px solid var(--accent);
+  color: var(--muted);
+  background: color-mix(in srgb, var(--accent) 5%, transparent);
+  border-radius: 0 var(--radius) var(--radius) 0;
+}
+.share-body pre {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 0.9em 1em;
+  overflow-x: auto;
+  margin: 1.1em 0;
+}
+.share-body pre code {
+  background: none;
+  border: none;
+  padding: 0;
+  font-size: 0.85em;
+  line-height: 1.6;
+}
+.share-body code {
+  font-family: var(--mono);
+  font-size: 0.85em;
+  background: color-mix(in srgb, var(--ink) 7%, transparent);
+  border-radius: 4px;
+  padding: 0.1em 0.35em;
+}
+.share-body hr { border: none; border-top: 1px solid var(--line); margin: 2em auto; width: 60%; }
+.share-body img, .share-body video { max-width: 100%; border-radius: var(--radius); }
+.share-body .share-table-wrap { overflow-x: auto; margin: 1.2em 0; }
+.share-body table { border-collapse: collapse; width: 100%; font-size: 0.95em; }
+.share-body th, .share-body td { border: 1px solid var(--line); padding: 0.5em 0.8em; text-align: left; }
+.share-body th { background: var(--surface); font-family: var(--sans); font-weight: 600; }
+.share-task { list-style: none; padding-left: 0.2em; }
+.share-task-item { display: flex; gap: 0.5em; align-items: flex-start; margin: 0.3em 0; }
+.share-check { flex-shrink: 0; color: var(--accent); }
+.share-datetime {
+  font-family: var(--sans);
+  font-size: 0.85em;
+  color: var(--muted);
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  padding: 0.1em 0.7em;
+  white-space: nowrap;
+}
+.share-media { margin: 1.3em 0; }
+.share-media video { width: 100%; background: #000; }
+.share-media figcaption {
+  margin-top: 0.4em;
+  font-family: var(--sans);
+  font-size: 0.8em;
+  color: var(--faint);
+  text-align: center;
+}
+.share-chart { margin: 1.4em 0; }
+.share-chart img { border: 1px solid var(--line); background: var(--surface); }
+.share-attachment { display: flex; align-items: center; gap: 0.6em; }
+.share-attachment a { text-decoration: none; }
+.share-attachment a:hover { text-decoration: underline; }
+.share-size { font-family: var(--sans); font-size: 0.8em; color: var(--faint); }
+.share-skip {
+  margin: 1em 0;
+  padding: 0.8em 1em;
+  border: 1px dashed var(--line);
+  border-radius: var(--radius);
+  color: var(--faint);
+  font-size: 0.85em;
+  font-family: var(--sans);
+}
+.share-empty-chart {
+  margin: 1em 0;
+  padding: 1.2em;
+  text-align: center;
+  border: 1px dashed var(--line);
+  border-radius: var(--radius);
+  color: var(--faint);
+  font-size: 0.85em;
+  font-family: var(--sans);
+}
+.share-footer {
+  margin-top: 3rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--line);
+  font-family: var(--sans);
+  font-size: 0.8em;
+  color: var(--faint);
+}
+@media (max-width: 560px) {
+  body { font-size: 16px; }
+  .share-page { padding: 1.5rem 1rem 3rem; }
+  .share-title { font-size: 1.6rem; }
+}
+
+</style>
+</head>
+<body>
+<main class="share-page">
+  <header class="share-header">
+    <h1 class="share-title">0001 building effective agents</h1>
+  </header>
+  <article class="share-body"></article>
+  <footer class="share-footer">由 Notes Editor 分享 · 此页面公开，任何知道链接的人可见</footer>
+</main>
+</body>
+</html>
